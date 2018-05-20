@@ -2,7 +2,13 @@
     <div id="home">
         <h1>Home</h1>
         <div id="tags">
-            Tags here
+            <a 
+                v-for="tag in getTags"
+                :href="'#' + tag"
+                class="tagLink"
+            >
+            #{{tag}}
+            </a>
         </div>
         <div id="content">
             <ul>
@@ -13,6 +19,8 @@
 </template>
 
 <script>
+import * as task from "./task.js";
+
 export default {
     name: "home",
     data() {
@@ -23,10 +31,15 @@ export default {
     methods: {
         loadTasks: function() {
             this.tasks.push(... [
-                {content: 1},
-                {content: 2},
-                {content: 3},
+                new task.Task("t1", "", "", ["test"]),
+                new task.Task("t2", "", "", ["test"]),
+                new task.Task("t3", "", "", ["test3"])
             ]);
+        }
+    },
+    computed: {
+        getTags() {
+            return this.tasks.map(t => t.tags).flatten();
         }
     },
     created() {
@@ -40,13 +53,8 @@ export default {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
-}
-
-h1, h2 {
-    font-weight: normal;
+    margin: 30px 0 0 30px;
 }
 
 ul {
@@ -59,5 +67,13 @@ li {
 
 a {
     color: #42b983;
+}
+
+.tagLink {
+    color: #999;
+    margin: 0 5px 0 0;
+}
+.tagLink:hover {
+    background-color: #f2f2f2;
 }
 </style>

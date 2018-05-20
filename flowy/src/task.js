@@ -1,16 +1,18 @@
-export {Tasl, Category};
+export {Task, Category};
 
 class Task {
-    constructor(content, author="", link=null, tags=[]) {
+    constructor(content, author="", link="", tags=[], tasks=[]) {
         this.content = content;
         this.author = author;
         this.link = link;
         this.tags = tags;
+        this.tasks= tasks;
     }
 }
 
 class Category {
-    constructor(tasks, tags=[]) {
+    constructor(name, tasks=[], tags=[]) {
+        this.name = name;
         this.tasks = tasks;
         this.tags = tags;
     }
