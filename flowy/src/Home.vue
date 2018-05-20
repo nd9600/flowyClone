@@ -5,7 +5,9 @@
             Tags here
         </div>
         <div id="content">
-            {{tasks}}
+            <ul>
+                <li v-for="task in tasks">{{task.content}}</li>
+            </ul>
         </div>
     </div>
 </template>
@@ -13,10 +15,22 @@
 <script>
 export default {
     name: "home",
-    data () {
+    data() {
         return {
-            tasks: 'Tasks here'
+            tasks: [],
         }
+    },
+    methods: {
+        loadTasks: function() {
+            this.tasks.push(... [
+                {content: 1},
+                {content: 2},
+                {content: 3},
+            ]);
+        }
+    },
+    created() {
+        this.loadTasks();
     }
 }
 </script>
@@ -36,12 +50,10 @@ h1, h2 {
 }
 
 ul {
-    list-style-type: none;
     padding: 0;
 }
 
 li {
-    display: inline-block;
     margin: 0 10px;
 }
 

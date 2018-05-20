@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import "./task.js"
 import App from './App.vue'
 
 new Vue({
