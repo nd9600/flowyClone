@@ -1,28 +1,20 @@
 <template>
     <div id="home">
         <h1>Home</h1>
-        <div class="tagsContainer" id="tags">
-            <a 
-                v-for="tag in getTags"
-                :href="'#' + tag"
-                class="tagLink"
-            >
-                #{{tag}}
-            </a>
-        </div>
+        <tags-container
+            id="tags"
+            :tags="getTags"
+        >
+        </tags-container>
         <div id="content">
             <ul>
                 <li v-for="task in tasks">
                     {{task.content}}
-                    <div v-if="task.tags.length > 0" class="tagsContainer">
-                        <a 
-                            v-for="tag in task.tags"
-                            :href="'#' + tag"
-                            class="tagLink"
-                        >
-                            #{{tag}}
-                        </a>
-                    </div>
+                    <tags-container
+                        v-if="task.tags.length > 0"
+                        :tags="task.tags"
+                    >
+                    </tags-container>
                 </li>
             </ul>
         </div>
@@ -78,17 +70,5 @@
 
     a {
         color: #42b983;
-    }
-
-    .tagsContainer {
-        display: inline;
-    }
-
-    .tagLink {
-        color: #999;
-        margin: 0 5px 0 0;
-    }
-    .tagLink:hover {
-        background-color: #f2f2f2;
     }
 </style>
