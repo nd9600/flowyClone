@@ -20,7 +20,8 @@
         methods: {
             removeTask(task) {
                 console.log(task);
-                console.log(taskStorage);
+                console.log(this.$store.state.tasks);
+                this.$store.commit("removeTask", task);
             }
         }
     }

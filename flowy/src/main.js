@@ -2,6 +2,8 @@ import Vue from 'vue';
 
 import App from './App.vue';
 
+import {store} from "./store/store.js";
+
 import Tasks from "./components/Tasks.vue";
 import Tags from "./components/Tags.vue";
 
@@ -20,5 +22,6 @@ Array.prototype.flatten = function() {
 
 new Vue({
     el: '#app',
+    store,
     render: h => h(App)
 })
