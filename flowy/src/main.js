@@ -1,9 +1,12 @@
 import Vue from 'vue';
 
 import App from './App.vue';
-import TagsContainer from "./components/TagsContainer.vue";
 
-Vue.component("tags-container", TagsContainer);
+import Tasks from "./components/Tasks.vue";
+import Tags from "./components/Tags.vue";
+
+Vue.component("tasks", Tasks);
+Vue.component("tags", Tags);
 
 Array.prototype.unique = function() {
     return this.map(JSON.stringify).reverse().filter(function (e, i, a) {
