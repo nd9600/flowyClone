@@ -1,5 +1,5 @@
 <template>
-    <div class="tagsContainer">
+    <span>
         <a 
             v-for="tag in this.tags"
             :href="'#' + tag"
@@ -7,7 +7,7 @@
         >
             #{{tag}}
         </a>
-    </div>
+    </span>
 </template>
 
 <script>
@@ -17,10 +17,6 @@
 </script>
 
 <style>
-    .tagsContainer {
-        display: inline;
-    }
-
     .tagLink {
         color: #999;
         margin: 0 5px 0 0;
