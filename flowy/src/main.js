@@ -6,9 +6,11 @@ import {store} from "./store/store.js";
 
 import Tasks from "./components/Tasks.vue";
 import Tags from "./components/Tags.vue";
+import Task from "./components/Task.vue";
 
 Vue.component("tasks", Tasks);
 Vue.component("tags", Tags);
+Vue.component("task", Task);
 
 Array.prototype.unique = function() {
     return this.map(JSON.stringify).reverse().filter(function (e, i, a) {
