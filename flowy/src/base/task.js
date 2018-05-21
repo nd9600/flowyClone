@@ -1,20 +1,21 @@
 export {Task, Category};
 
 class Task {
-    constructor(content, complete=false, author="", link="", tags=[], tasks=[]) {
-        this.content = content;
-        this.complete = complete;
-        this.author = author;
-        this.link = link;
-        this.tags = tags;
-        this.tasks= tasks;
+    constructor(obj) {
+        this.id = obj.id;
+        this.content = obj.content;
+        this.complete = obj.complete || false;
+        this.author = obj.author || "";
+        this.link = obj.link || "";
+        this.tags = obj.tags || [];
+        this.tasks = obj.tasks || [];
     }
 }
 
 class Category {
-    constructor(name, tasks=[], tags=[]) {
-        this.name = name;
-        this.tasks = tasks;
-        this.tags = tags;
+    constructor(obj) {
+        this.name = obj.name;
+        this.tasks = obj.tasks || [];
+        this.tags = obj.tags || [];
     }
 }

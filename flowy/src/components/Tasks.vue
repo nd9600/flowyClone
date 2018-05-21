@@ -8,6 +8,7 @@
                     :tags="task.tags"
                 >
                 </tags>
+                <button class="removeButton" @click="removeTask(task)">x</button>
             </li>
         </ul>
     </div>
@@ -15,7 +16,13 @@
 
 <script>
     export default {
-        props: ["tasks"]
+        props: ["tasks"],
+        methods: {
+            removeTask(task) {
+                console.log(task);
+                console.log(taskStorage);
+            }
+        }
     }
 </script>
 
@@ -26,5 +33,18 @@
 
     li {
         margin: 0 10px;
+    }
+
+    .removeButton {
+        display: inline;
+        margin: auto 0;
+        margin-bottom: auto;
+        font-size: 18px;
+        color: transparent;
+        background-color: transparent;
+        border-color: transparent;
+    }
+    .removeButton:hover {
+        color: #999;
     }
 </style>

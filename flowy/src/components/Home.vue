@@ -23,28 +23,47 @@
 <script>
     import * as task from "../base/task.js";
 
+    // localStorage persistence
+    var STORAGE_KEY = 'tasks-flowyClone'
+    var taskStorage = {
+        fetch: function () {
+            var tasks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+                tasks.forEach(function (task, index) {
+                task.id = index
+            })
+            taskStorage.uid = tasks.length
+            return tasks
+        },
+        save: function (tasks) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks))
+        }
+    }
+
     export default {
         name: "home",
         data() {
             return {
-                tasks: [],
+                tasks: taskStorage.fetch(),
                 newTask: "",
             }
         },
         methods: {
             loadTasks() {
-                this.tasks.push(... [
-                    new task.Task("t1", false, "", "", ["test"]),
-                    new task.Task("t2", false, "", "", ["test"]),
-                    new task.Task("t3", false, "", "", ["test3"])
-                ]);
+                this.tasks = taskStorage.fetch();
             },
             addTask(event) {
                 var value = this.newTask && this.newTask.trim()
                 if (!value) {
                     return
                 }
-                this.tasks.push(new task.Task(value, false, "", "", []));
+                this.tasks.push(new task.Task({
+                    id: taskStorage.uid++,
+                    content: value, 
+                    complete: false, 
+                    author: "", 
+                    link: "", 
+                    tags: ["test", "test2"]
+                }));
                 this.newTask = "";
             }
         },
@@ -53,8 +72,15 @@
                 return this.tasks.map(t => t.tags).flatten();
             }
         },
-        created() {
-            this.loadTasks();
+
+        // watch tasks change for localStorage persistence
+        watch: {
+            tasks: {
+                handler: function (tasks) {
+                    taskStorage.save(tasks)
+                },
+                deep: true
+            }
         }
     }
 </script>
@@ -70,7 +96,7 @@
     }
 
     #home {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        font-family: Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         color: #2c3e50;
