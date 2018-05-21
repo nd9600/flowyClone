@@ -1,8 +1,9 @@
 export {Task, Category};
 
 class Task {
-    constructor(content, author="", link="", tags=[], tasks=[]) {
+    constructor(content, complete=false, author="", link="", tags=[], tasks=[]) {
         this.content = content;
+        this.complete = complete;
         this.author = author;
         this.link = link;
         this.tags = tags;

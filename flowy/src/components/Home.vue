@@ -6,6 +6,12 @@
             :tags="getTags"
         >
         </tags>
+        <input 
+            class="newTask" 
+            placeholder="New task"
+            v-model="newTask"
+            @keyup.enter="addTask"
+        >
         <tasks
             id="tasks"
             :tasks="tasks"
@@ -22,15 +28,24 @@
         data() {
             return {
                 tasks: [],
+                newTask: "",
             }
         },
         methods: {
-            loadTasks: function() {
+            loadTasks() {
                 this.tasks.push(... [
-                    new task.Task("t1", "", "", ["test"]),
-                    new task.Task("t2", "", "", ["test"]),
-                    new task.Task("t3", "", "", ["test3"])
+                    new task.Task("t1", false, "", "", ["test"]),
+                    new task.Task("t2", false, "", "", ["test"]),
+                    new task.Task("t3", false, "", "", ["test3"])
                 ]);
+            },
+            addTask(event) {
+                var value = this.newTask && this.newTask.trim()
+                if (!value) {
+                    return
+                }
+                this.tasks.push(new task.Task(value, false, "", "", []));
+                this.newTask = "";
             }
         },
         computed: {
@@ -45,15 +60,20 @@
 </script>
 
 <style>
+    a {
+        color: #42b983;
+    }
+
+    .newTask {
+        display: block;
+        margin: 10px 0 10px 0;
+    }
+
     #home {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         color: #2c3e50;
         margin: 30px 0 0 30px;
-    }
-
-    a {
-        color: #42b983;
     }
 </style>
