@@ -2,7 +2,7 @@
     <li>
         <div class="task">
             <input class="toggle" type="checkbox" v-model="task.complete">
-            <label style="display: inline">{{task.content}}</label>
+            <p style="display: inline" contenteditable="true" @input="changeContent">{{task.content}}</p>
             <tags
                 v-if="task.tags.length > 0"
                 :tags="task.tags"
@@ -17,6 +17,13 @@
     export default {
         props: ["task"],
         methods: {
+            changeContent(event) {
+                let value = event.target.textContent && event.target.textContent.trim();
+                if (! value) {
+                    return;
+                }
+                this.task.content = value;
+            },
             removeTask() {
                 this.$store.commit("removeTask", this.task);
             }

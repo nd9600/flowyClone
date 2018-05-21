@@ -34,8 +34,8 @@
         methods: {
             addTask(event) {
                 let value = this.newTask && this.newTask.trim();
-                if (!value) {
-                    return
+                if (! value) {
+                    return;
                 }
                 this.$store.commit("addTask", new task.Task({
                     id: this.$store.state.taskStorageUID++,
