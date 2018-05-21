@@ -30,7 +30,7 @@
 </template>
 
 <script>
-    import * as task from "./task.js";
+    import * as task from "../base/task.js";
 
     export default {
         name: "home",
