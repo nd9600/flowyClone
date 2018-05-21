@@ -12,6 +12,7 @@
             :tags="getTags"
         >
         </tags>
+        <hr />
         <tasks
             id="tasks"
             :tasks="getTasks"
@@ -71,6 +72,7 @@
     .newTask {
         display: block;
         margin: 10px 0 10px 0;
+        padding: 10px;
     }
 
     #home {

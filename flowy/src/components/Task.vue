@@ -9,6 +9,15 @@
             >
             </tags>
             <button class="removeButton" @click="removeTask">x</button>
+
+            <ul v-if="task.tasks.length > 0">
+                <task 
+                    v-for="nestedTask in task.tasks"
+                    :task="nestedTask"
+                    :key="nestedTask.id"
+                >
+                </task>
+            </ul>
         </div>
     </li>
 </template>

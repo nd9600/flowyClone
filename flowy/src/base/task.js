@@ -11,11 +11,3 @@ class Task {
         this.tasks = obj.tasks || [];
     }
 }
-
-class Category {
-    constructor(obj) {
-        this.name = obj.name;
-        this.tasks = obj.tasks || [];
-        this.tags = obj.tags || [];
-    }
-}
