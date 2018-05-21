@@ -1,12 +1,17 @@
 <template>
     <div id="home">
         <h1>Home</h1>
-        <input 
-            class="newTask" 
-            placeholder="New task"
-            v-model="newTask"
-            @keyup.enter="addTask"
-        >
+            <input 
+                class="newTask" 
+                placeholder="New task"
+                v-model="newTask"
+                @keyup.enter="addTask"
+            >
+        <div>
+            <a @click="visibility = 'all';">all</a>
+            <a @click="visibility = 'active';">active</a>
+            <a @click="visibility = 'completed';">completed</a>
+        </div>
         <tags
             id="tags"
             :tags="getTags"
@@ -15,7 +20,7 @@
         <hr />
         <tasks
             id="tasks"
-            :tasks="getTasks"
+            :tasks="getFilteredTasks"
         >
         </tasks>
     </div>
@@ -25,11 +30,28 @@
     import * as task from "../base/task.js";
     import {mapGetters} from "vuex";
 
+    let filters = {
+        all: function (tasks) {
+            return tasks
+        },
+        active: function (tasks) {
+            return tasks.filter(function (task) {
+                return ! task.complete
+            });
+        },
+        completed: function (tasks) {
+            return tasks.filter(function (task) {
+                return task.complete
+            });
+        }
+    };
+
     export default {
         name: "home",
         data() {
             return {
                 newTask: "",
+                visibility: "all"
             }
         },
         methods: {
@@ -54,6 +76,9 @@
                 "getTasks",
                 "loadTasksFromStorage"
             ]),
+            getFilteredTasks() {
+                return filters[this.visibility](this.getTasks);
+            },
             getTags() {
                 return this.getTasks.map(t => t.tags).flatten().unique();
             }
