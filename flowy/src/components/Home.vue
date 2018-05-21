@@ -2,10 +2,15 @@
     <div id="home">
         <h1>Home</h1>
             <input 
-                class="newTask" 
+                class="inputBox" 
                 placeholder="New task"
                 v-model="newTask"
                 @keyup.enter="addTask"
+            >
+            <input
+                class="inputBox"
+                placeholder="Search"
+                v-model="searchTerm"
             >
         <div>
             <a @click="visibility = 'all';">all</a>
@@ -51,6 +56,7 @@
         data() {
             return {
                 newTask: "",
+                searchTerm: "",
                 visibility: "all"
             }
         },
@@ -77,7 +83,15 @@
                 "loadTasksFromStorage"
             ]),
             getFilteredTasks() {
-                return filters[this.visibility](this.getTasks);
+                let searchTerm = this.searchTerm && this.searchTerm.trim();
+                if (! searchTerm) {
+                    return filters[this.visibility](this.getTasks);
+                }
+                let tasksContainingSearchTerm = this.getTasks.filter(task => 
+                    task.content.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
+                );
+                return filters[this.visibility](tasksContainingSearchTerm);
+                
             },
             getTags() {
                 return this.getTasks.map(t => t.tags).flatten().unique();
@@ -94,7 +108,7 @@
         color: #42b983;
     }
 
-    .newTask {
+    .inputBox {
         display: block;
         margin: 10px 0 10px 0;
         padding: 10px;
