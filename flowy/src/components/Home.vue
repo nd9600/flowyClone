@@ -13,9 +13,18 @@
                 v-model="searchTerm"
             >
         <div>
-            <a @click="visibility = 'all';">all</a>
-            <a @click="visibility = 'active';">active</a>
-            <a @click="visibility = 'completed';">completed</a>
+            <a 
+                @click="visibility = 'all';"
+                :class="{ selected: visibility == 'all' }"
+            >all</a>
+            <a 
+                @click="visibility = 'active';"
+                :class="{ selected: visibility == 'active' }"
+            >active</a>
+            <a 
+                @click="visibility = 'completed';"
+                :class="{ selected: visibility == 'completed' }"
+            >completed</a>
         </div>
         <tags
             id="tags"
@@ -135,5 +144,9 @@
         -moz-osx-font-smoothing: grayscale;
         color: #2c3e50;
         margin: 30px 0 0 30px;
+    }
+
+    .selected {
+        color: #982c61;
     }
 </style>
