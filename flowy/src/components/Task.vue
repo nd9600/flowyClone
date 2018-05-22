@@ -3,12 +3,12 @@
         <a class="bullet" @click="toggleComplete"></a>
 
         <span :class="{ strikethrough: task.complete }">
-            <p 
+            <span 
                 class="taskText" 
                 contentEditable="true" 
                 @blur.prevent="changeContent"
             >{{task.content}}
-            </p>
+            </span>
             <a
                 v-if="task.link.length > 0"
                 :href="task.link"
@@ -17,12 +17,14 @@
                 link
             </a>
 
-            <tags
-                v-if="tags.length > 0"
-                :tags="tags"
-            >
-            </tags>
+            
         </span>
+
+        <tags
+            v-if="tags.length > 0"
+            :tags="tags"
+        >
+        </tags>
 
         <button class="removeButton" @click="removeTask(task)">x</button>
 
@@ -101,6 +103,7 @@
         margin: 0px;
         line-height: 20px;
         min-height: 20px;
+        max-width: 50%;
     }
 
     .removeButton {

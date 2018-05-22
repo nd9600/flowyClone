@@ -35,12 +35,23 @@
             :tasks="getFilteredTasks"
         >
         </tasks>
+
+        <br />
+
+        <p class="smallText">{{tasksAsJSON}}</p>
+        <p class="smallText">{{this.taskStorageUID}}</p>
+        <!-- <textarea
+            class="inputBox" 
+            placeholder="Replace tasks with JSON"
+            @blur="replaceTasksWithJSON"
+        ></textarea> -->
     </div>
 </template>
 
 <script>
     import * as task from "../base/task.js";
     import {mapGetters, mapMutations} from "vuex";
+    import {STORAGE_KEY} from "../store/store.js";
     import {getTagsInTasks} from "../base/useful_functions.js";
 
     let filters = {
@@ -64,7 +75,8 @@
         data() {
             return {
                 newTask: "",
-                visibility: "all"
+                visibility: "all",
+                jsonInput: ""
             }
         },
         methods: {
@@ -90,6 +102,20 @@
                     link: "", 
                 }));
                 this.newTask = "";
+            },
+
+            replaceTasksWithJSON(event) {
+                let value = event.target.value && event.target.value.trim();
+                if (! value) {
+                    return;
+                }
+                let splitValue = value.split("\n").filter(str => str.length > 0);
+                let newTasks = splitValue[0];
+                let newUID = splitValue[1];
+                localStorage.setItem(STORAGE_KEY + "-tasks", newTasks);
+                localStorage.setItem(STORAGE_KEY + "-taskStorageUID", newUID);
+
+                this.initialiseTasks();
             }
         },
         computed: {
@@ -123,6 +149,11 @@
                 set (value) {
                     this.changeSearchTerm(value);
                 }
+            },
+
+            tasksAsJSON() {
+                console.log(JSON.stringify(this.tasks));
+                return JSON.stringify(this.tasks);
             }
         },
         created() {
@@ -152,5 +183,10 @@
 
     .selected {
         color: #982c61;
+    }
+
+    .smallText {
+        color: #c3c3c3;
+        font-size: 1rem;
     }
 </style>

@@ -3,9 +3,11 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
+export {STORAGE_KEY, store};
+
 const STORAGE_KEY = 'tasks-flowyClone';
 
-export const store = new Vuex.Store({
+const store = new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
     state: {
         tasks: [],
@@ -17,7 +19,7 @@ export const store = new Vuex.Store({
             return state.tasks;
         },
         tasksFromStorage: (state) => {
-            var tasks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+            var tasks = JSON.parse(localStorage.getItem(STORAGE_KEY + "-tasks") || '[]')
             tasks.forEach(function (task, index) {
                 task.id = index;
             })

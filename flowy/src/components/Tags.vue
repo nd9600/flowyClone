@@ -46,5 +46,7 @@
     }
     .tagLink:hover {
         background-color: #f2f2f2;
+        color: #982c61;
+        border-bottom: 2px solid #4a4a4a;
     }
 </style>

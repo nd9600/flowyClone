@@ -11,6 +11,6 @@ class Task {
         this.link = obj.link || "";
 
         this.tasks = obj.tasks || [];
-        this.parent = obj,parent || null;
+        this.parent = obj.parent || null;
     }
 }
