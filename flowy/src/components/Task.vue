@@ -7,7 +7,6 @@
                 class="taskText" 
                 contentEditable="true" 
                 @blur.prevent="changeContent"
-                
             >{{task.content}}
             </p>
             <a
@@ -18,11 +17,11 @@
                 link
             </a>
 
-            <!-- <tags
-                v-if="task.tags.length > 0"
-                :tags="task.tags"
+            <tags
+                v-if="tags.length > 0"
+                :tags="tags"
             >
-            </tags> -->
+            </tags>
         </span>
 
         <button class="removeButton" @click="removeTask(task)">x</button>
@@ -39,7 +38,7 @@
 <script>
     // import _ from 'lodash';
     import {mapMutations} from "vuex";
-    import {cloneAndModify} from "../base/useful_functions.js";
+    import {cloneAndModify, getTagsInTask} from "../base/useful_functions.js";
 
     export default {
         props: ["task"],
@@ -68,13 +67,8 @@
                 }// }, 1000)
         },
         computed: {
-            getFormattedContent() {
-                return this.task.content.split(" ").map(s => {
-                    if ((s.length > 0) && (s[0] === "#")) {
-                        return `<span class='tagLink'>${s}</span>`;
-                    }
-                    return s;
-                }).join(" ");
+            tags() {
+                return getTagsInTask(this.task);
             }
         }
     }

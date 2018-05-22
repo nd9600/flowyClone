@@ -1,4 +1,4 @@
-export {extract, cloneAndModify, getTagsInTasks};
+export {extract, cloneAndModify, getTagsInTask, getTagsInTasks};
 
 
 Array.prototype.unique = function() {
@@ -31,12 +31,14 @@ function getTagsInString(str) {
     return str.split(" ").filter(s => (s.length > 1) && (s[0] === "#"));
 }
 
+function getTagsInTask(task) {
+    let tagsInContent = getTagsInString(task.content);
+    if ((typeof task.tasks !== "undefined") && task.tasks.length > 0) {
+        return tagsInContent.concat(getTagsInTasks(task.tasks));
+    }
+    return tagsInContent;
+};
+
 function getTagsInTasks(tasks) {
-    return tasks.map(task => {
-        let tagsInContent = getTagsInString(task.content);
-        if ((typeof task.tasks !== "undefined") && task.tasks.length > 0) {
-            return tagsInContent.concat(getTagsInTasks(task.tasks));
-        }
-        return tagsInContent;
-    }).flatten().unique();
+    return tasks.map(task => getTagsInTask(task)).flatten().unique();
 };
