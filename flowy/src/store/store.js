@@ -7,9 +7,11 @@ const STORAGE_KEY = 'tasks-flowyClone';
 
 //uid in taskStorage means we need to keep taskStorage in Vuex
 export const store = new Vuex.Store({
+    strict: process.env.NODE_ENV !== 'production',
     state: {
         tasks: [],
-        taskStorageUID: 0
+        taskStorageUID: 0,
+        searchTerm: ""
     },
     getters: {
         getTasks: (state) => {
@@ -17,11 +19,14 @@ export const store = new Vuex.Store({
         },
         loadTasksFromStorage: (state) => {
             var tasks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
-                tasks.forEach(function (task, index) {
-                task.id = index
+            tasks.forEach(function (task, index) {
+                task.id = index;
             })
-            state.uid = tasks.length
-            return tasks
+            state.uid = tasks.length;
+            return tasks;
+        },
+        getSearchTerm: (state) => {
+            return state.searchTerm;
         }
     },
     //synchronous
@@ -47,6 +52,9 @@ export const store = new Vuex.Store({
         saveTasks: (state) => {
             localStorage.setItem(STORAGE_KEY + "-tasks", JSON.stringify(state.tasks));
             localStorage.setItem(STORAGE_KEY + "-taskStorageUID", JSON.stringify(state.taskStorageUID));
+        },
+        changeSearchTerm: (state, newTerm) => {
+            state.searchTerm = newTerm;
         }
     },
     //asynchronous

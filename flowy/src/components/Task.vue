@@ -44,6 +44,8 @@
 
 <script>
     import _ from 'lodash';
+    import {mapMutations} from "vuex";
+
     export default {
         props: ["task"],
         methods: {

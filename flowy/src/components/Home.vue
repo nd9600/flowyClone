@@ -11,6 +11,7 @@
                 class="inputBox"
                 placeholder="Search"
                 v-model="searchTerm"
+                @keyup.esc="clearSearchTerm"
             >
         <div>
             <a @click="visibility = 'all';">all</a>
@@ -33,7 +34,7 @@
 
 <script>
     import * as task from "../base/task.js";
-    import {mapGetters} from "vuex";
+    import {mapGetters, mapMutations} from "vuex";
 
     let filters = {
         all: function (tasks) {
@@ -56,11 +57,14 @@
         data() {
             return {
                 newTask: "",
-                searchTerm: "",
                 visibility: "all"
             }
         },
         methods: {
+            ...mapMutations([
+                "changeSearchTerm"
+            ]),
+
             addTask(event) {
                 let value = this.newTask && this.newTask.trim();
                 if (! value) {
@@ -75,13 +79,19 @@
                     tags: ["test", "test2"]
                 }));
                 this.newTask = "";
+            },
+            clearSearchTerm() {
+                this.changeSearchTerm("");
             }
         },
         computed: {
             ...mapGetters([
                 "getTasks",
-                "loadTasksFromStorage"
+                "loadTasksFromStorage",
+                "getSearchTerm"
             ]),
+
+            //can filter tasks by a search term or visibiliity
             getFilteredTasks() {
                 let searchTerm = this.searchTerm && this.searchTerm.trim();
                 if (! searchTerm) {
@@ -95,6 +105,15 @@
             },
             getTags() {
                 return this.getTasks.map(t => t.tags).flatten().unique();
+            },
+
+            searchTerm: {
+                get () {
+                    return this.getSearchTerm;
+                },
+                set (value) {
+                    this.changeSearchTerm(value);
+                }
             }
         },
         beforeCreate() {

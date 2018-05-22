@@ -2,8 +2,8 @@
     <span>
         <a 
             v-for="tag in this.tags"
-            :href="'#' + tag"
             class="tagLink"
+            @click.prevent="updateSearchTerm"
         >
             #{{tag}}
         </a>
@@ -11,8 +11,19 @@
 </template>
 
 <script>
+    import {mapMutations} from "vuex";
+
     export default {
-        props: ["tags"]
+        props: ["tags"],
+        methods: {
+            ...mapMutations([
+                "changeSearchTerm"
+            ]),
+            updateSearchTerm(event) {
+                //only adds the text following the #
+                this.changeSearchTerm(event.target.innerText.slice(1));
+            }
+        }
     }
 </script>
 
