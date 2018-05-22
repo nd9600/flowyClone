@@ -11,7 +11,6 @@
                 class="inputBox"
                 placeholder="Search"
                 v-model="searchTerm"
-                @keyup.esc="clearSearchTerm"
             >
         <div>
             <a @click="visibility = 'all';">all</a>
@@ -79,9 +78,6 @@
                     tags: ["test", "test2"]
                 }));
                 this.newTask = "";
-            },
-            clearSearchTerm() {
-                this.changeSearchTerm("");
             }
         },
         computed: {

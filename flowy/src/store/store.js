@@ -54,7 +54,9 @@ export const store = new Vuex.Store({
             localStorage.setItem(STORAGE_KEY + "-taskStorageUID", JSON.stringify(state.taskStorageUID));
         },
         changeSearchTerm: (state, newTerm) => {
-            state.searchTerm = newTerm;
+            if (state.searchTerm !== newTerm) {
+                state.searchTerm = newTerm;
+            }
         }
     },
     //asynchronous
