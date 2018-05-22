@@ -3,26 +3,20 @@
         <a class="bullet" @click="toggleComplete"></a>
 
         <span :class="{ strikethrough: task.complete }">
-            <span v-if="task.length > 0">
-                <a :href="task.link">
-                    <p 
-                        class="taskText" 
-                        contentEditable="true" 
-                        @input="changeContent"
-                    >
-                        {{task.content}}
-                    </p>
-                </a>
-            </span>
-            <span v-else>
-                <p 
-                    class="taskText" 
-                    contentEditable="true" 
-                    @input="changeContent"
-                >
-                    {{task.content}}
-                </p>
-            </span>
+            <p 
+                class="taskText" 
+                contentEditable="true" 
+                @input="changeContent"
+            >
+                {{task.content}}
+            </p>
+            <a
+                v-if="task.link.length > 0"
+                :href="task.link"
+                class="taskLink"
+            >
+                link
+            </a>
 
             <tags
                 v-if="task.tags.length > 0"
@@ -31,7 +25,7 @@
             </tags>
         </span>
 
-        <button class="removeButton" @click="removeTask">x</button>
+        <button class="removeButton" @click="removeTask(task)">x</button>
 
         <tasks
             v-if="task.tasks.length > 0"
@@ -45,34 +39,31 @@
 <script>
     import _ from 'lodash';
     import {mapMutations} from "vuex";
+    import {cloneAndModify} from "../base/useful_functions.js";
 
     export default {
         props: ["task"],
         methods: {
+            ...mapMutations([
+                "changeTask",
+                "removeTask"
+            ]),
+
             toggleComplete() {
-                this.task.complete = ! this.task.complete;
+                let oldTask = this.task;
+                let newTask = cloneAndModify(oldTask, {complete: (! oldTask.complete) })
+                this.changeTask({newTask, oldTask});
             },
 
             //should only run once a second
             changeContent(event) {
                 let value = event.target.textContent && event.target.textContent.trim();
-                console.log(value);
                 if (! value) {
                     return;
                 }
-                this.task.content = value;
-            },
-            removeTask() {
-                this.$store.commit("removeTask", this.task);
-            }
-        }, 
-        watch: {
-            //need a deep watcher because it's an object
-            task: {
-                handler: function (newTask, oldTask) { 
-                    this.$store.commit("changeTask", {newTask, oldTask});
-                },
-                deep: true
+                let oldTask = this.task;
+                let newTask = cloneAndModify(oldTask, {content: value})
+                this.changeTask({newTask, oldTask});
             }
         }
     }

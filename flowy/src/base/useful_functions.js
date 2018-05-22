@@ -1,3 +1,5 @@
+export {extract, cloneAndModify};
+
 Array.prototype.unique = function() {
     return this.map(JSON.stringify).reverse().filter(function (e, i, a) {
         return a.indexOf(e, i+1) === -1;
@@ -8,6 +10,7 @@ Array.prototype.flatten = function() {
     return [].concat(...this);
 };
 
+// extracts all keys in vs from an object
 function extract(obj, vs) {
     let new_obj = {};
     vs.forEach((v) => { 
@@ -15,3 +18,9 @@ function extract(obj, vs) {
     }); 
     return new_obj;
 }
+
+
+// clones an object and changes some of its properties
+function cloneAndModify(obj, properties) {
+    return Object.assign(JSON.parse(JSON.stringify(obj)), properties);
+};

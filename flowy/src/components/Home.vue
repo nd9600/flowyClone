@@ -5,12 +5,12 @@
                 class="inputBox" 
                 placeholder="New task"
                 v-model="newTask"
-                @keyup.enter="addTask"
+                @keyup.enter="addTaskMethod"
             >
             <input
                 class="inputBox"
                 placeholder="Search"
-                v-model="searchTerm"
+                v-model="computedSearchTerm"
             >
         <div>
             <a 
@@ -27,13 +27,11 @@
             >completed</a>
         </div>
         <tags
-            id="tags"
             :tags="getTags"
         >
         </tags>
         <hr />
         <tasks
-            id="tasks"
             :tasks="getFilteredTasks"
         >
         </tasks>
@@ -70,16 +68,21 @@
         },
         methods: {
             ...mapMutations([
+                "initialiseTasks",
+                "addTask",
+                "incrementTaskStorageUID",
                 "changeSearchTerm"
             ]),
 
-            addTask(event) {
+            addTaskMethod(event) {
                 let value = this.newTask && this.newTask.trim();
                 if (! value) {
                     return;
                 }
-                this.$store.commit("addTask", new task.Task({
-                    id: this.$store.state.taskStorageUID++,
+
+                this.incrementTaskStorageUID();
+                this.addTask(new task.Task({
+                    id: this.taskStorageUID,
                     content: value, 
                     complete: false, 
                     author: "", 
@@ -91,38 +94,38 @@
         },
         computed: {
             ...mapGetters([
-                "getTasks",
-                "loadTasksFromStorage",
-                "getSearchTerm"
+                "tasks",
+                "taskStorageUID",
+                "searchTerm"
             ]),
 
             //can filter tasks by a search term or visibiliity
             getFilteredTasks() {
                 let searchTerm = this.searchTerm && this.searchTerm.trim();
                 if (! searchTerm) {
-                    return filters[this.visibility](this.getTasks);
+                    return filters[this.visibility](this.tasks);
                 }
-                let tasksContainingSearchTerm = this.getTasks.filter(task => 
+                let tasksContainingSearchTerm = this.tasks.filter(task => 
                     task.content.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
                 );
                 return filters[this.visibility](tasksContainingSearchTerm);
                 
             },
             getTags() {
-                return this.getTasks.map(t => t.tags).flatten().unique();
+                return this.tasks.map(t => t.tags).flatten().unique();
             },
 
-            searchTerm: {
+            computedSearchTerm: {
                 get () {
-                    return this.getSearchTerm;
+                    return this.searchTerm;
                 },
                 set (value) {
                     this.changeSearchTerm(value);
                 }
             }
         },
-        beforeCreate() {
-            this.$store.commit('initialiseTasks');
+        created() {
+            this.initialiseTasks();
         }
     }
 </script>
