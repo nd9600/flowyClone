@@ -49,7 +49,9 @@ export const store = new Vuex.Store({
             state.tasks.splice(state.tasks.indexOf(task), 1);
         },
         changeTask: (state, {newTask, oldTask}) => {
-            state.tasks.splice(state.tasks.indexOf(oldTask), 1, newTask);
+            let indexOfOldTask = state.tasks.indexOf(oldTask);
+            console.log(indexOfOldTask);
+            state.tasks[indexOfOldTask] = newTask;
         },
         saveTasks: (state) => {
             localStorage.setItem(STORAGE_KEY + "-tasks", JSON.stringify(state.tasks));

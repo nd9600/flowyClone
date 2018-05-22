@@ -27,7 +27,7 @@
             >completed</a>
         </div>
         <tags
-            :tags="getTags"
+            :tags="tags"
         >
         </tags>
         <hr />
@@ -41,6 +41,7 @@
 <script>
     import * as task from "../base/task.js";
     import {mapGetters, mapMutations} from "vuex";
+    import {getTagsInTasks} from "../base/useful_functions.js";
 
     let filters = {
         all: function (tasks) {
@@ -87,7 +88,6 @@
                     complete: false, 
                     author: "", 
                     link: "", 
-                    tags: ["test", "test2"]
                 }));
                 this.newTask = "";
             }
@@ -112,8 +112,8 @@
                 return filters[this.visibility](tasksContainingSearchTerm);
                 
             },
-            getTags() {
-                return this.tasks.map(t => t.tags).flatten().unique();
+            tags() {
+                return getTagsInTasks(this.tasks);
             },
 
             computedSearchTerm: {

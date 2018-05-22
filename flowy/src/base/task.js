@@ -10,9 +10,7 @@ class Task {
         this.author = obj.author || "";
         this.link = obj.link || "";
 
-        this.tags = obj.tags || [];
         this.tasks = obj.tasks || [];
-
         this.parent = obj,parent || null;
     }
 }

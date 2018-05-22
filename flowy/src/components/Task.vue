@@ -6,9 +6,9 @@
             <p 
                 class="taskText" 
                 contentEditable="true" 
-                @input="changeContent"
+                @blur.prevent="changeContent"
+                v-html="getFormattedContent"
             >
-                {{task.content}}
             </p>
             <a
                 v-if="task.link.length > 0"
@@ -18,11 +18,11 @@
                 link
             </a>
 
-            <tags
+            <!-- <tags
                 v-if="task.tags.length > 0"
                 :tags="task.tags"
             >
-            </tags>
+            </tags> -->
         </span>
 
         <button class="removeButton" @click="removeTask(task)">x</button>
@@ -55,15 +55,26 @@
                 this.changeTask({newTask, oldTask});
             },
 
-            //should only run once a second
-            changeContent(event) {
-                let value = event.target.textContent && event.target.textContent.trim();
-                if (! value) {
-                    return;
-                }
-                let oldTask = this.task;
-                let newTask = cloneAndModify(oldTask, {content: value})
-                this.changeTask({newTask, oldTask});
+            //only runs once a second, if the content has actually changed
+            changeContent: _.debounce(
+                function(event) {
+                    let value = event.target.textContent && event.target.textContent.trim();
+                    if (! value || value === this.task.content) {
+                        return;
+                    }
+                    let oldTask = this.task;
+                    let newTask = cloneAndModify(oldTask, {content: value})
+                    this.changeTask({newTask, oldTask});
+                }, 1000)
+        },
+        computed: {
+            getFormattedContent() {
+                return this.task.content.split(" ").map(s => {
+                    if ((s.length > 0) && (s[0] === "#")) {
+                        return `<span class='tagLink'>${s}</span>`;
+                    }
+                    return s;
+                }).join(" ");
             }
         }
     }
