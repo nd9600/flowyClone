@@ -105,6 +105,7 @@
                 if (! searchTerm) {
                     return filters[this.visibility](this.tasks);
                 }
+                
                 let tasksContainingSearchTerm = this.tasks.filter(task => 
                     task.content.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
                 );
