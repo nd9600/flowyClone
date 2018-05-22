@@ -7,8 +7,8 @@
                 class="taskText" 
                 contentEditable="true" 
                 @blur.prevent="changeContent"
-                v-html="getFormattedContent"
-            >
+                
+            >{{task.content}}
             </p>
             <a
                 v-if="task.link.length > 0"
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-    import _ from 'lodash';
+    // import _ from 'lodash';
     import {mapMutations} from "vuex";
     import {cloneAndModify} from "../base/useful_functions.js";
 
@@ -56,7 +56,7 @@
             },
 
             //only runs once a second, if the content has actually changed
-            changeContent: _.debounce(
+            changeContent: //_.debounce(
                 function(event) {
                     let value = event.target.textContent && event.target.textContent.trim();
                     if (! value || value === this.task.content) {
@@ -65,7 +65,7 @@
                     let oldTask = this.task;
                     let newTask = cloneAndModify(oldTask, {content: value})
                     this.changeTask({newTask, oldTask});
-                }, 1000)
+                }// }, 1000)
         },
         computed: {
             getFormattedContent() {

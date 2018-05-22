@@ -40,10 +40,3 @@ function getTagsInTasks(tasks) {
         return tagsInContent;
     }).flatten().unique();
 };
-
-"abc #def ghi".split(" ").map(s => {
-    if ((s.length > 0) && (s[0] === "#")) {
-        return `<p class='tagLink'>${s}</p>`;
-    }
-    return s;
-}).join(" ");

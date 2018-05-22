@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import {mapMutations} from "vuex";
+    import {mapMutations, mapGetters} from "vuex";
 
     export default {
         props: ["tags"],
@@ -21,9 +21,16 @@
                 "changeSearchTerm"
             ]),
             updateSearchTerm(event) {
-                //only adds the text following the #
-                this.changeSearchTerm(event.target.innerText.slice(0));
+                //only adds the text following the #, if it has changed
+                if (this.searchTerm !== event.target.innerText.slice(0)) {
+                    this.changeSearchTerm(event.target.innerText.slice(0));
+                }
             }
+        },
+        computed: {
+            ...mapGetters([
+                "searchTerm"
+            ])
         }
     }
 </script>
