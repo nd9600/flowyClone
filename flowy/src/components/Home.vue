@@ -123,10 +123,10 @@
             },
 
             computedSearchTerm: {
-                get () {
+                get() {
                     return this.searchTerm;
                 },
-                set (value) {
+                set(value) {
                     this.changeSearchTerm(value);
                 }
             }

@@ -1,14 +1,12 @@
 <template>
     <div class="tasksList">
-        <ul>
-            <task 
-                v-for="task in this.tasks"
-                v-on:removeTask="removeTask"
-                :task="task"
-                :key="task.id"
-            >
-            </task>
-        </ul>
+        <task 
+            v-for="task in this.tasks"
+            v-on:removeTask="removeTask"
+            :task="task"
+            :key="task.id"
+        >
+        </task>
     </div>
 </template>
 

@@ -19,14 +19,6 @@ const store = new Vuex.Store({
             //you might need to deep clone this
             return state.tasks;
         },
-        tasksFromStorage: (state) => {
-            var tasks = JSON.parse(localStorage.getItem(STORAGE_KEY + "-tasks") || '[]')
-            tasks.forEach(function (task, index) {
-                task.id = index;
-            })
-            state.taskStorageUID = tasks.length;
-            return tasks;
-        },
         taskStorageUID: (state) => {
             return state.taskStorageUID;
         },

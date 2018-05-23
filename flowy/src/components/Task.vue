@@ -1,32 +1,34 @@
 <template>
     <span class="task">
-        <a class="bullet" @click="toggleComplete"></a>
+        <img class="bullet" @click="toggleComplete">
 
         <span :class="{ strikethrough: task.complete }">
-            <span 
-                class="taskText" 
-                contentEditable="true" 
-                @blur.prevent="changeContent"
-            >{{task.content}}
-            </span>
+            <input
+                v-model="taskContent"
+                type="text"
+                class="taskText"
+            >
             <a
                 v-if="task.link.length > 0"
                 :href="task.link"
                 class="taskLink"
             >
                 link
-            </a>
-
-            
+            </a>            
         </span>
 
-        <tags
-            v-if="tags.length > 0"
-            :tags="tags"
-        >
-        </tags>
+        <span>
+            <button 
+                @click="$emit('removeTask', task)"
+                class="removeButton"
+            >x</button>
 
-        <button class="removeButton" @click="$emit('removeTask', task)">x</button>
+            <tags
+                v-if="tags.length > 0"
+                :tags="tags"
+            >
+            </tags>
+        </span>
 
         <tasks
             v-if="task.tasks.length > 0"
@@ -38,7 +40,6 @@
 </template>
 
 <script>
-    // import _ from 'lodash';
     import {getTagsInTask} from "../base/useful_functions.js";
 
     export default {
@@ -46,19 +47,17 @@
         methods: {
             toggleComplete() {
                 this.task.complete = ! this.task.complete;
-            },
-
-            //only runs once a second, if the content has actually changed
-            changeContent: //_.debounce(
-                function(event) {
-                    let value = event.target.textContent && event.target.textContent.trim();
-                    if (! value || value === this.task.content) {
-                        return;
-                    }
-                    this.task.content = value;
-                }// }, 1000)
+            }
         },
         computed: {
+            taskContent: {
+                get() {
+                    return this.task.content;
+                },
+                set(value) {
+                    this.task.content = value;
+                }
+            },
             tags() {
                 return getTagsInTask(this.task);
             }
@@ -71,38 +70,39 @@
     .task {
         display: flex;
         justify-content: flex-start;
-        align-items: center;
-        padding: 0px;
+        padding: 5px;
     }
 
     .bullet {
         background-color: transparent;
         background-image: url("../assets/bullet.svg");
-        height: 18px;
-        width: 18px;
-        border: none;
+        height: 32px;
+        width: 32px;
+        border-radius: 32px;
     }
     .bullet:hover {
         background-color: #aaa;
-        border-radius: 12px;
     }
 
-    .taskText {
+    .taskText, input[type] {
         display: inline;
         padding: 0 15px 0 5px;
-        margin: 0px;
+        margin: 0 0 3px 3px;
         line-height: 20px;
-        min-height: 20px;
-        max-width: 50%;
+        min-height: 32px;
+        min-width: 200px;
     }
 
     .removeButton {
-        margin: auto 0;
-        margin-bottom: auto;
+        min-height: 32px;
+
+        margin: 0 10px 0 10px;
+
         font-size: 18px;
-        color: transparent;
+        color: #ddd;
         background-color: transparent;
         border-color: transparent;
+
         text-decoration: none;
     }
     .removeButton:hover {
