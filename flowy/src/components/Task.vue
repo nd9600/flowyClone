@@ -39,21 +39,13 @@
 
 <script>
     // import _ from 'lodash';
-    import {mapMutations} from "vuex";
-    import {cloneAndModify, getTagsInTask} from "../base/useful_functions.js";
+    import {getTagsInTask} from "../base/useful_functions.js";
 
     export default {
         props: ["task"],
         methods: {
-            ...mapMutations([
-                "changeTask",
-                "removeTask"
-            ]),
-
             toggleComplete() {
-                let oldTask = this.task;
-                let newTask = cloneAndModify(oldTask, {complete: (! oldTask.complete) })
-                this.changeTask({newTask, oldTask});
+                this.task.complete = ! this.task.complete;
             },
 
             //only runs once a second, if the content has actually changed
@@ -63,9 +55,7 @@
                     if (! value || value === this.task.content) {
                         return;
                     }
-                    let oldTask = this.task;
-                    let newTask = cloneAndModify(oldTask, {content: value})
-                    this.changeTask({newTask, oldTask});
+                    this.task.content = value;
                 }// }, 1000)
         },
         computed: {

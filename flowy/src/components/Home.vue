@@ -32,26 +32,15 @@
         </tags>
         <hr />
         <tasks
-            :tasks="getFilteredTasks"
+            :tasks="filteredTasks"
         >
         </tasks>
-
-        <br />
-
-        <p class="smallText">{{tasksAsJSON}}</p>
-        <p class="smallText">{{this.taskStorageUID}}</p>
-        <!-- <textarea
-            class="inputBox" 
-            placeholder="Replace tasks with JSON"
-            @blur="replaceTasksWithJSON"
-        ></textarea> -->
     </div>
 </template>
 
 <script>
     import * as task from "../base/task.js";
-    import {mapGetters, mapMutations} from "vuex";
-    import {STORAGE_KEY} from "../store/store.js";
+    import {mapGetters, mapMutations, mapActions} from "vuex";
     import {getTagsInTasks} from "../base/useful_functions.js";
 
     let filters = {
@@ -76,15 +65,18 @@
             return {
                 newTask: "",
                 visibility: "all",
-                jsonInput: ""
+                localTasks: [],
+                localTasks2: []
             }
         },
         methods: {
             ...mapMutations([
                 "initialiseTasks",
-                "addTask",
                 "incrementTaskStorageUID",
                 "changeSearchTerm"
+            ]),
+            ...mapActions([
+                "updateTasks"
             ]),
 
             addTaskMethod(event) {
@@ -94,7 +86,7 @@
                 }
 
                 this.incrementTaskStorageUID();
-                this.addTask(new task.Task({
+                this.localTasks2.push(new task.Task({
                     id: this.taskStorageUID,
                     content: value, 
                     complete: false, 
@@ -102,20 +94,6 @@
                     link: "", 
                 }));
                 this.newTask = "";
-            },
-
-            replaceTasksWithJSON(event) {
-                let value = event.target.value && event.target.value.trim();
-                if (! value) {
-                    return;
-                }
-                let splitValue = value.split("\n").filter(str => str.length > 0);
-                let newTasks = splitValue[0];
-                let newUID = splitValue[1];
-                localStorage.setItem(STORAGE_KEY + "-tasks", newTasks);
-                localStorage.setItem(STORAGE_KEY + "-taskStorageUID", newUID);
-
-                this.initialiseTasks();
             }
         },
         computed: {
@@ -126,20 +104,20 @@
             ]),
 
             //can filter tasks by a search term or visibiliity
-            getFilteredTasks() {
+            filteredTasks() {
                 let searchTerm = this.searchTerm && this.searchTerm.trim();
                 if (! searchTerm) {
-                    return filters[this.visibility](this.tasks);
+                    return filters[this.visibility](this.localTasks);
                 }
                 
-                let tasksContainingSearchTerm = this.tasks.filter(task => 
+                let tasksContainingSearchTerm = this.localTasks.filter(task => 
                     task.content.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
                 );
                 return filters[this.visibility](tasksContainingSearchTerm);
                 
             },
             tags() {
-                return getTagsInTasks(this.tasks);
+                return getTagsInTasks(this.localTasks);
             },
 
             computedSearchTerm: {
@@ -149,15 +127,22 @@
                 set (value) {
                     this.changeSearchTerm(value);
                 }
-            },
-
-            tasksAsJSON() {
-                console.log(JSON.stringify(this.tasks));
-                return JSON.stringify(this.tasks);
+            }
+        },
+        watch: {
+            //need a deep watcher because the array has objects in it
+            localTasks: {
+                handler: function (newTasks, oldTasks) { 
+                    this.updateTasks(newTasks);
+                },
+                deep: true
             }
         },
         created() {
             this.initialiseTasks();
+
+            // properly clones this.tasks
+            this.localTasks2 = JSON.parse(JSON.stringify(this.tasks));
         }
     }
 </script>
@@ -171,6 +156,7 @@
         display: block;
         margin: 10px 0 10px 0;
         padding: 10px;
+        min-width: 100px;
     }
 
     #home {
@@ -183,10 +169,5 @@
 
     .selected {
         color: #982c61;
-    }
-
-    .smallText {
-        color: #c3c3c3;
-        font-size: 1rem;
     }
 </style>

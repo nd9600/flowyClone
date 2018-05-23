@@ -53,7 +53,7 @@ const store = new Vuex.Store({
         changeTask: (state, {newTask, oldTask}) => {
             state.tasks.splice(state.tasks.indexOf(oldTask), 1, newTask);
         },
-        saveTasks: (state) => {
+        saveTasksToLocalStorage: (state) => {
             localStorage.setItem(STORAGE_KEY + "-tasks", JSON.stringify(state.tasks));
             localStorage.setItem(STORAGE_KEY + "-taskStorageUID", JSON.stringify(state.taskStorageUID));
         },
@@ -64,19 +64,25 @@ const store = new Vuex.Store({
             if (state.searchTerm !== newTerm) {
                 state.searchTerm = newTerm;
             }
+        },
+        updateTasks: (state, newTasks) => {
+            state.tasks = newTasks;
         }
     },
     //asynchronous
     actions: {
-        saveTasks: (context) => {
-            context.commit("saveTasks")
+        saveTasksToLocalStorage: (context) => {
+            context.commit("saveTasksToLocalStorage")
+        },
+        updateTasks: (context, newTasks) => {
+            context.commit("updateTasks", newTasks);
         }
     }
 });
 
 // save the tasks to localStorage whenever they change
 store.subscribe((mutation, state) => {
-    if (["addTask", "removeTask", "changeTask"].indexOf(mutation.type) > -1) {
+    if (["updateTasks"].indexOf(mutation.type) > -1) {
         localStorage.setItem(STORAGE_KEY + "-tasks", JSON.stringify(state.tasks));
         localStorage.setItem(STORAGE_KEY + "-taskStorageUID", JSON.stringify(state.taskStorageUID));
     }
