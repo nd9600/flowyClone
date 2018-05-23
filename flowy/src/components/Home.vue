@@ -1,17 +1,18 @@
 <template>
     <div id="home">
         <h1>Home</h1>
-            <input 
-                class="inputBox" 
-                placeholder="New task"
-                v-model="newTask"
-                @keyup.enter="addTask"
-            >
-            <input
-                class="inputBox"
-                placeholder="Search"
-                v-model="computedSearchTerm"
-            >
+        <input 
+            class="inputBox" 
+            placeholder="New task"
+            v-model="newTask"
+            @keyup.enter="addTask"
+        >
+        <input
+            class="inputBox"
+            placeholder="Search"
+            v-model="computedSearchTerm"
+        >
+
         <div>
             <a 
                 @click="visibility = 'all';"
@@ -26,15 +27,20 @@
                 :class="{ selected: visibility == 'completed' }"
             >completed</a>
         </div>
+
         <tags
             :tags="tags"
         >
         </tags>
-        <hr />
+
+        <div class="separator"></div>
+
         <tasks
             :tasks="filteredTasks"
         >
         </tasks>
+
+        <p style="color: #999;">{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p>
     </div>
 </template>
 
@@ -118,6 +124,11 @@
                 return filters[this.visibility](tasksContainingSearchTerm);
                 
             },
+
+            numberOfTasksRemaining() {
+                return this.filteredTasks.length;
+            },
+
             tags() {
                 return getTagsInTasks(this.localTasks);
             },
@@ -129,6 +140,11 @@
                 set(value) {
                     this.changeSearchTerm(value);
                 }
+            }
+        },
+        filters: {
+            pluralise(n) {
+                return n === 1 ? "item" : "items";
             }
         },
         watch: {
@@ -163,7 +179,7 @@
         display: block;
         margin: 10px 0 10px 0;
         padding: 10px;
-        min-width: 100px;
+        min-width: 200px;
     }
 
     #home {
@@ -176,5 +192,11 @@
 
     .selected {
         color: #982c61;
+    }
+
+    .separator {
+        background-color: #d1d1d1;
+        height: 1px;
+        margin: 10px 0 10px 0;
     }
 </style>
