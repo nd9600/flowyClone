@@ -5,7 +5,7 @@
                 class="inputBox" 
                 placeholder="New task"
                 v-model="newTask"
-                @keyup.enter="addTaskMethod"
+                @keyup.enter="addTask"
             >
             <input
                 class="inputBox"
@@ -65,8 +65,10 @@
             return {
                 newTask: "",
                 visibility: "all",
+
+                //props change this array, the watcher below then commits the new tasks to the store
                 localTasks: [],
-                localTasks2: []
+                shouldUpdateTasks: false
             }
         },
         methods: {
@@ -79,14 +81,14 @@
                 "updateTasks"
             ]),
 
-            addTaskMethod(event) {
+            addTask(event) {
                 let value = this.newTask && this.newTask.trim();
                 if (! value) {
                     return;
                 }
 
                 this.incrementTaskStorageUID();
-                this.localTasks2.push(new task.Task({
+                this.localTasks.push(new task.Task({
                     id: this.taskStorageUID,
                     content: value, 
                     complete: false, 
@@ -130,10 +132,12 @@
             }
         },
         watch: {
-            //need a deep watcher because the array has objects in it
+            // needs a deep watcher because the array has objects in it
             localTasks: {
                 handler: function (newTasks, oldTasks) { 
-                    this.updateTasks(newTasks);
+                    if (this.shouldUpdateTasks) {
+                        this.updateTasks(newTasks);
+                    }
                 },
                 deep: true
             }
@@ -141,8 +145,11 @@
         created() {
             this.initialiseTasks();
 
-            // properly clones this.tasks
-            this.localTasks2 = JSON.parse(JSON.stringify(this.tasks));
+            // have to deep clone the tasks so that we don't accidentally use a reference to the original object instead
+            this.shouldUpdateTasks = false;
+            //this.localTasks = this.tasks.map(task => Object.assign({}, task));
+            this.localTasks = JSON.parse(JSON.stringify(this.tasks));
+            this.shouldUpdateTasks = true;
         }
     }
 </script>

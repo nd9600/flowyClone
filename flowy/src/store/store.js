@@ -16,6 +16,7 @@ const store = new Vuex.Store({
     },
     getters: {
         tasks: (state) => {
+            //you might need to deep clone this
             return state.tasks;
         },
         tasksFromStorage: (state) => {
@@ -44,15 +45,6 @@ const store = new Vuex.Store({
                 state.taskStorageUID = JSON.parse(localStorage.getItem(STORAGE_KEY + "-taskStorageUID"));
             }
         },
-        addTask: (state, task) => {
-            state.tasks.push(task);
-        },
-        removeTask: (state, task) => {
-            state.tasks.splice(state.tasks.indexOf(task), 1);
-        },
-        changeTask: (state, {newTask, oldTask}) => {
-            state.tasks.splice(state.tasks.indexOf(oldTask), 1, newTask);
-        },
         saveTasksToLocalStorage: (state) => {
             localStorage.setItem(STORAGE_KEY + "-tasks", JSON.stringify(state.tasks));
             localStorage.setItem(STORAGE_KEY + "-taskStorageUID", JSON.stringify(state.taskStorageUID));
@@ -66,7 +58,8 @@ const store = new Vuex.Store({
             }
         },
         updateTasks: (state, newTasks) => {
-            state.tasks = newTasks;
+            // have to deep clone the tasks so that we don't accidentally use a reference to the original object instead
+            state.tasks = JSON.parse(JSON.stringify(newTasks));
         }
     },
     //asynchronous
