@@ -26,7 +26,7 @@
         >
         </tags>
 
-        <button class="removeButton" @click="removeTask(task)">x</button>
+        <button class="removeButton" @click="$emit('removeTask', task)">x</button>
 
         <tasks
             v-if="task.tasks.length > 0"
