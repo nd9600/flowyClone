@@ -1,11 +1,18 @@
 <template>
   <div>
-    <home :tasks="this.localTasks"></home>
+    <keep-alive>
+        <component
+            :is="this.currentComponent"
+        >
+        </component>
+    </keep-alive>
+    
   </div>
 </template>
 
 <script>
 import Home from "./components/Home.vue";
+import DetailedTask from "./components/DetailedTask.vue";
 import {mapGetters, mapMutations, mapActions} from "vuex";
 
 export default {
@@ -18,21 +25,25 @@ export default {
         }
     },
     components: {
-        Home   
+        Home,
+        DetailedTask  
     },
     methods: {
         ...mapMutations([
+            "changeCurrentComponent",
             "initialiseTasks",
             "changeSearchTerm"
         ]),
         ...mapActions([
             "updateTasks"
-        ]),
+        ])
     },
     computed: {
         ...mapGetters([
+            "currentComponent",
+            "componentProp",
             "tasks"
-        ]),
+        ])
     },
     watch: {
         // needs a deep watcher because the array has objects in it
@@ -45,14 +56,20 @@ export default {
             deep: true
         }
     },
-    mounted: function() {
+    created: function() {
+        console.log("in hook");
         var vm = this;
 
         vm.initialiseTasks();
-        // have to deep clone the tasks so that we don't accidentally use a reference to the original object instead
+
         this.shouldUpdateTasks = false;
-        //this.localTasks = this.tasks.map(task => Object.assign({}, task));
+
+        // have to deep clone the tasks so that we don't accidentally use a reference to the original array in the state instead - if we need, changing localTasks would change the array in the state outside a mutation, which we don't want to do
         this.localTasks = JSON.parse(JSON.stringify(this.tasks));
+        this.changeCurrentComponent({
+            component: "home",
+            prop: this.localTasks
+        });
         this.shouldUpdateTasks = true;
 
         //clear the search term when escape is pressed

@@ -1,6 +1,6 @@
 <template>
     <span class="task">
-        <img class="bullet" @click="toggleComplete">
+        <img class="bullet" @click="switchComponent('detailedTask', task)">
 
         <div :class="{ strikethrough: task.complete }">
             <input
@@ -41,10 +41,18 @@
 
 <script>
     import {getTagsInTask} from "../base/useful_functions.js";
+    import {mapMutations} from "vuex";
 
     export default {
+        name: "task",
         props: ["task"],
         methods: {
+            ...mapMutations([
+                "changeCurrentComponent"
+            ]),
+            switchComponent(component, prop) {
+                this.changeCurrentComponent({component, prop});
+            },
             toggleComplete() {
                 this.task.complete = ! this.task.complete;
             }

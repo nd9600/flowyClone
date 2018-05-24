@@ -67,9 +67,9 @@
 
     export default {
         name: "home",
-        props: ["tasks"],
         data() {
             return {
+                localProp: [],
                 newTask: "",
                 visibility: "all",
             }
@@ -102,6 +102,10 @@
                 "taskStorageUID",
                 "searchTerm"
             ]),
+
+            tasks() {
+                return this.propToComponent;
+            },
 
             //can filter tasks by a search term or visibiliity
             filteredTasks() {
