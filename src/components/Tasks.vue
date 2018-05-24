@@ -14,7 +14,6 @@
     export default {
         props: ["tasks"],
         methods: {
-
             //event is fired from a child task
             removeTask(task) {
                 let indexOfTask = this.tasks.indexOf(task);

@@ -22,8 +22,9 @@
             ]),
             updateSearchTerm(event) {
                 //only adds the text following the #, if it has changed
-                if (this.searchTerm !== event.target.innerText.slice(0)) {
-                    this.changeSearchTerm(event.target.innerText.slice(0));
+                let newSearchTerm = event.target.innerText.slice(0);
+                if (this.searchTerm !== newSearchTerm) {
+                    this.changeSearchTerm(newSearchTerm);
                 }
             }
         },
