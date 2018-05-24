@@ -2,7 +2,7 @@
     <span class="task">
         <img class="bullet" @click="toggleComplete">
 
-        <span :class="{ strikethrough: task.complete }">
+        <div :class="{ strikethrough: task.complete }">
             <input
                 v-model="taskContent"
                 type="text"
@@ -15,7 +15,7 @@
             >
                 link
             </a>            
-        </span>
+        </div>
 
         <span>
             <button 
@@ -90,7 +90,7 @@
         margin: 0 0 3px 3px;
         line-height: 20px;
         min-height: 32px;
-        min-width: 200px;
+        min-width: 300px;
     }
 
     .removeButton {
