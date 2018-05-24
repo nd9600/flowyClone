@@ -46,7 +46,7 @@
 
 <script>
     import * as task from "../base/task.js";
-    import {mapGetters, mapMutations, mapActions} from "vuex";
+    import {mapGetters, mapMutations} from "vuex";
     import {getTagsInTasks} from "../base/useful_functions.js";
 
     let filters = {
@@ -67,24 +67,17 @@
 
     export default {
         name: "home",
+        props: ["tasks"],
         data() {
             return {
                 newTask: "",
                 visibility: "all",
-
-                //props change this array, the watcher below then commits the new tasks to the store
-                localTasks: [],
-                shouldUpdateTasks: false
             }
         },
         methods: {
             ...mapMutations([
-                "initialiseTasks",
                 "incrementTaskStorageUID",
                 "changeSearchTerm"
-            ]),
-            ...mapActions([
-                "updateTasks"
             ]),
 
             addTask(event) {
@@ -94,7 +87,7 @@
                 }
 
                 this.incrementTaskStorageUID();
-                this.localTasks.push(new task.Task({
+                this.tasks.push(new task.Task({
                     id: this.taskStorageUID,
                     content: value, 
                     complete: false, 
@@ -106,7 +99,6 @@
         },
         computed: {
             ...mapGetters([
-                "tasks",
                 "taskStorageUID",
                 "searchTerm"
             ]),
@@ -115,10 +107,10 @@
             filteredTasks() {
                 let searchTerm = this.searchTerm && this.searchTerm.trim();
                 if (! searchTerm) {
-                    return filters[this.visibility](this.localTasks);
+                    return filters[this.visibility](this.tasks);
                 }
                 
-                let tasksContainingSearchTerm = this.localTasks.filter(task => 
+                let tasksContainingSearchTerm = this.tasks.filter(task => 
                     task.content.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
                 );
                 return filters[this.visibility](tasksContainingSearchTerm);
@@ -126,11 +118,11 @@
             },
 
             numberOfTasksRemaining() {
-                return this.filteredTasks.length;
+                return this.filteredTasks.filter(task => ! task.complete).length;
             },
 
             tags() {
-                return getTagsInTasks(this.localTasks);
+                return getTagsInTasks(this.tasks);
             },
 
             computedSearchTerm: {
@@ -146,26 +138,6 @@
             pluralise(n) {
                 return n === 1 ? "item" : "items";
             }
-        },
-        watch: {
-            // needs a deep watcher because the array has objects in it
-            localTasks: {
-                handler: function (newTasks, oldTasks) { 
-                    if (this.shouldUpdateTasks) {
-                        this.updateTasks(newTasks);
-                    }
-                },
-                deep: true
-            }
-        },
-        created() {
-            this.initialiseTasks();
-
-            // have to deep clone the tasks so that we don't accidentally use a reference to the original object instead
-            this.shouldUpdateTasks = false;
-            //this.localTasks = this.tasks.map(task => Object.assign({}, task));
-            this.localTasks = JSON.parse(JSON.stringify(this.tasks));
-            this.shouldUpdateTasks = true;
         }
     }
 </script>
