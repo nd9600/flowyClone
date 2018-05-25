@@ -1,4 +1,4 @@
-export {Task, Category};
+export {Task};
 
 class Task {
     constructor(obj) {

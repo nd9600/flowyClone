@@ -1,8 +1,9 @@
 <template>
     <div>
-        <h1 @click="goHome"><a>Home</a></h1>
-        <h2>Task</h2>
-
+        <h1>Task</h1>
+        <div class="separator"></div>
+        <h3 @click="goHome"><a>Go home</a></h3>
+        
         <fieldset>
             <legend>content</legend>
             <textarea v-model="task.content"></textarea>

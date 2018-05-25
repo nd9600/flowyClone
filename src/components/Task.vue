@@ -1,7 +1,25 @@
 <template>
     <span class="task">
         <div class="mainTaskContainer">
-            <img @click="goToDetailedTask(task)" class="bullet" src="../assets/bullet.svg">
+            <img 
+                @click="goToDetailedTask" 
+                @mouseover="showContextMenu = true"
+                @mouseleave="showContextMenu = false"
+                class="bullet" 
+                src="../assets/bullet.svg">
+            <div
+                class="contextMenuLocation"
+            >
+                <div
+                    v-if="showContextMenu"
+                    @mouseover="showContextMenu = true"
+                    @mouseleave="showContextMenu = false" 
+                    class="contextMenu"
+                >
+                    <a @click="toggleComplete">Complete</a>
+                    <a @click="$emit('removeTask', task)">Remove</a>
+                </div>
+            </div>
 
             <span :class="{ strikethrough: task.complete }">
                 <input
@@ -63,9 +81,14 @@
     export default {
         name: "task",
         props: ["task"],
+        data() {
+            return {
+                showContextMenu: false
+            }
+        },
         methods: {
-            goToDetailedTask(prop) {
-                this.$root.$emit("change-component-event", "detailedTask", {task: prop});
+            goToDetailedTask() {
+                this.$root.$emit("change-component-event", "detailedTask", {task: this.task});
             },
             toggleComplete() {
                 this.task.complete = ! this.task.complete;
@@ -87,16 +110,34 @@
         padding: 5px;
     }
 
+    .contextMenuLocation {
+        position: absolute;
+        z-index: 2;
+        height: 0px;
+    }
+    .contextMenu {
+        min-height: 58px;
+        width: 80px;
+
+        padding: 5px;
+        margin: 16px 0 10px -30px;
+        
+        background: #e1e1e1;
+        border: 1px solid #bbb;
+        border-radius: 4px;
+    }
+
     .mainTaskContainer {
         display: flex;
         align-items: center;
     }
 
     .bullet {
-        background-color: transparent;
         height: 32px;
         width: 32px;
+        background-color: transparent;
         border-radius: 32px;
+        cursor: pointer;
     }
     .bullet:hover {
         background-color: #aaa;
