@@ -3,6 +3,8 @@
     <keep-alive>
         <component
             :is="this.currentComponent"
+            v-bind="this.componentProp"
+            v-on:changeCurrentComponent="changeCurrentComponent"
         >
         </component>
     </keep-alive>
@@ -13,15 +15,16 @@
 <script>
 import Home from "./components/Home.vue";
 import DetailedTask from "./components/DetailedTask.vue";
-import {mapGetters, mapMutations, mapActions} from "vuex";
+import {mapMutations} from "vuex";
+import {STORAGE_KEY} from "./store/store.js";
 
 export default {
     name: "app",
     data () {
         return {
-            //props change this array, the watcher below then commits the new tasks to the store
-            localTasks: [],
-            shouldUpdateTasks: false
+            tasks: [],
+            currentComponent: "home",
+            componentProp: {tasks: this.tasks}
         }
     },
     components: {
@@ -30,30 +33,15 @@ export default {
     },
     methods: {
         ...mapMutations([
-            "changeCurrentComponent",
             "initialiseTasks",
             "changeSearchTerm"
         ]),
-        ...mapActions([
-            "updateTasks"
-        ])
-    },
-    computed: {
-        ...mapGetters([
-            "currentComponent",
-            "componentProp",
-            "tasks"
-        ])
-    },
-    watch: {
-        // needs a deep watcher because the array has objects in it
-        localTasks: {
-            handler: function (newTasks, oldTasks) { 
-                if (this.shouldUpdateTasks) {
-                    this.updateTasks(newTasks);
-                }
-            },
-            deep: true
+        changeCurrentComponent(component, prop) {
+            //the event is actually emitted to the vue instance in main.js
+            console.log(component);
+            console.log(prop);
+            this.currentComponent = component;
+            this.componentProp = prop;
         }
     },
     created: function() {
@@ -62,15 +50,8 @@ export default {
 
         vm.initialiseTasks();
 
-        this.shouldUpdateTasks = false;
-
-        // have to deep clone the tasks so that we don't accidentally use a reference to the original array in the state instead - if we need, changing localTasks would change the array in the state outside a mutation, which we don't want to do
-        this.localTasks = JSON.parse(JSON.stringify(this.tasks));
-        this.changeCurrentComponent({
-            component: "home",
-            prop: this.localTasks
-        });
-        this.shouldUpdateTasks = true;
+        this.tasks = JSON.parse(localStorage.getItem(STORAGE_KEY + "-tasks"));
+        this.changeCurrentComponent("home", {tasks: this.tasks});
 
         //clear the search term when escape is pressed
         window.addEventListener('keyup', function(event) {

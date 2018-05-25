@@ -9,16 +9,13 @@
 
     export default {
         name: "detailedTask",
-        props: ["propToComponent"],
+        props: ["task"],
         methods: {
             toggleComplete() {
                 this.task.complete = ! this.task.complete;
             }
         },
         computed: {
-            task() {
-                return this.propToComponent;
-            },
             taskContent: {
                 get() {
                     return this.task.content;

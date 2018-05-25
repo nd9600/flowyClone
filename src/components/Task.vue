@@ -41,17 +41,14 @@
 
 <script>
     import {getTagsInTask} from "../base/useful_functions.js";
-    import {mapMutations} from "vuex";
 
     export default {
         name: "task",
         props: ["task"],
         methods: {
-            ...mapMutations([
-                "changeCurrentComponent"
-            ]),
             switchComponent(component, prop) {
-                this.changeCurrentComponent({component, prop});
+                console.log(this);
+                this.$root.$emit("changeCurrentComponent", component, {task: prop});
             },
             toggleComplete() {
                 this.task.complete = ! this.task.complete;
