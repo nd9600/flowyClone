@@ -1,45 +1,56 @@
 <template>
     <span class="task">
-        <img class="bullet" @click="goToDetailedTask(task)">
+        <div class="mainTaskContainer">
+            <img @click="goToDetailedTask(task)" class="bullet" src="../assets/bullet.svg">
 
-        <span :class="{ strikethrough: task.complete }">
-            <input
-                v-model="task.content"
-                type="text"
-                class="taskText"
-            >
-            <a
-                v-if="task.link.length > 0"
-                :href="task.link"
-            >
-                link
-            </a>
+            <span :class="{ strikethrough: task.complete }">
+                <input
+                    v-model="task.content"
+                    type="text"
+                    class="taskText"
+                >
+                <a
+                    v-if="task.link.length > 0"
+                    :href="task.link"
+                >
+                    link
+                </a>
+                <p 
+                    v-if="task.author.length > 0"
+                    class="author"
+                >{{task.author}}
+                </p>       
+            </span>
+
+            <span>
+                <button 
+                    @click="$emit('removeTask', task)"
+                    class="removeButton"
+                >x</button>
+
+                <tags
+                    v-if="tags.length > 0"
+                    :tags="tags"
+                >
+                </tags>
+            </span>
+        </div>
+
+        <div>
             <p 
-                v-if="task.author.length > 0"
-                class="author"
-            >{{task.author}}
-            </p>       
-        </span>
+                v-if="task.description.length > 0"
+                class="description"
+            >{{task.description}}</p>
+        </div>
 
-        <span>
-            <button 
-                @click="$emit('removeTask', task)"
-                class="removeButton"
-            >x</button>
-
-            <tags
-                v-if="tags.length > 0"
-                :tags="tags"
+        <div>
+            <tasks
+                v-if="task.tasks.length > 0"
+                :tasks="task.tasks"
+                :class="{ strikethrough: task.complete }"
             >
-            </tags>
-        </span>
-
-        <tasks
-            v-if="task.tasks.length > 0"
-            :tasks="task.tasks"
-            :class="{ strikethrough: task.complete }"
-        >
-        </tasks>
+            </tasks>
+        </div>
     </span>
 </template>
 
@@ -69,13 +80,18 @@
 
     .task {
         display: flex;
+        flex-direction: column;
         justify-content: flex-start;
         padding: 5px;
     }
 
+    .mainTaskContainer {
+        display: flex;
+        align-items: center;
+    }
+
     .bullet {
         background-color: transparent;
-        background-image: url("../assets/bullet.svg");
         height: 32px;
         width: 32px;
         border-radius: 32px;
@@ -125,6 +141,13 @@
     .author {
         display: inline;
         font-size: 1.3rem;
+        color: #696969;
+    }
+
+    .description {
+        margin: 0 0 0 60px;
+        font-size: 1.5rem;
+        color: #696969;
     }
 
 </style>

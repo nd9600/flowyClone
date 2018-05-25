@@ -13,7 +13,7 @@
             v-model="computedSearchTerm"
         >
 
-        <div>
+        <span>
             <a 
                 @click="visibility = 'all';"
                 :class="{ selected: visibility == 'all' }"
@@ -26,7 +26,7 @@
                 @click="visibility = 'completed';"
                 :class="{ selected: visibility == 'completed' }"
             >completed</a>
-        </div>
+        </span>
 
         <tags
             :tags="tags"
