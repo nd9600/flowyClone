@@ -105,13 +105,13 @@
 
             //can filter tasks by a search term or visibiliity
             filteredTasks() {
-                let searchTerm = this.searchTerm && this.searchTerm.trim();
-                if (! searchTerm) {
+                let currentSearchTerm = this.searchTerm && this.searchTerm.trim();
+                if (! currentSearchTerm) {
                     return filters[this.visibility](this.tasks);
                 }
                 
                 let tasksContainingSearchTerm = this.tasks.filter(task => 
-                    task.content.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1
+                    task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) > -1
                 );
                 return filters[this.visibility](tasksContainingSearchTerm);
                 

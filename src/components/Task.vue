@@ -2,7 +2,7 @@
     <span class="task">
         <img class="bullet" @click="goToDetailedTask(task)">
 
-        <div :class="{ strikethrough: task.complete }">
+        <div class="strikethroughContainer" :class="{ strikethrough: task.complete }">
             <input
                 v-model="task.content"
                 type="text"
@@ -11,10 +11,14 @@
             <a
                 v-if="task.link.length > 0"
                 :href="task.link"
-                class="taskLink"
             >
                 link
-            </a>            
+            </a>
+            <p 
+                v-if="task.author.length > 0"
+                class="author"
+            >{{task.author}}
+            </p>       
         </div>
 
         <span>
@@ -80,7 +84,7 @@
         background-color: #aaa;
     }
 
-    .taskText, input[type] {
+    .taskText, input[type="text"] {
         display: inline;
         padding: 0 15px 0 5px;
         margin: 0 0 3px 3px;
@@ -105,6 +109,10 @@
         color: #999;
     }
 
+    .strikethroughContainer {
+        width: 100%;
+    }
+
     .strikethrough {
         position: relative;
         color: #999;
@@ -116,6 +124,11 @@
         left: 0;
         border-bottom: 1px solid #111;
         width: 100%;
+    }
+
+    .author {
+        display: inline;
+        font-size: 1.5rem;
     }
 
 </style>
