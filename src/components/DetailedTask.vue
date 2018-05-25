@@ -7,20 +7,18 @@
             <textarea v-model="task.content"></textarea>
         </label>
 
-        <br />
-
-        <label>
-            complete <input type="checkbox" v-model="task.complete">
-        </label>
-
-        <br />
-
         <label>
             description 
             <textarea v-model="task.description"></textarea>
         </label>
 
         <br />
+
+        <label>
+            complete <input type="checkbox" v-model="task.complete">
+        </label>
+
+        <div class="separator"></div>
 
         <div>
             <a :href="taskLink">
