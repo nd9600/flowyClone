@@ -2,7 +2,7 @@
     <span class="task">
         <img class="bullet" @click="goToDetailedTask(task)">
 
-        <div class="strikethroughContainer" :class="{ strikethrough: task.complete }">
+        <span :class="{ strikethrough: task.complete }">
             <input
                 v-model="task.content"
                 type="text"
@@ -19,7 +19,7 @@
                 class="author"
             >{{task.author}}
             </p>       
-        </div>
+        </span>
 
         <span>
             <button 
@@ -109,10 +109,6 @@
         color: #999;
     }
 
-    .strikethroughContainer {
-        width: 100%;
-    }
-
     .strikethrough {
         position: relative;
         color: #999;
@@ -128,7 +124,7 @@
 
     .author {
         display: inline;
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
 
 </style>
