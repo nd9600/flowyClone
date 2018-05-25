@@ -1,10 +1,10 @@
 <template>
     <span class="task">
-        <img class="bullet" @click="switchComponent('detailedTask', task)">
+        <img class="bullet" @click="goToDetailedTask(task)">
 
         <div :class="{ strikethrough: task.complete }">
             <input
-                v-model="taskContent"
+                v-model="task.content"
                 type="text"
                 class="taskText"
             >
@@ -46,23 +46,14 @@
         name: "task",
         props: ["task"],
         methods: {
-            switchComponent(component, prop) {
-                console.log(this);
-                this.$root.$emit("changeCurrentComponent", component, {task: prop});
+            goToDetailedTask(prop) {
+                this.$root.$emit("change-component-event", "detailedTask", {task: prop});
             },
             toggleComplete() {
                 this.task.complete = ! this.task.complete;
             }
         },
         computed: {
-            taskContent: {
-                get() {
-                    return this.task.content;
-                },
-                set(value) {
-                    this.task.content = value;
-                }
-            },
             tags() {
                 return getTagsInTask(this.task);
             }

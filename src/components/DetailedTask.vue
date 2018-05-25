@@ -1,6 +1,9 @@
 <template>
     <div>
-        <p>{{task.content}}</p>
+        <h1 @click="goHome">Home</h1>
+        <textarea 
+            v-model="task.content"
+        ></textarea>
     </div>
 </template>
 
@@ -11,19 +14,14 @@
         name: "detailedTask",
         props: ["task"],
         methods: {
+            goHome() {
+                this.$root.$emit("change-component-event", "home", {tasks: this.$root.tasks});
+            },
             toggleComplete() {
                 this.task.complete = ! this.task.complete;
             }
         },
         computed: {
-            taskContent: {
-                get() {
-                    return this.task.content;
-                },
-                set(value) {
-                    this.task.content = value;
-                }
-            },
             tags() {
                 return getTagsInTask(this.task);
             }

@@ -1,8 +1,9 @@
 import Vue from 'vue';
+import {mapMutations} from "vuex";
 
 import App from './App.vue';
 
-import {store} from "./store/store.js";
+import {store, STORAGE_KEY} from "./store/store.js";
 
 import Tasks from "./components/Tasks.vue";
 import Tags from "./components/Tags.vue";
@@ -27,25 +28,55 @@ new Vue({
     template: `<app
         :currentComponent="this.currentComponent"
         :componentProp="this.componentProp"
-        v-on:changeCurrentComponent="changeCurrentComponent"
     ></app>`,
     data: {
         currentComponent: "home",
-        componentProp: {tasks: []}
+        componentProp: {tasks: []},
+        tasks: [],
+        shouldUpdateTasks: true
     },
     components: {
         App
     },
     methods: {
+        ...mapMutations([
+            "initialiseTaskStorageUID"
+        ]),
         changeCurrentComponent(component, prop) {
-            //the event is actually emitted to the vue instance in main.js
-            console.log(component);
-            console.log(prop);
             if (this.currentComponent !== component) {
                 this.currentComponent = component;
             }
             this.componentProp = prop;
         }
+    },
+    watch: {
+        // needs a deep watcher because the array has objects in it
+        tasks: {
+            handler: function (newTasks, oldTasks) { 
+                if (this.shouldUpdateTasks) {
+                    localStorage.setItem(STORAGE_KEY + "-tasks", JSON.stringify(newTasks));
+                }
+            },
+            deep: true
+        }
+    },
+    created() {
+
+        this.initialiseTaskStorageUID();
+
+        this.shouldUpdateTasks = false;
+        if (localStorage.getItem(STORAGE_KEY + "-tasks") === null) {
+            this.tasks = [];
+        } else {
+            this.tasks = JSON.parse(localStorage.getItem(STORAGE_KEY + "-tasks"));
+        }
+        this.shouldUpdateTasks = true;
+
+        this.changeCurrentComponent("home", {tasks: this.tasks});
+
+        this.$on("change-component-event", (component, prop) => {
+            this.changeCurrentComponent(component, prop);
+        });
     },
     store
 })

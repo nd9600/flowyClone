@@ -17,9 +17,6 @@ const mutations = {
             state.taskStorageUID = JSON.parse(localStorage.getItem(STORAGE_KEY + "-taskStorageUID"));
         }
     },
-    saveTaskStorageUIDToLocalStorage: (state) => {
-        localStorage.setItem(STORAGE_KEY + "-taskStorageUID", JSON.stringify(state.taskStorageUID));
-    },
     incrementTaskStorageUID: (state) => {
         state.taskStorageUID++;
     }
