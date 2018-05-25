@@ -45,9 +45,6 @@
         methods: {
             goHome() {
                 this.$root.$emit("change-component-event", "home", {tasks: this.$root.tasks});
-            },
-            toggleComplete() {
-                this.task.complete = ! this.task.complete;
             }
         },
         computed: {

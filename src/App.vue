@@ -1,11 +1,13 @@
 <template>
   <div>
     <keep-alive>
-        <component
-            :is="this.currentComponent"
-            v-bind="this.componentProp"
-        >
-        </component>
+        <transition name="fade">
+            <component
+                :is="this.currentComponent"
+                v-bind="this.componentProp"
+            >
+            </component>
+        </transition>
     </keep-alive>
     
   </div>
@@ -84,4 +86,10 @@ export default {
 </script>
 
 <style>
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity 0.2s;
+    }
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
+    }
 </style>

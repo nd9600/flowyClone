@@ -77,7 +77,6 @@
 </script>
 
 <style>
-
     .task {
         display: flex;
         flex-direction: column;
