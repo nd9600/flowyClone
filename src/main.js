@@ -24,6 +24,28 @@ Array.prototype.flatten = function() {
 
 new Vue({
     el: '#app',
-    store,
-    render: h => h(App)
+    template: `<app
+        :currentComponent="this.currentComponent"
+        :componentProp="this.componentProp"
+        v-on:changeCurrentComponent="changeCurrentComponent"
+    ></app>`,
+    data: {
+        currentComponent: "home",
+        componentProp: {tasks: []}
+    },
+    components: {
+        App
+    },
+    methods: {
+        changeCurrentComponent(component, prop) {
+            //the event is actually emitted to the vue instance in main.js
+            console.log(component);
+            console.log(prop);
+            if (this.currentComponent !== component) {
+                this.currentComponent = component;
+            }
+            this.componentProp = prop;
+        }
+    },
+    store
 })

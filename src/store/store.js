@@ -17,3 +17,10 @@ const store = new Vuex.Store({
         searchTerm
     }
 });
+
+store.subscribe((mutation, state) => {
+    if (["incrementTaskStorageUID"].indexOf(mutation.type) > -1) {
+        let key = STORAGE_KEY + "-taskStorageUID";
+        localStorage.setItem(key, JSON.stringify(state.tasks.taskStorageUID));
+    }
+});

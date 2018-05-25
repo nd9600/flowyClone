@@ -11,13 +11,13 @@ const getters = {
 }
 
 const mutations = {
-    initialiseTasks(state) {
+    initialiseTaskStorageUID(state) {
         // replace the state object with the stored item
         if (localStorage.getItem(STORAGE_KEY + "-taskStorageUID")) {
             state.taskStorageUID = JSON.parse(localStorage.getItem(STORAGE_KEY + "-taskStorageUID"));
         }
     },
-    saveTasksToLocalStorage: (state) => {
+    saveTaskStorageUIDToLocalStorage: (state) => {
         localStorage.setItem(STORAGE_KEY + "-taskStorageUID", JSON.stringify(state.taskStorageUID));
     },
     incrementTaskStorageUID: (state) => {

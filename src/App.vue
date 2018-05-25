@@ -4,7 +4,6 @@
         <component
             :is="this.currentComponent"
             v-bind="this.componentProp"
-            v-on:changeCurrentComponent="changeCurrentComponent"
         >
         </component>
     </keep-alive>
@@ -20,11 +19,11 @@ import {STORAGE_KEY} from "./store/store.js";
 
 export default {
     name: "app",
+    props: ["currentComponent", "componentProp"],
     data () {
         return {
             tasks: [],
-            currentComponent: "home",
-            componentProp: {tasks: this.tasks}
+            shouldUpdateTasks: true
         }
     },
     components: {
@@ -33,25 +32,36 @@ export default {
     },
     methods: {
         ...mapMutations([
-            "initialiseTasks",
+            "initialiseTaskStorageUID",
             "changeSearchTerm"
-        ]),
-        changeCurrentComponent(component, prop) {
-            //the event is actually emitted to the vue instance in main.js
-            console.log(component);
-            console.log(prop);
-            this.currentComponent = component;
-            this.componentProp = prop;
+        ])
+    },
+    watch: {
+        // needs a deep watcher because the array has objects in it
+        tasks: {
+            handler: function (newTasks, oldTasks) { 
+                console.log("in watcher")
+                if (this.shouldUpdateTasks) {
+                    localStorage.setItem(STORAGE_KEY + "-tasks", JSON.stringify(newTasks));
+                }
+            },
+            deep: true
         }
     },
     created: function() {
         console.log("in hook");
         var vm = this;
 
-        vm.initialiseTasks();
+        vm.initialiseTaskStorageUID();
 
-        this.tasks = JSON.parse(localStorage.getItem(STORAGE_KEY + "-tasks"));
-        this.changeCurrentComponent("home", {tasks: this.tasks});
+        this.shouldUpdateTasks = false;
+        if (localStorage.getItem(STORAGE_KEY + "-tasks") === null) {
+            this.tasks = [];
+        } else {
+            this.tasks = JSON.parse(localStorage.getItem(STORAGE_KEY + "-tasks"));
+        }
+        this.shouldUpdateTasks = true;
+        this.$root.changeCurrentComponent("home", {tasks: this.tasks});
 
         //clear the search term when escape is pressed
         window.addEventListener('keyup', function(event) {
