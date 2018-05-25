@@ -33,12 +33,15 @@ function getTagsInString(str) {
 
 function getTagsInTask(task) {
     let tagsInContent = getTagsInString(task.content);
+    let tagsInDescription = getTagsInString(task.description);
+    let tagsToReturn = tagsInContent.concat(tagsInDescription);
     if ((typeof task.tasks !== "undefined") && task.tasks.length > 0) {
-        return tagsInContent.concat(getTagsInTasks(task.tasks));
+        tagsToReturn = tagsToReturn.concat(getTagsInTasks(task.tasks));
     }
-    return tagsInContent;
+    return tagsToReturn.unique();
 };
 
 function getTagsInTasks(tasks) {
+    //we need to flatten the map's result as it returns an array of arrays
     return tasks.map(task => getTagsInTask(task)).flatten().unique();
 };

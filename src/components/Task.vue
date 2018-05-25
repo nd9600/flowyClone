@@ -8,42 +8,45 @@
                     v-model="task.content"
                     type="text"
                     class="taskText"
-                >
-                <a
-                    v-if="task.link.length > 0"
-                    :href="task.link"
-                >
-                    link
-                </a>
-                <p 
-                    v-if="task.author.length > 0"
-                    class="author"
-                >{{task.author}}
-                </p>       
+                >       
             </span>
 
-            <span>
-                <button 
-                    @click="$emit('removeTask', task)"
-                    class="removeButton"
-                >x</button>
-
-                <tags
-                    v-if="tags.length > 0"
-                    :tags="tags"
-                >
-                </tags>
-            </span>
+            <button 
+                @click="$emit('removeTask', task)"
+                class="removeButton"
+            >x</button>
         </div>
 
         <div>
             <p 
                 v-if="task.description.length > 0"
-                class="description"
+                class="description leftIndent"
             >{{task.description}}</p>
         </div>
 
-        <div>
+        <div class="leftIndent">
+            <a
+                v-if="task.link.length > 0"
+                :href="task.link"
+            >
+                link
+            </a>
+            <p 
+                v-if="task.author.length > 0"
+                class="author"
+            >{{task.author}}
+            </p>
+        </div>
+
+        <div class="leftIndent">
+            <tags
+                v-if="tags.length > 0"
+                :tags="tags"
+            >
+            </tags>
+        </div>
+
+        <div class="leftIndent">
             <tasks
                 v-if="task.tasks.length > 0"
                 :tasks="task.tasks"
@@ -144,9 +147,12 @@
     }
 
     .description {
-        margin: 0 0 0 60px;
         font-size: 1.5rem;
         color: #696969;
+    }
+
+    .leftIndent {
+        margin: 0 0 0 60px;
     }
 
 </style>

@@ -1,38 +1,38 @@
 <template>
     <div>
         <h1 @click="goHome"><a>Home</a></h1>
+        <h2>Task</h2>
 
-        <label>
-            content 
+        <fieldset>
+            <legend>content</legend>
             <textarea v-model="task.content"></textarea>
-        </label>
 
-        <label>
-            description 
-            <textarea v-model="task.description"></textarea>
-        </label>
+            <div style="padding-top: 15px;">
+                description
+                <textarea v-model="task.description"></textarea>
+            </div>
 
-        <br />
-
-        <label>
-            complete <input type="checkbox" v-model="task.complete">
-        </label>
-
-        <div class="separator"></div>
-
-        <div>
-            <a :href="taskLink">
-                link
-            </a>
-            <input type="text" v-model="task.link">
-        </div>
+            <tags
+                v-if="tags.length > 0"
+                :tags="tags"
+            >
+            </tags>
+        </fieldset>
 
         <br />
 
-        <label>
-            author 
-            <input type="text" v-model="task.author">
-        </label>
+        <fieldset>
+            <p>complete <input type="checkbox" v-model="task.complete"></p>
+
+            <div style="padding: 20px 0 20px 0;">
+                <a :href="taskLink">
+                    link
+                </a>
+                <input type="text" v-model="task.link">
+            </div>
+
+            <p>author <input type="text" v-model="task.author"></p>
+        </fieldset>
     </div>
 </template>
 
