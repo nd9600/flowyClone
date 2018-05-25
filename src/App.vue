@@ -86,6 +86,15 @@ export default {
 </script>
 
 <style>
+    a {
+      text-decoration: none;
+      color: #2c8898; 
+    }
+    a:hover {
+        color: #982c61;
+        border-bottom: 2px solid #4a4a4a; 
+    }
+
     .fade-enter-active, .fade-leave-active {
         transition: opacity 0.2s;
     }
