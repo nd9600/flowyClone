@@ -40,7 +40,9 @@
         >
         </tasks>
 
-        <p style="color: #999;">{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p>
+        <p v-if="visibility !== 'completed'"
+            style="color: #999;"
+        >{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p>
     </div>
 </template>
 

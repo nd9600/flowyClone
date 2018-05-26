@@ -18,11 +18,14 @@
                 >
                     <a @click="toggleComplete">Complete</a>
                     <a @click="$emit('removeTask', task)">Remove</a>
+                    <a @click="goToDetailedTask">Edit</a>
+                    <a @click="addNewTask">Add new task</a>
                 </div>
             </div>
 
             <span :class="{ strikethrough: task.complete }">
                 <input
+                    ref="taskInput"
                     v-model="task.content"
                     type="text"
                     class="taskText"
@@ -76,7 +79,9 @@
 </template>
 
 <script>
+    import * as task from "../base/task.js";
     import {getTagsInTask} from "../base/useful_functions.js";
+    import {mapGetters, mapMutations} from "vuex";
 
     export default {
         name: "task",
@@ -87,17 +92,37 @@
             }
         },
         methods: {
+            ...mapMutations([
+                "incrementTaskStorageUID"
+            ]),
+
             goToDetailedTask() {
                 this.$root.$emit("change-component-event", "detailedTask", {task: this.task});
             },
             toggleComplete() {
                 this.task.complete = ! this.task.complete;
+            },
+            addNewTask() {
+                this.incrementTaskStorageUID();
+                this.task.tasks.push(new task.Task({
+                    id: this.taskStorageUID,
+                    content: "blank",
+                    complete: false
+                }));
             }
         },
         computed: {
+            ...mapGetters([
+                "taskStorageUID"
+            ]),
+
             tags() {
                 return getTagsInTask(this.task);
             }
+        },
+        mounted(){
+            //resizes the task content input when the task is first created
+            Stretchy.resize(this.$refs.taskInput);
         }
     }
 </script>
@@ -116,8 +141,10 @@
         height: 0px;
     }
     .contextMenu {
+        display: flex;
+        flex-direction: column;
         min-height: 58px;
-        width: 80px;
+        min-width: 80px;
 
         padding: 5px;
         margin: 16px 0 10px -30px;
