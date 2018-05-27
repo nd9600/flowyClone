@@ -37,41 +37,18 @@ function getTagsInTasks(tasks) {
     return tasks.map(task => getTagsInTask(task)).flatten().unique();
 };
 
-function getTasksByActivityInTask(task, activity) {
-    let tasksToReturn = [];
-    let selectCompletedTasks = (activity !== "active");
-
-    let tasksToPickFromInnerTasks = task.tasks.filter(taskInArray => taskInArray.complete === selectCompletedTasks);
-    console.log(tasksToPickFromInnerTasks.map(t => t.content));
-
-    if (task.complete === selectCompletedTasks) {
-        let newTask = extract(task, Object.keys(task).diff(["tasks"]));
-        newTask["tasks"] = tasksToPickFromInnerTasks;
-        tasksToReturn.push(newTask);
-    } else {
-        tasksToReturn.push(...tasksToPickFromInnerTasks);
-    }
-    // if ((typeof task.tasks !== "undefined") && task.tasks.length > 0) {
-    //      tasksToReturn.push(getTasksByActivityInTasks(task.tasks));
-    // }
-    console.log(tasksToReturn);
-    return tasksToReturn.flatten();
-}
-
-function getTasksByActivityInTasks(tasks, activity) {
-    return tasks.map(task => getTasksByActivityInTask(task, activity));
-}
-
 let filters = {
     all: function (tasks) {
         return tasks
     },
     active: function (tasks) {
-        let a = getTasksByActivityInTasks(tasks, "active").flatten();
-        console.log(a);
-        return a;
+        return tasks.filter(function (task) {
+            return ! task.complete
+        });
     },
     completed: function (tasks) {
-        return getTasksByActivityInTasks(tasks, "completed").flatten();
+        return tasks.filter(function (task) {
+            return task.complete
+        });
     }
 };

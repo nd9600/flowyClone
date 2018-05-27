@@ -71,7 +71,6 @@
             <tasks
                 v-if="task.tasks.length > 0"
                 :tasks="task.tasks"
-                :class="{ strikethrough: task.complete }"
             >
             </tasks>
         </div>
