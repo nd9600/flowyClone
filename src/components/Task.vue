@@ -1,80 +1,96 @@
 <template>
-    <span class="task">
-        <div class="mainTaskContainer">
-            <img 
-                @click="goToDetailedTask" 
-                @mouseover="showContextMenu = true"
-                @mouseleave="showContextMenu = false"
-                class="bullet" 
-                src="../assets/bullet.svg">
-            <div
-                class="contextMenuLocation"
-            >
-                <div
-                    v-if="showContextMenu"
+    <span class="taskFlexbox">
+        <div 
+            v-if="task.tasks.length > 0"
+            @click="showChildren = ! showChildren"
+            class="showHide"
+        >
+            {{showHideButtonText}}
+        </div>
+        <div class="task">
+            <div class="mainTaskContainer">
+                <img 
+                    @click="goToDetailedTask" 
                     @mouseover="showContextMenu = true"
-                    @mouseleave="showContextMenu = false" 
-                    class="contextMenu"
+                    @mouseleave="showContextMenu = false"
+                    class="bullet" 
+                    src="../assets/bullet.svg">
+                <div
+                    class="contextMenuLocation"
                 >
-                    <a @click="toggleComplete">Complete</a>
-                    <a @click="bold">Bold</a>
-                    <a @click="goToDetailedTask">Edit</a>
-                    <a @click="$emit('removeTask', task)">Remove</a>
-                    <a @click="addNewTask">Add new task</a>
+                    <div
+                        v-if="showContextMenu"
+                        @mouseover="showContextMenu = true"
+                        @mouseleave="showContextMenu = false" 
+                        class="contextMenu"
+                    >
+                        <a
+                            v-if="task.tasks.length > 0"
+                            @click="showChildren = ! showChildren"
+                        >
+                            {{showHideText}} children
+                        </a>
+                        <a @click="task.complete = ! task.complete">Complete</a>
+                        <a @click="bold">Bold</a>
+                        <div class="separator"></div>
+                        <a @click="goToDetailedTask">Edit</a>
+                        <a @click="$emit('removeTask', task)">Remove</a>
+                        <a @click="addNewTask">Add new task</a>
+                    </div>
                 </div>
+
+                <span :class="{ strikethrough: task.complete }">
+                    <input
+                        ref="taskInput"
+                        v-model="task.content"
+                        :class="{ bold: task.bold }"
+                        type="text"
+                        class="taskText"
+                    >       
+                </span>
+
+                <button 
+                    @click="$emit('removeTask', task)"
+                    class="removeButton"
+                >x</button>
             </div>
 
-            <span :class="{ strikethrough: task.complete }">
-                <input
-                    ref="taskInput"
-                    v-model="task.content"
-                    :class="{ bold: task.bold }"
-                    type="text"
-                    class="taskText"
-                >       
-            </span>
+            <div>
+                <p 
+                    v-if="task.description.length > 0"
+                    class="description leftIndent"
+                >{{task.description}}</p>
+            </div>
 
-            <button 
-                @click="$emit('removeTask', task)"
-                class="removeButton"
-            >x</button>
-        </div>
+            <div class="leftIndent">
+                <a
+                    v-if="task.link.length > 0"
+                    :href="task.link"
+                >
+                    link
+                </a>
+                <p 
+                    v-if="task.author.length > 0"
+                    class="author"
+                >{{task.author}}
+                </p>
+            </div>
 
-        <div>
-            <p 
-                v-if="task.description.length > 0"
-                class="description leftIndent"
-            >{{task.description}}</p>
-        </div>
+            <div class="leftIndent">
+                <tags
+                    v-if="tags.length > 0"
+                    :tags="tags"
+                >
+                </tags>
+            </div>
 
-        <div class="leftIndent">
-            <a
-                v-if="task.link.length > 0"
-                :href="task.link"
-            >
-                link
-            </a>
-            <p 
-                v-if="task.author.length > 0"
-                class="author"
-            >{{task.author}}
-            </p>
-        </div>
-
-        <div class="leftIndent">
-            <tags
-                v-if="tags.length > 0"
-                :tags="tags"
-            >
-            </tags>
-        </div>
-
-        <div class="leftIndent">
-            <tasks
-                v-if="task.tasks.length > 0"
-                :tasks="task.tasks"
-            >
-            </tasks>
+            <div v-if="showChildren">
+                <tasks
+                    v-if="task.tasks.length > 0"
+                    :tasks="task.tasks"
+                >
+                </tasks>
+            </div>
         </div>
     </span>
 </template>
@@ -88,7 +104,8 @@
         props: ["task"],
         data() {
             return {
-                showContextMenu: false
+                showContextMenu: false,
+                showChildren: true
             }
         },
         methods: {
@@ -98,9 +115,6 @@
 
             goToDetailedTask() {
                 this.$root.$emit("change-component-event", "detailedTask", {task: this.task});
-            },
-            toggleComplete() {
-                this.task.complete = ! this.task.complete;
             },
             bold() {
                 this.task.bold = ! this.task.bold;
@@ -122,6 +136,14 @@
                 "taskStorageUID"
             ]),
 
+            showHideButtonText() {
+                return (this.showChildren ? "[-]" : "[+]");
+            },
+
+            showHideText() {
+                return (this.showChildren ? "Hide" : "Show");
+            },
+
             tags() {
                 return task.getTagsInTask(this.task);
             }
@@ -134,16 +156,46 @@
 </script>
 
 <style>
+    .taskFlexbox {
+        display: flex;
+        padding: 5px;
+    }
+
     .task {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         padding: 5px;
+        margin-left: 33px;
+    }
+
+    .showHide {
+        z-index: 2;
+        min-width: 25px;
+        max-width: 25px;
+        padding: 4px;
+        margin-right: -33px;
+        flex-grow: 1;
+
+        cursor: pointer;
+        text-align: center;
+        font-weight: lighter;
+        color: #999;
+        background-color: #f3f3f3;
+        border-radius: 8px;
+        transition: 200ms;
+        transition-property: background-color;
+        transition-duration: 200ms;
+        transition-timing-function: ease;
+    }
+    .showHide:hover {
+        color: #fff;
+        background-color: var(--link-colour);
     }
 
     .contextMenuLocation {
         position: absolute;
-        z-index: 2;
+        z-index: 4;
         height: 0px;
     }
     .contextMenu {
@@ -230,7 +282,7 @@
     }
 
     .leftIndent {
-        margin: 0 0 0 60px;
+        margin-left: 30px;
     }
 
 </style>

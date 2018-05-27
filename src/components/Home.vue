@@ -125,8 +125,12 @@
 </script>
 
 <style>
+    :root {
+        --link-colour: #42b983;
+    }
+
     a {
-        color: #42b983;
+        color: var(--link-colour);
     }
 
     .inputBox {
