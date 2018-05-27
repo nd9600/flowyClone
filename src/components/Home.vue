@@ -99,8 +99,12 @@
                 
             },
 
+            flattenedTasks() {
+                return task.tasksToArray(this.filteredTasks).flattenDeep();
+            },
+
             numberOfTasksRemaining() {
-                return this.filteredTasks.filter(task => ! task.complete).length;
+                return this.flattenedTasks.filter(task => ! task.complete).length;
             },
 
             tags() {

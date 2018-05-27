@@ -20,6 +20,16 @@ Array.prototype.flatten = function() {
     return [].concat(...this);
 };
 
+Array.prototype.flattenDeep = function() {
+    return this.reduce((acc, val) => {
+        let isArray = Array.isArray(val);
+        if (isArray) {
+            return acc.concat(val.flattenDeep());
+        }
+        return acc.concat(val);
+    }, [])
+};
+
 Array.prototype.diff = function(a) {
     return this.filter(function(i) {return a.indexOf(i) < 0;});
 };

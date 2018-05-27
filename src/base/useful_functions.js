@@ -15,6 +15,16 @@ Array.prototype.diff = function(a) {
     return this.filter(function(i) {return a.indexOf(i) < 0;});
 };
 
+Array.prototype.flattenDeep = function() {
+    return this.reduce((acc, val) => {
+        let isArray = Array.isArray(val);
+        if (isArray) {
+            return acc.concat(val.flattenDeep());
+        }
+        return acc.concat(val);
+    }, [])
+};
+
 // extracts all keys in vs from an object
 function extract(obj, vs) {
     let new_obj = {};

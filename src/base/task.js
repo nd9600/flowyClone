@@ -1,6 +1,6 @@
 import {extract} from "./useful_functions.js";
 
-export {Task, getTagsInTask, getTagsInTasks, filters};
+export {Task, getTagsInTask, getTagsInTasks, tasksToArray, filters};
 
 class Task {
     constructor(obj) {
@@ -39,7 +39,11 @@ function getTagsInTasks(tasks) {
     return tasks.map(task => getTagsInTask(task)).flatten().unique();
 };
 
-let filters = {
+function tasksToArray(tasks) {
+    return tasks.map(task => [task].concat(tasksToArray(task.tasks)))
+};
+
+const filters = {
     all: function (tasks) {
         return tasks
     },

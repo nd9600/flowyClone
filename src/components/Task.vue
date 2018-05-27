@@ -35,11 +35,14 @@
                         <div class="separator"></div>
                         <a @click="goToDetailedTask">Edit</a>
                         <a @click="$emit('removeTask', task)">Remove</a>
-                        <a @click="addNewTask">Add new task</a>
+                        <a @click="addNewTask">Add new child</a>
                     </div>
                 </div>
 
-                <span :class="{ strikethrough: task.complete }">
+                <span 
+                    :class="{ strikethrough: task.complete }"
+                    style="margin-left: 5px;"
+                >
                     <input
                         ref="taskInput"
                         v-model="task.content"
@@ -283,7 +286,7 @@
     }
 
     .leftIndent {
-        margin-left: 30px;
+        margin-left: 40px;
     }
 
 </style>
