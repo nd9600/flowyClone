@@ -42,19 +42,20 @@ function getTasksByActivityInTask(task, activity) {
     let selectCompletedTasks = (activity !== "active");
 
     let tasksToPickFromInnerTasks = task.tasks.filter(taskInArray => taskInArray.complete === selectCompletedTasks);
+    console.log(tasksToPickFromInnerTasks.map(t => t.content));
 
     if (task.complete === selectCompletedTasks) {
         let newTask = extract(task, Object.keys(task).diff(["tasks"]));
         newTask["tasks"] = tasksToPickFromInnerTasks;
-        tasksToReturn.push(task);
+        tasksToReturn.push(newTask);
     } else {
         tasksToReturn.push(...tasksToPickFromInnerTasks);
     }
     // if ((typeof task.tasks !== "undefined") && task.tasks.length > 0) {
-    //     tasksToReturn.push(getTasksByActivityInTasks(task.tasks));
+    //      tasksToReturn.push(getTasksByActivityInTasks(task.tasks));
     // }
     console.log(tasksToReturn);
-    return tasksToReturn;
+    return tasksToReturn.flatten();
 }
 
 function getTasksByActivityInTasks(tasks, activity) {

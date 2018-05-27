@@ -107,7 +107,7 @@
             },
 
             tags() {
-                return task.getTagsInTasks(this.tasks);
+                return task.getTagsInTasks(this.filteredTasks);
             },
 
             computedSearchTerm: {
