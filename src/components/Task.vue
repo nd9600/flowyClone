@@ -205,7 +205,7 @@
         min-width: 80px;
 
         padding: 5px;
-        margin: 16px 0 10px -30px;
+        margin: 16px 0 10px -38px;
         
         background: #e1e1e1;
         border: 1px solid #bbb;
