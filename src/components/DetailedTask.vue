@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import {getTagsInTask} from "../base/useful_functions.js";
+    import {getTagsInTask} from "../base/task.js";
 
     export default {
         name: "detailedTask",

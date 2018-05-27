@@ -80,7 +80,6 @@
 
 <script>
     import * as task from "../base/task.js";
-    import {getTagsInTask} from "../base/useful_functions.js";
     import {mapGetters, mapMutations} from "vuex";
 
     export default {
@@ -106,7 +105,7 @@
                 this.incrementTaskStorageUID();
                 this.task.tasks.push(new task.Task({
                     id: this.taskStorageUID,
-                    content: "blank",
+                    content: "",
                     complete: false
                 }));
             }
@@ -117,7 +116,7 @@
             ]),
 
             tags() {
-                return getTagsInTask(this.task);
+                return task.getTagsInTask(this.task);
             }
         },
         mounted(){

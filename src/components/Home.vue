@@ -49,23 +49,6 @@
 <script>
     import * as task from "../base/task.js";
     import {mapGetters, mapMutations} from "vuex";
-    import {getTagsInTasks} from "../base/useful_functions.js";
-
-    let filters = {
-        all: function (tasks) {
-            return tasks
-        },
-        active: function (tasks) {
-            return tasks.filter(function (task) {
-                return ! task.complete
-            });
-        },
-        completed: function (tasks) {
-            return tasks.filter(function (task) {
-                return task.complete
-            });
-        }
-    };
 
     export default {
         name: "home",
@@ -109,13 +92,13 @@
             filteredTasks() {
                 let currentSearchTerm = this.searchTerm && this.searchTerm.trim();
                 if (! currentSearchTerm) {
-                    return filters[this.visibility](this.tasks);
+                    return task.filters[this.visibility](this.tasks);
                 }
                 
                 let tasksContainingSearchTerm = this.tasks.filter(task => 
                     task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) > -1
                 );
-                return filters[this.visibility](tasksContainingSearchTerm);
+                return task.filters[this.visibility](tasksContainingSearchTerm);
                 
             },
 
@@ -124,7 +107,7 @@
             },
 
             tags() {
-                return getTagsInTasks(this.tasks);
+                return task.getTagsInTasks(this.tasks);
             },
 
             computedSearchTerm: {
