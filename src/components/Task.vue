@@ -184,12 +184,12 @@
         text-align: center;
         font-weight: lighter;
         color: #999;
-        background-color: #f3f3f3;
+        background-color: #f6f6f6;
+        border-radius: 8px;
     }
     .showHide:hover {
         color: #fff;
         background-color: var(--link-colour);
-        border-radius: 8px;
         transition: background-color 200ms ease 0s;
     }
 
@@ -244,15 +244,16 @@
 
         font-size: 18px;
         color: #ddd;
-        background-color: transparent;
-        border-color: transparent;
+        background-color: #f6f6f6;
+        border-color: #f6f6f6;
+        border-radius: 8px;
 
         text-decoration: none;
     }
     .removeButton:hover {
         background-color: var(--link-colour);
         border: 1px solid var(--link-colour);
-        border-radius: 8px;
+        
         transition: background-color 200ms ease 0s;
         color: #fff;
     }

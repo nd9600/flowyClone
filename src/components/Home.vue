@@ -99,6 +99,10 @@
                 
             },
 
+            abc() {
+                return task.tasksToArray(this.filteredTasks);
+            },
+
             flattenedTasks() {
                 return task.tasksToArray(this.filteredTasks).flattenDeep();
             },
