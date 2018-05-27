@@ -182,15 +182,12 @@
         font-weight: lighter;
         color: #999;
         background-color: #f3f3f3;
-        border-radius: 8px;
-        transition: 200ms;
-        transition-property: background-color;
-        transition-duration: 200ms;
-        transition-timing-function: ease;
     }
     .showHide:hover {
         color: #fff;
         background-color: var(--link-colour);
+        border-radius: 8px;
+        transition: background-color 200ms ease 0s;
     }
 
     .contextMenuLocation {
@@ -250,7 +247,11 @@
         text-decoration: none;
     }
     .removeButton:hover {
-        color: #999;
+        background-color: var(--link-colour);
+        border: 1px solid var(--link-colour);
+        border-radius: 8px;
+        transition: background-color 200ms ease 0s;
+        color: #fff;
     }
 
     .strikethrough {
