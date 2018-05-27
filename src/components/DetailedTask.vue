@@ -34,6 +34,12 @@
 
             <p>author <input type="text" v-model="task.author"></p>
         </fieldset>
+
+        <br />
+
+        <fieldset>
+            <p>bold <input type="checkbox" v-model="task.bold"></p>
+        </fieldset>
     </div>
 </template>
 

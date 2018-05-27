@@ -74,10 +74,7 @@
                 this.incrementTaskStorageUID();
                 this.tasks.push(new task.Task({
                     id: this.taskStorageUID,
-                    content: value, 
-                    complete: false, 
-                    author: "", 
-                    link: "", 
+                    content: value
                 }));
                 this.newTask = "";
             }

@@ -14,6 +14,8 @@ class Task {
 
         this.tasks = obj.tasks || [];
         this.parent = obj.parent || null;
+
+        this.bold = obj.bold || false;
     }
 }
 

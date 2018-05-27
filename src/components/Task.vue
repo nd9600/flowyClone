@@ -17,8 +17,9 @@
                     class="contextMenu"
                 >
                     <a @click="toggleComplete">Complete</a>
-                    <a @click="$emit('removeTask', task)">Remove</a>
+                    <a @click="bold">Bold</a>
                     <a @click="goToDetailedTask">Edit</a>
+                    <a @click="$emit('removeTask', task)">Remove</a>
                     <a @click="addNewTask">Add new task</a>
                 </div>
             </div>
@@ -27,6 +28,7 @@
                 <input
                     ref="taskInput"
                     v-model="task.content"
+                    :class="{ bold: task.bold }"
                     type="text"
                     class="taskText"
                 >       
@@ -99,6 +101,12 @@
             },
             toggleComplete() {
                 this.task.complete = ! this.task.complete;
+            },
+            bold() {
+                this.task.bold = ! this.task.bold;
+                setTimeout(() => {
+                    Stretchy.resize(this.$refs.taskInput)
+                }, 10);
             },
             addNewTask() {
                 this.incrementTaskStorageUID();
@@ -204,6 +212,10 @@
         left: 0;
         border-bottom: 1px solid #111;
         width: 100%;
+    }
+
+    .bold {
+        font-weight: bold;
     }
 
     .author {
