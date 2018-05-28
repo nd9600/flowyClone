@@ -28,7 +28,7 @@
                             v-if="task.tasks.length > 0"
                             @click="showChildren = ! showChildren"
                         >
-                            {{showHideText}} children
+                            {{showHideText}}
                         </a>
                         <a @click="task.complete = ! task.complete">Complete</a>
                         <a @click="bold">Bold</a>
@@ -109,7 +109,7 @@
                 <p 
                     v-if="task.tasks.length > 0"
                     class="smallText"
-                >{{task.tasks.length}} children</p>
+                >{{task.tasks.length}} {{task.tasks.length | pluralise}}</p>
             </div>
         </div>
     </span>
@@ -174,6 +174,11 @@
                 return task.getTagsInTask(this.task);
             }
         },
+        filters: {
+            pluralise(n) {
+                return n === 1 ? "child" : "children";
+            }
+        },
         mounted(){
             //resizes the task content input when the task is first created
             Stretchy.resize(this.$refs.taskInput);
@@ -229,7 +234,7 @@
         padding: 5px;
         margin: 16px 0 10px -38px;
         
-        background: #e1e1e1;
+        background: #f6f6f6;
         border: 1px solid #bbb;
         border-radius: 4px;
     }
