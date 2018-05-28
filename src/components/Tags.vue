@@ -22,7 +22,7 @@
             ]),
             updateSearchTerm(event) {
                 //only adds the text following the #, if it has changed
-                let newSearchTerm = event.target.innerText.slice(0);
+                let newSearchTerm = event.target.innerText.slice(0).trim();
                 if (this.searchTerm !== newSearchTerm) {
                     this.changeSearchTerm(newSearchTerm);
                 }

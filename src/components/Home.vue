@@ -7,11 +7,23 @@
             v-model="newTask"
             @keyup.enter="addTask"
         >
-        <input
-            class="inputBox"
-            placeholder="Search"
-            v-model="computedSearchTerm"
+        <div
+            @mouseover="showClearButton = true"
+            @mouseleave="showClearButton = false"
+            class="searchBoxWrapper"
         >
+            <input
+                type="search"
+                class="inputBox"
+                placeholder="Search"
+                v-model="computedSearchTerm"
+            >
+            <a
+                v-if="showClearButton"
+                @click="computedSearchTerm = ''"
+                class="clearButton"
+            >x</a>
+        </div>
 
         <span>
             <a 
@@ -57,6 +69,7 @@
             return {
                 newTask: "",
                 visibility: "all",
+                showClearButton: false
             }
         },
         methods: {
@@ -99,7 +112,7 @@
                 
             },
 
-            abc() {
+            tasksAsArrat() {
                 return task.tasksToArray(this.filteredTasks);
             },
 
@@ -147,11 +160,24 @@
         color: #fff;
     }
 
+    input[type="search"]::-webkit-search-cancel-button { 
+        display: none 
+    }
+
+    .searchBoxWrapper {
+        display: flex;
+        align-items: center;
+    }
+
     .inputBox {
         display: block;
         margin: 10px 0 10px 0;
         padding: 10px;
         min-width: 200px;
+    }
+
+    .clearButton {
+        margin-left: -25px;
     }
 
     #home {

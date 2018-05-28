@@ -34,7 +34,7 @@
                         <a @click="bold">Bold</a>
                         <div class="separator"></div>
                         <a @click="goToDetailedTask">Edit</a>
-                        <a @click="$emit('removeTask', task)">Remove</a>
+                        <a @click="removeTask">Remove</a>
                         <a @click="addNewTask">Add new child</a>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
 
                 <button 
                     @click="removeTask"
-                    class="btn"
+                    class="btn dangerBtn"
                 >x
                 </button>
             </div>
@@ -278,6 +278,10 @@
         
         transition: background-color 200ms ease 0s;
         color: #fff;
+    }
+    .dangerBtn:hover {
+        background-color: #e00808;
+        border: 1px solid #e00808;
     }
 
     .strikethrough {
