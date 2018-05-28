@@ -52,16 +52,24 @@
                     >       
                 </span>
 
+                <button
+                    @click="addNewTask"
+                    class="btn"
+                >+
+                </button>
+
                 <button 
-                    @click="$emit('removeTask', task)"
-                    class="removeButton"
-                >x</button>
+                    @click="removeTask"
+                    class="btn"
+                >x
+                </button>
             </div>
 
             <div>
                 <p 
                     v-if="task.description.length > 0"
                     class="description leftIndent"
+                    style="margin-top: 0; margin-bottom: 0;"
                 >{{task.description}}</p>
             </div>
 
@@ -74,7 +82,7 @@
                 </a>
                 <p 
                     v-if="task.author.length > 0"
-                    class="author"
+                    class="smallText"
                 >{{task.author}}
                 </p>
             </div>
@@ -93,6 +101,15 @@
                     :tasks="task.tasks"
                 >
                 </tasks>
+            </div>
+            <div 
+                v-if="! showChildren"
+                class="leftIndent"
+            >
+                <p 
+                    v-if="task.tasks.length > 0"
+                    class="smallText"
+                >{{task.tasks.length}} children</p>
             </div>
         </div>
     </span>
@@ -132,6 +149,12 @@
                     content: "",
                     complete: false
                 }));
+            },
+            removeTask() {
+                let confirm = window.confirm("Are you sure you want to delete this?");
+                if (confirm) {
+                    this.$emit('removeTask', this.task);
+                }
             }
         },
         computed: {
@@ -161,15 +184,14 @@
 <style>
     .taskFlexbox {
         display: flex;
-        padding: 5px;
+        margin: 10px 0 10px 0;
     }
 
     .task {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        padding: 5px;
-        margin-left: 33px;
+        margin: 5px 0 0 33px;
     }
 
     .showHide {
@@ -237,7 +259,7 @@
         min-width: 300px;
     }
 
-    .removeButton {
+    .btn {
         min-height: 32px;
 
         margin: 0 10px 0 10px;
@@ -250,7 +272,7 @@
 
         text-decoration: none;
     }
-    .removeButton:hover {
+    .btn:hover {
         background-color: var(--link-colour);
         border: 1px solid var(--link-colour);
         
@@ -275,9 +297,11 @@
         font-weight: bold;
     }
 
-    .author {
+    .smallText {
         display: inline;
-        font-size: 1.3rem;
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 1.2rem;
         color: #696969;
     }
 

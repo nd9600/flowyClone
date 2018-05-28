@@ -141,6 +141,12 @@
         color: var(--link-colour);
     }
 
+    .button:focus, .button:hover, button:focus, button:hover, input[type="submit"]:focus, input[type="submit"]:hover, input[type="reset"]:focus, input[type="reset"]:hover, input[type="button"]:focus, input[type="button"]:hover {
+        background-color: var(--link-colour);
+        border-color: var(--link-colour);
+        color: #fff;
+    }
+
     .inputBox {
         display: block;
         margin: 10px 0 10px 0;
