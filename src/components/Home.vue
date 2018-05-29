@@ -40,21 +40,21 @@
             >completed</a>
         </span>
 
-        <tags
+        <!-- <tags
             :tags="tags"
         >
-        </tags>
+        </tags> -->
 
         <div class="separator"></div>
 
-        <tasks
+        <!-- <tasks
             :tasks="filteredTasks"
         >
         </tasks>
 
         <p v-if="visibility !== 'completed'"
             style="color: #999;"
-        >{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p>
+        >{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p> -->
     </div>
 </template>
 
@@ -64,7 +64,6 @@
 
     export default {
         name: "home",
-        props: ["tasks"],
         data() {
             return {
                 newTask: "",
@@ -94,6 +93,11 @@
         },
         computed: {
             ...mapGetters([
+                "tasks",
+                "taskByID",
+                "hasTask",
+                "tasksInTask",
+                "rootTasks",
                 "taskStorageUID",
                 "searchTerm"
             ]),
