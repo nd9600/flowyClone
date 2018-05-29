@@ -25,8 +25,7 @@ export default {
     el: '#app',
     data: {
         currentComponent: "home",
-        componentProp: {tasks: new Map()},
-        shouldUpdateTasks: true
+        componentProp: {}
     },
     components: {
         Home,

@@ -11,22 +11,27 @@ const getters = {
         return state.tasks;
     },
     taskByID(state, id) {
+        console.log(state.tasks);
         return state.tasks.get(id);
     },
     hasTask(state, id) {
         return state.tasks.has(id);
     },
     tasksInTask(state, id) {
-        if (! this.hasTask(state, id)) {
+        if (! getters.hasTask(state, id)) {
             return [];
         }
-        let thisTask = this.taskByID(state);
-        return thisTask.tasks.map(taskID => this.taskByID(taskID));
+        let thisTask = getters.taskByID(state);
+        return thisTask.tasks.map(taskID => getters.taskByID(taskID));
     },
 
     rootTaskIDs(state) {
         return state.rootTaskIDs;
     },
+    rootTasks(state) {
+        return state.rootTaskIDs.map(id => getters.taskByID(id));
+    },
+
     taskStorageUID(state) {
         return state.taskStorageUID;
     }
@@ -47,19 +52,19 @@ const mutations = {
         //we need to delete the task ID from the root too
         let rootTaskID = state.rootTaskIDs.indexOf(taskID);
         if (rootTaskID > -1) {
-            state.rootTasks.splice(rootTaskID, 1);
+            state.rootTaskIDs.splice(rootTaskID, 1);
         }
     },
 
     addTaskToRoot(state, task) {
         let taskID = task["id"];
-        rootTasks.push(taskID);
+        state.rootTaskIDs.push(taskID);
     },
 
     initialiseTasks(state) {
-        if (localStorage.getItem(STORAGE_KEY + "-tasks")) {
-            state.tasks = JSON.parse(localStorage.getItem(STORAGE_KEY + "-tasks"));
-        }
+        // if (localStorage.getItem(STORAGE_KEY + "-tasks")) {
+        //     state.tasks = JSON.parse(localStorage.getItem(STORAGE_KEY + "-tasks"));
+        // }
 
         if (localStorage.getItem(STORAGE_KEY + "-taskStorageUID")) {
             state.taskStorageUID = JSON.parse(localStorage.getItem(STORAGE_KEY + "-taskStorageUID"));

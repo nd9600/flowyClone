@@ -74,7 +74,9 @@
         methods: {
             ...mapMutations([
                 "incrementTaskStorageUID",
-                "changeSearchTerm"
+                "changeSearchTerm",
+                "setTask",
+                "addTaskToRoot"
             ]),
 
             addTask(event) {
@@ -84,10 +86,12 @@
                 }
 
                 this.incrementTaskStorageUID();
-                this.tasks.push(new task.Task({
+                let newTaskObject = new task.Task({
                     id: this.taskStorageUID,
                     content: value
-                }));
+                });
+                this.setTask(newTaskObject["id"], newTaskObject);
+                this.addTaskToRoot(newTaskObject["id"]);
                 this.newTask = "";
             }
         },
@@ -106,22 +110,14 @@
             filteredTasks() {
                 let currentSearchTerm = this.searchTerm && this.searchTerm.trim();
                 if (! currentSearchTerm) {
-                    return task.filters[this.visibility](this.tasks);
+                    return task.filters[this.visibility](this.rootTasks);
                 }
                 
-                let tasksContainingSearchTerm = this.tasks.filter(task => 
+                let tasksContainingSearchTerm = this.rootTasks.filter(task => 
                     task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) > -1
                 );
                 return task.filters[this.visibility](tasksContainingSearchTerm);
                 
-            },
-
-            tasksAsArrat() {
-                return task.tasksToArray(this.filteredTasks);
-            },
-
-            flattenedTasks() {
-                return task.tasksToArray(this.filteredTasks).flattenDeep();
             },
 
             numberOfTasksRemaining() {
