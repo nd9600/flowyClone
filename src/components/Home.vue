@@ -50,11 +50,11 @@
         <!-- <tasks
             :tasks="filteredTasks"
         >
-        </tasks>
+        </tasks> -->
 
         <p v-if="visibility !== 'completed'"
             style="color: #999;"
-        >{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p> -->
+        >{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p>
     </div>
 </template>
 
@@ -90,7 +90,7 @@
                     id: this.taskStorageUID,
                     content: value
                 });
-                this.setTask(newTaskObject["id"], newTaskObject);
+                this.setTask(newTaskObject);
                 this.addTaskToRoot(newTaskObject["id"]);
                 this.newTask = "";
             }
@@ -98,9 +98,7 @@
         computed: {
             ...mapGetters([
                 "tasks",
-                "taskByID",
-                "hasTask",
-                "tasksInTask",
+                "tasksAsArray",
                 "rootTasks",
                 "taskStorageUID",
                 "searchTerm"
@@ -121,7 +119,7 @@
             },
 
             numberOfTasksRemaining() {
-                return this.flattenedTasks.filter(task => ! task.complete).length;
+                return this.tasksAsArray.filter(task => ! task.complete).length;
             },
 
             tags() {

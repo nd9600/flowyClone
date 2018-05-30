@@ -3,15 +3,19 @@ const STORAGE_KEY = 'tasks-flowyClone';
 const state = {
     tasks: new Map(),
     rootTaskIDs: [],
-    taskStorageUID: 0,
+    taskStorageUID: 0
 }
 
 const getters = {
     tasks(state) {
         return state.tasks;
     },
+    tasksAsArray(state) {
+        console.log(state.tasks.values());
+        console.log(Array.from(state.tasks.values()));
+        return Array.from(state.tasks.values());
+    },
     taskByID(state, id) {
-        console.log(state.tasks);
         return state.tasks.get(id);
     },
     hasTask(state, id) {
@@ -21,15 +25,15 @@ const getters = {
         if (! getters.hasTask(state, id)) {
             return [];
         }
-        let thisTask = getters.taskByID(state);
-        return thisTask.tasks.map(taskID => getters.taskByID(taskID));
+        let thisTask = getters.taskByID(id);
+        return thisTask.tasks.map(taskID => getters.taskByID(state, taskID));
     },
 
     rootTaskIDs(state) {
         return state.rootTaskIDs;
     },
     rootTasks(state) {
-        return state.rootTaskIDs.map(id => getters.taskByID(id));
+        return state.rootTaskIDs.map(id => getters.taskByID(state, id));
     },
 
     taskStorageUID(state) {
@@ -56,8 +60,7 @@ const mutations = {
         }
     },
 
-    addTaskToRoot(state, task) {
-        let taskID = task["id"];
+    addTaskToRoot(state, taskID) {
         state.rootTaskIDs.push(taskID);
     },
 
