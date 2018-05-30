@@ -74,7 +74,8 @@
         },
         computed: {
             ...mapGetters([
-                "getTagsInTask"
+                "taskByID",
+                "tagsInTask"
             ]),
             taskLink() {
                 if (this.task.link.length > 0) {
@@ -83,18 +84,22 @@
                 return "#";
             },
             tags() {
-                return this.getTagsInTask(this.task);
+                return this.tagsInTask(this.task);
             }
         },
         watch: {
             task: {
                 handler: function (newTask) { 
-                    if (shouldUpdateTask) {
+                    if (this.shouldUpdateTask) {
                         this.setTask(newTask);
                     }
                 },
                 deep: true
             },
+        },
+        created() {
+            this.task = this.taskByID(this.taskID);
+            this.shouldUpdateTask = true;
         },
     }
 </script>

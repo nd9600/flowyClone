@@ -98,10 +98,10 @@ const mutations = {
     },
 
     initialiseTasks(state) {
-        // if (localStorage.getItem(STORAGE_KEY + "-tasks")) {
-        //     mutations.incrementTaskChangeTracker(state);
-        //     state.tasks = JSON.parse(localStorage.getItem(STORAGE_KEY + "-tasks"));
-        // }
+        if (localStorage.getItem(STORAGE_KEY + "-tasks")) {
+            mutations.incrementTaskChangeTracker(state);
+            state.tasks = JSON.parse(localStorage.getItem(STORAGE_KEY + "-tasks"));
+        }
 
         if (localStorage.getItem(STORAGE_KEY + "-taskStorageUID")) {
             state.taskStorageUID = JSON.parse(localStorage.getItem(STORAGE_KEY + "-taskStorageUID"));
