@@ -125,7 +125,20 @@
         data() {
             return {
                 showContextMenu: false,
-                showChildren: true
+                showChildren: true,
+                shouldUpdateTask: false,
+
+                //all task's properties must be added here, so they are reactive
+                task: {
+                    id: 0,
+                    content: "",
+                    description: "",
+                    complete: false,
+                    author: "",
+                    link: "",
+                    tasks: [],
+                    bold: false
+                }
             }
         },
         methods: {
@@ -136,7 +149,7 @@
             ]),
 
             goToDetailedTask() {
-                this.$root.$emit("change-component-event", "detailedTask", {task: this.task});
+                this.$root.$emit("change-component-event", "detailedTask", {taskID: this.taskID});
             },
             bold() {
                 this.task.bold = ! this.task.bold;
@@ -168,15 +181,8 @@
                 "tasksInTask"
             ]),
 
-            task() {
-                return this.taskByID(this.taskID);
-            },
-
             innerTasks() {
-                console.log("innerTasks");
-                let t = this.tasksInTask(this.task.id);
-                console.log(t);
-                return t;
+                return this.tasksInTask(this.taskID);
             },
 
             showHideButtonText() {
@@ -195,19 +201,24 @@
         },
         watch: {
             task: {
-                handler: function (newTask, oldTask) { 
-                    console.log("watch");
-                    this.setTask(newTask);
+                handler: function (newTask) { 
+                    if (shouldUpdateTask) {
+                        this.setTask(newTask);
+                    }
                 },
                 deep: true
-            }
+            },
         },
         filters: {
             pluralise(n) {
                 return n === 1 ? "child" : "children";
             }
         },
-        mounted(){
+        created() {
+            this.task = this.taskByID(this.taskID);
+            this.shouldUpdateTask = true;
+        },
+        mounted() {
             //resizes the task content input when the task is first created
             Stretchy.resize(this.$refs.taskInput);
         }

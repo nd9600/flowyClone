@@ -45,11 +45,30 @@
 
 <script>
     import {getTagsInTask} from "../base/task.js";
+    import {mapMutations} from "vuex";
 
     export default {
         name: "detailedTask",
-        props: ["task"],
+        props: ["taskID"],
+        data() {
+            return {
+                //all task's properties must be added here, so they are reactive
+                task: {
+                    id: 0,
+                    content: "",
+                    description: "",
+                    complete: false,
+                    author: "",
+                    link: "",
+                    tasks: [],
+                    bold: false
+                }
+            }
+        }
         methods: {
+            ...mapMutations([
+                "setTask"
+            ]),
             goHome() {
                 this.$root.$emit("change-component-event", "home", {tasks: this.$root.tasks});
             }
@@ -64,7 +83,17 @@
             tags() {
                 return getTagsInTask(this.task);
             }
-        }
+        },
+        watch: {
+            task: {
+                handler: function (newTask) { 
+                    if (shouldUpdateTask) {
+                        this.setTask(newTask);
+                    }
+                },
+                deep: true
+            },
+        },
     }
 </script>
 

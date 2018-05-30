@@ -97,7 +97,6 @@
         },
         computed: {
             ...mapGetters([
-                "tasks",
                 "rootTasks",
                 "taskStorageUID",
                 "searchTerm"

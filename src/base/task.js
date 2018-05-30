@@ -13,7 +13,6 @@ class Task {
         this.link = obj.link || "";
 
         this.tasks = obj.tasks || [];
-        this.parent = obj.parent || null;
 
         this.bold = obj.bold || false;
     }
