@@ -121,7 +121,7 @@
 
     export default {
         name: "task",
-        props: ["task"],
+        props: ["taskID"],
         data() {
             return {
                 showContextMenu: false,
@@ -164,8 +164,13 @@
         computed: {
             ...mapGetters([
                 "taskStorageUID",
+                "taskByID",
                 "tasksInTask"
             ]),
+
+            task() {
+                return this.taskByID(this.taskID);
+            },
 
             innerTasks() {
                 console.log("innerTasks");
@@ -185,7 +190,16 @@
             tags() {
                 return [];
                 //needs to use vuex getters now
-                return task.getTagsInTask(this.task);
+                //return task.getTagsInTask(this.task);
+            }
+        },
+        watch: {
+            task: {
+                handler: function (newTask, oldTask) { 
+                    console.log("watch");
+                    this.setTask(newTask);
+                },
+                deep: true
             }
         },
         filters: {

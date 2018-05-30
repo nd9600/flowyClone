@@ -1,10 +1,10 @@
 <template>
     <div class="tasksList">
         <task 
-            v-for="task in this.tasks"
+            v-for="taskID in this.taskIDs"
             v-on:removeTask="removeTask"
-            :task="task"
-            :key="task.id"
+            :taskID="taskID"
+            :key="taskID"
         >
         </task>
     </div>
@@ -12,12 +12,13 @@
 
 <script>
     export default {
-        props: ["tasks"],
+        props: ["taskIDs"],
         methods: {
             //event is fired from a child task
             removeTask(task) {
-                let indexOfTask = this.tasks.indexOf(task);
-                this.tasks.splice(indexOfTask, 1);
+                console.log(task);
+                // let indexOfTask = this.tasks.indexOf(task);
+                // this.tasks.splice(indexOfTask, 1);
             }
         }
     }

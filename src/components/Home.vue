@@ -48,7 +48,7 @@
         <div class="separator"></div>
 
         <tasks
-            :tasks="filteredTasks"
+            :taskIDs="filteredTaskIDs"
         >
         </tasks>
 
@@ -115,6 +115,10 @@
                 );
                 return task.filters[this.visibility](tasksContainingSearchTerm);
                 
+            },
+
+            filteredTaskIDs() {
+                return this.filteredTasks.map(task => task.id);
             },
 
             numberOfTasksRemaining() {

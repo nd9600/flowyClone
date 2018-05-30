@@ -66,7 +66,7 @@ const mutations = {
         let taskID = task["id"];
         state.tasks.delete(taskID);
 
-        //we need to delete the task ID from the root too
+        //we might need to delete the task ID from the root too
         let rootTaskID = state.rootTaskIDs.indexOf(taskID);
         if (rootTaskID > -1) {
             state.rootTaskIDs.splice(rootTaskID, 1);
