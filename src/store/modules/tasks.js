@@ -2,24 +2,25 @@ const STORAGE_KEY = 'tasks-flowyClone';
 
 const state = {
     tasks: new Map(),
+    tasksChangeTracker: 1,
     rootTaskIDs: [],
     taskStorageUID: 0
 }
 
 const getters = {
     tasks(state) {
-        return state.tasks;
+        return state.tasksChangeTracker && state.tasks;
     },
     tasksAsArray(state) {
-        console.log(state.tasks.values());
-        console.log(Array.from(state.tasks.values()));
-        return Array.from(state.tasks.values());
+        console.log(getters.tasks(state).values());
+        console.log(Array.from(getters.tasks(state).values()));
+        return Array.from(getters.tasks(state).values());
     },
     taskByID(state, id) {
-        return state.tasks.get(id);
+        return getters.tasks(state).get(id);
     },
     hasTask(state, id) {
-        return state.tasks.has(id);
+        return getters.tasks(state).has(id);
     },
     tasksInTask(state, id) {
         if (! getters.hasTask(state, id)) {
@@ -33,7 +34,7 @@ const getters = {
         return state.rootTaskIDs;
     },
     rootTasks(state) {
-        return state.rootTaskIDs.map(id => getters.taskByID(state, id));
+        return getters.rootTaskIDs(state).map(id => getters.taskByID(state, id));
     },
 
     taskStorageUID(state) {
@@ -42,14 +43,22 @@ const getters = {
 }
 
 const mutations = {
+    incrementTaskChangeTracker(state) {
+        state.tasksChangeTracker += 1;
+    },
     setTasks(state, tasks) {
+        mutations.incrementTaskChangeTracker(state);
         state.tasks = JSON.parse(JSON.stringify(tasks));
     },
     setTask(state, task) {
+        mutations.incrementTaskChangeTracker(state);
+
         let taskID = task["id"];
         state.tasks.set(taskID, task);
     },
     removeTask(state, task) {
+        mutations.incrementTaskChangeTracker(state);
+
         let taskID = task["id"];
         state.tasks.delete(taskID);
 
@@ -66,6 +75,7 @@ const mutations = {
 
     initialiseTasks(state) {
         // if (localStorage.getItem(STORAGE_KEY + "-tasks")) {
+        //     mutations.incrementTaskChangeTracker(state);
         //     state.tasks = JSON.parse(localStorage.getItem(STORAGE_KEY + "-tasks"));
         // }
 
