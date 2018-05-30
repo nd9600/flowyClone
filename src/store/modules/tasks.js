@@ -63,6 +63,9 @@ const getters = {
 const mutations = {
     incrementTaskChangeTracker(state) {
         state.tasksChangeTracker += 1;
+
+        let localTasksKey = STORAGE_KEY + "-tasks";
+        //localStorage.setItem(localTasksKey, JSON.stringify(getters.tasks(state)));
     },
     setTasks(state, tasks) {
         state.tasks = JSON.parse(JSON.stringify(tasks));
@@ -70,6 +73,9 @@ const mutations = {
     },
     setTask(state, task) {
         let taskID = task["id"];
+        console.log("setTask");
+        console.trace();
+        console.log(state.tasks);
         state.tasks.set(taskID, task);
         mutations.incrementTaskChangeTracker(state);
     },

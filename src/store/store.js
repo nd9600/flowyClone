@@ -19,8 +19,12 @@ const store = new Vuex.Store({
 });
 
 store.subscribe((mutation, state) => {
-    if (["incrementTaskChangeTracker"].indexOf(mutation.type) > -1) {
-        let key = STORAGE_KEY + "-taskStorageUID";
-        localStorage.setItem(key, JSON.stringify(state.tasks.taskStorageUID));
+    // console.log(mutation);
+    if (["setTask", "removeTask", "addTaskToTask", "addTaskToRoot"].indexOf(mutation.type) > -1) {
+        // let localTasksKey = STORAGE_KEY + "-tasks";
+        // localStorage.setItem(localTasksKey, JSON.stringify(state.tasks.tasks));
+
+        let localUIDkey = STORAGE_KEY + "-taskStorageUID";
+        localStorage.setItem(localUIDkey, JSON.stringify(state.tasks.taskStorageUID));
     }
 });
