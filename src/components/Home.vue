@@ -47,10 +47,10 @@
 
         <div class="separator"></div>
 
-        <!-- <tasks
+        <tasks
             :tasks="filteredTasks"
         >
-        </tasks> -->
+        </tasks>
 
         <p v-if="visibility !== 'completed'"
             style="color: #999;"
@@ -98,7 +98,6 @@
         computed: {
             ...mapGetters([
                 "tasks",
-                "tasksAsArray",
                 "rootTasks",
                 "taskStorageUID",
                 "searchTerm"
@@ -119,7 +118,7 @@
             },
 
             numberOfTasksRemaining() {
-                return this.tasksAsArray.filter(task => ! task.complete).length;
+                return this.rootTasks.filter(task => ! task.complete).length;
             },
 
             tags() {

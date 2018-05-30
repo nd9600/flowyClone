@@ -25,7 +25,7 @@
                         class="contextMenu"
                     >
                         <a
-                            v-if="task.tasks.length > 0"
+                            v-if="innerTasks.length > 0"
                             @click="showChildren = ! showChildren"
                         >
                             {{showHideText}}
@@ -98,7 +98,7 @@
             <div v-if="showChildren">
                 <tasks
                     v-if="task.tasks.length > 0"
-                    :tasks="task.tasks"
+                    :tasks="innerTasks"
                 >
                 </tasks>
             </div>
@@ -107,7 +107,7 @@
                 class="leftIndent"
             >
                 <p 
-                    v-if="task.tasks.length > 0"
+                    v-if="innerTasks.length > 0"
                     class="smallText"
                 >{{task.tasks.length}} {{task.tasks.length | pluralise}}</p>
             </div>
@@ -130,7 +130,8 @@
         },
         methods: {
             ...mapMutations([
-                "incrementTaskStorageUID"
+                "incrementTaskStorageUID",
+                "addTaskToTask"
             ]),
 
             goToDetailedTask() {
@@ -144,11 +145,12 @@
             },
             addNewTask() {
                 this.incrementTaskStorageUID();
-                this.task.tasks.push(new task.Task({
+                let newTask = new task.Task({
                     id: this.taskStorageUID,
                     content: "",
                     complete: false
-                }));
+                });
+                this.addTaskToTask(this.task.id, newTask.id)
             },
             removeTask() {
                 let confirm = window.confirm("Are you sure you want to delete this?");
@@ -159,8 +161,14 @@
         },
         computed: {
             ...mapGetters([
-                "taskStorageUID"
+                "taskStorageUID",
+                "tasksInTask"
             ]),
+
+            innerTasks() {
+                console.log("innerTasks: " + this.task.id);
+                return this.tasksInTask(this.task.id);
+            },
 
             showHideButtonText() {
                 return (this.showChildren ? "[-]" : "[+]");

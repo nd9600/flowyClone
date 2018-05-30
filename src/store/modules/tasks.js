@@ -12,29 +12,32 @@ const getters = {
         return state.tasksChangeTracker && state.tasks;
     },
     tasksAsArray(state) {
-        console.log(getters.tasks(state).values());
-        console.log(Array.from(getters.tasks(state).values()));
         return Array.from(getters.tasks(state).values());
     },
-    taskByID(state, id) {
+    taskByID: (state) => id => {
         return getters.tasks(state).get(id);
     },
-    hasTask(state, id) {
+    hasTask: (state) => id => {
         return getters.tasks(state).has(id);
     },
-    tasksInTask(state, id) {
-        if (! getters.hasTask(state, id)) {
+    tasksInTask: (state) => id => {
+        console.log("tasksInTask");
+        //console.trace();
+        console.log(state);
+        console.log(id);
+        if (! getters.hasTask(state)(id)) {
             return [];
         }
-        let thisTask = getters.taskByID(id);
-        return thisTask.tasks.map(taskID => getters.taskByID(state, taskID));
+        let thisTask = getters.taskByID(state)(id);
+        console.log(thisTask);
+        return thisTask.tasks.map(taskID => getters.taskByID(state, getters)(taskID));
     },
 
     rootTaskIDs(state) {
         return state.rootTaskIDs;
     },
     rootTasks(state) {
-        return getters.rootTaskIDs(state).map(id => getters.taskByID(state, id));
+        return getters.rootTaskIDs(state).map(id => getters.taskByID(state, getters)(id));
     },
 
     taskStorageUID(state) {
@@ -47,18 +50,15 @@ const mutations = {
         state.tasksChangeTracker += 1;
     },
     setTasks(state, tasks) {
-        mutations.incrementTaskChangeTracker(state);
         state.tasks = JSON.parse(JSON.stringify(tasks));
+        mutations.incrementTaskChangeTracker(state);
     },
     setTask(state, task) {
-        mutations.incrementTaskChangeTracker(state);
-
         let taskID = task["id"];
         state.tasks.set(taskID, task);
+        mutations.incrementTaskChangeTracker(state);
     },
     removeTask(state, task) {
-        mutations.incrementTaskChangeTracker(state);
-
         let taskID = task["id"];
         state.tasks.delete(taskID);
 
@@ -67,6 +67,13 @@ const mutations = {
         if (rootTaskID > -1) {
             state.rootTaskIDs.splice(rootTaskID, 1);
         }
+        mutations.incrementTaskChangeTracker(state);
+    },
+
+    addTaskToTask(state, {taskID, newTaskID}) {
+        let task = getters.taskByID(taskID);
+        task.tasks.push(newTaskID);
+        mutations.incrementTaskChangeTracker(state);
     },
 
     addTaskToRoot(state, taskID) {
