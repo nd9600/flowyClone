@@ -40,10 +40,10 @@
             >completed</a>
         </span>
 
-        <!-- <tags
+        <tags
             :tags="tags"
         >
-        </tags> -->
+        </tags>
 
         <div class="separator"></div>
 
@@ -98,8 +98,9 @@
         computed: {
             ...mapGetters([
                 "rootTasks",
+                "tagsInTasks",
                 "taskStorageUID",
-                "searchTerm"
+                "searchTerm",
             ]),
 
             //can filter tasks by a search term or visibiliity
@@ -125,7 +126,7 @@
             },
 
             tags() {
-                return task.getTagsInTasks(this.filteredTasks);
+                return this.tagsInTasks(this.filteredTaskIDs);
             },
 
             computedSearchTerm: {

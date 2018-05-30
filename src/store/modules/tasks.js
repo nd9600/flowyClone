@@ -1,3 +1,5 @@
+import {getTagsInString} from "../../base/task.js";
+
 const STORAGE_KEY = 'tasks-flowyClone';
 
 const state = {

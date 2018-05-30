@@ -44,8 +44,7 @@
 </template>
 
 <script>
-    import {getTagsInTask} from "../base/task.js";
-    import {mapMutations} from "vuex";
+    import {mapMutations, mapGetters} from "vuex";
 
     export default {
         name: "detailedTask",
@@ -74,6 +73,9 @@
             }
         },
         computed: {
+            ...mapGetters([
+                "getTagsInTask"
+            ]),
             taskLink() {
                 if (this.task.link.length > 0) {
                     return this.task.link;
@@ -81,7 +83,7 @@
                 return "#";
             },
             tags() {
-                return getTagsInTask(this.task);
+                return this.getTagsInTask(this.task);
             }
         },
         watch: {

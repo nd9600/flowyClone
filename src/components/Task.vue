@@ -25,7 +25,7 @@
                         class="contextMenu"
                     >
                         <a
-                            v-if="innerTasks.length > 0"
+                            v-if="task.tasks.length > 0"
                             @click="showChildren = ! showChildren"
                         >
                             {{showHideText}}
@@ -98,7 +98,7 @@
             <div v-if="showChildren">
                 <tasks
                     v-if="task.tasks.length > 0"
-                    :tasks="innerTasks"
+                    :taskIDs="task.tasks"
                 >
                 </tasks>
             </div>
@@ -107,7 +107,7 @@
                 class="leftIndent"
             >
                 <p 
-                    v-if="innerTasks.length > 0"
+                    v-if="task.tasks.length > 0"
                     class="smallText"
                 >{{task.tasks.length}} {{task.tasks.length | pluralise}}</p>
             </div>
@@ -179,12 +179,8 @@
                 "taskStorageUID",
                 "taskByID",
                 "tasksInTask",
-                "tagsInTasks"
+                "tagsInTask"
             ]),
-
-            innerTasks() {
-                return this.tasksInTask(this.taskID);
-            },
 
             showHideButtonText() {
                 return (this.showChildren ? "[-]" : "[+]");
@@ -195,13 +191,13 @@
             },
 
             tags() {
-                return task.getTagsInTask(this.task);
+                return this.tagsInTask(this.task);
             }
         },
         watch: {
             task: {
                 handler: function (newTask) { 
-                    if (shouldUpdateTask) {
+                    if (this.shouldUpdateTask) {
                         this.setTask(newTask);
                     }
                 },

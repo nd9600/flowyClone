@@ -1,6 +1,4 @@
-import {extract} from "./useful_functions.js";
-
-export {Task, filters};
+export {Task, getTagsInString, filters};
 
 class Task {
     constructor(obj) {
