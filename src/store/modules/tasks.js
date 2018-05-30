@@ -15,25 +15,16 @@ const getters = {
         return Array.from(getters.tasks(state).values());
     },
     taskByID: (state) => id => {
-        console.log("taskByID");
-        console.log(getters.tasks(state).get(id));
         return getters.tasks(state).get(id);
     },
     hasTask: (state) => id => {
-        console.log("hasTask");
-        console.log(getters.tasks(state).has(id));
         return getters.tasks(state).has(id);
     },
     tasksInTask: (state) => id => {
-        console.log("tasksInTask");
-        //console.trace();
-        console.log(state);
-        console.log(id);
         if (! getters.hasTask(state)(id)) {
             return [];
         }
         let thisTask = getters.taskByID(state)(id);
-        console.log(thisTask);
         return thisTask.tasks.map(taskID => getters.taskByID(state, getters)(taskID));
     },
 
@@ -42,6 +33,24 @@ const getters = {
     },
     rootTasks(state) {
         return getters.rootTaskIDs(state).map(id => getters.taskByID(state, getters)(id));
+    },
+
+    tagsInTask: (state) => task => {
+        let tagsInContent = getTagsInString(task.content);
+        let tagsInDescription = getTagsInString(task.description);
+        let tagsToReturn = tagsInContent.concat(tagsInDescription);
+        if ((typeof task.tasks !== "undefined") && task.tasks.length > 0) {
+            let innerTasks = getters.tagsInTasks(state)(task.tasks)
+            tagsToReturn = tagsToReturn.concat(innerTasks);
+        }
+        return tagsToReturn.unique();
+    },
+
+    tagsInTasks: (state) => (tasks) => {
+        return tasks.map(taskID => {
+            let innerTask = getters.taskByID(state, getters)(taskID);
+            return getters.tagsInTask(state)(innerTask);
+        }).flatten().unique();
     },
 
     taskStorageUID(state) {
@@ -74,10 +83,10 @@ const mutations = {
         mutations.incrementTaskChangeTracker(state);
     },
 
+    // need to add mutation for removing an inner task
+
     addTaskToTask(state, {taskID, newTaskID}) {
         let task = getters.taskByID(state)(taskID);
-        console.log(taskID);
-        console.log(task);
         task.tasks.push(newTaskID);
         mutations.incrementTaskChangeTracker(state);
     },

@@ -36,7 +36,7 @@ export default {
             "initialiseTasks",
             "changeSearchTerm"
         ]),
-        changeCurrentComponent(component, prop) {
+        changeCurrentComponent(component, prop={}) {
             if (this.currentComponent !== component) {
                 this.currentComponent = component;
             }

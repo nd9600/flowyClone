@@ -178,7 +178,8 @@
             ...mapGetters([
                 "taskStorageUID",
                 "taskByID",
-                "tasksInTask"
+                "tasksInTask",
+                "tagsInTasks"
             ]),
 
             innerTasks() {
@@ -194,9 +195,7 @@
             },
 
             tags() {
-                return [];
-                //needs to use vuex getters now
-                //return task.getTagsInTask(this.task);
+                return task.getTagsInTask(this.task);
             }
         },
         watch: {

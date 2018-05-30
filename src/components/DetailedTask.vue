@@ -64,13 +64,13 @@
                     bold: false
                 }
             }
-        }
+        },
         methods: {
             ...mapMutations([
                 "setTask"
             ]),
             goHome() {
-                this.$root.$emit("change-component-event", "home", {tasks: this.$root.tasks});
+                this.$root.$emit("change-component-event", "home");
             }
         },
         computed: {
