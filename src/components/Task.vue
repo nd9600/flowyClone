@@ -131,6 +131,7 @@
         methods: {
             ...mapMutations([
                 "incrementTaskStorageUID",
+                "setTask",
                 "addTaskToTask"
             ]),
 
@@ -150,7 +151,8 @@
                     content: "",
                     complete: false
                 });
-                this.addTaskToTask(this.task.id, newTask.id)
+                this.setTask(newTask);
+                this.addTaskToTask({taskID: this.task.id, newTaskID: newTask.id})
             },
             removeTask() {
                 let confirm = window.confirm("Are you sure you want to delete this?");
@@ -166,8 +168,10 @@
             ]),
 
             innerTasks() {
-                console.log("innerTasks: " + this.task.id);
-                return this.tasksInTask(this.task.id);
+                console.log("innerTasks");
+                let t = this.tasksInTask(this.task.id);
+                console.log(t);
+                return t;
             },
 
             showHideButtonText() {
@@ -179,6 +183,8 @@
             },
 
             tags() {
+                return [];
+                //needs to use vuex getters now
                 return task.getTagsInTask(this.task);
             }
         },

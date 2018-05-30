@@ -15,9 +15,13 @@ const getters = {
         return Array.from(getters.tasks(state).values());
     },
     taskByID: (state) => id => {
+        console.log("taskByID");
+        console.log(getters.tasks(state).get(id));
         return getters.tasks(state).get(id);
     },
     hasTask: (state) => id => {
+        console.log("hasTask");
+        console.log(getters.tasks(state).has(id));
         return getters.tasks(state).has(id);
     },
     tasksInTask: (state) => id => {
@@ -71,7 +75,9 @@ const mutations = {
     },
 
     addTaskToTask(state, {taskID, newTaskID}) {
-        let task = getters.taskByID(taskID);
+        let task = getters.taskByID(state)(taskID);
+        console.log(taskID);
+        console.log(task);
         task.tasks.push(newTaskID);
         mutations.incrementTaskChangeTracker(state);
     },
