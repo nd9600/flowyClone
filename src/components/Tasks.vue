@@ -11,14 +11,21 @@
 </template>
 
 <script>
+    import {mapMutations} from "vuex";
     export default {
-        props: ["taskIDs"],
+        props: ["outerTask", "taskIDs"],
         methods: {
+            ...mapMutations({
+                removeTaskMutation: "removeTask"
+            }),
+
             //event is fired from a child task
-            removeTask(task) {
-                console.log(task);
-                // let indexOfTask = this.tasks.indexOf(task);
-                // this.tasks.splice(indexOfTask, 1);
+            removeTask(taskID) {
+                if (this.outerTask) {
+                    let indexOfTask = this.outerTask.tasks.indexOf(taskID);
+                    this.outerTask.tasks.splice(indexOfTask, 1);
+                }
+                this.removeTaskMutation(taskID);                
             }
         }
     }

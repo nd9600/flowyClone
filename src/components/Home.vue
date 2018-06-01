@@ -48,6 +48,7 @@
         <div class="separator"></div>
 
         <tasks
+            :outerTask="null"
             :taskIDs="filteredTaskIDs"
         >
         </tasks>
@@ -122,7 +123,7 @@
             },
 
             numberOfTasksRemaining() {
-                return this.rootTasks.filter(task => ! task.complete).length;
+                return this.filteredTasks.filter(task => ! task.complete).length;
             },
 
             tags() {

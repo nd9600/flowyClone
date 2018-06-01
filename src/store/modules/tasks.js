@@ -73,43 +73,49 @@ const mutations = {
         state.tasks.set(taskID, task);
         mutations.incrementTaskChangeTracker(state);
     },
-    removeTask(state, task) {
-        let taskID = task["id"];
+
+    //this is how you make a recursive function inside an object
+    removeTask: function recursiveRemove(state, taskID) {
+
+        //removes any tasks that are inside the current one; they wouldn't be accessible after deletion anyway
+        let task = state.tasks.get(taskID);
+        task.tasks.map(innerTaskID => recursiveRemove(state, innerTaskID));
+
         state.tasks.delete(taskID);
 
         //we might need to delete the task ID from the root too
-        let rootTaskID = state.rootTaskIDs.indexOf(taskID);
-        if (rootTaskID > -1) {
-            state.rootTaskIDs.splice(rootTaskID, 1);
+        let rootTaskIDIndex = state.rootTaskIDs.indexOf(taskID);
+        if (rootTaskIDIndex > -1) {
+            state.rootTaskIDs.splice(rootTaskIDIndex, 1);
         }
         mutations.incrementTaskChangeTracker(state);
     },
-
-    // need to add mutation for removing an inner task
 
     addTaskToTask(state, {taskID, newTaskID}) {
         let task = state.tasks.get(taskID);
         task.tasks.push(newTaskID);
         mutations.incrementTaskChangeTracker(state);
     },
-
     addTaskToRoot(state, taskID) {
         state.rootTaskIDs.push(taskID);
     },
 
     initialiseTasks(state) {
+        // load the tasks map
         let tasksKey = STORAGE_KEY + "-tasks";
         let mapStringFromLocalStorage = localStorage.getItem(tasksKey);
         if (mapStringFromLocalStorage) {
             state.tasks = new Map(JSON.parse(mapStringFromLocalStorage));
         }
 
+        //load the root task IDs
         let rootTaskIDsKey = STORAGE_KEY + "-rootTaskIDs";
         let rootTaskIDsString = localStorage.getItem(rootTaskIDsKey);
         if (rootTaskIDsString) {
             state.rootTaskIDs = JSON.parse(rootTaskIDsString);
         }
 
+        // load the task storage UID
         let UIDKey = STORAGE_KEY + "-taskStorageUID";
         let UIDString = localStorage.getItem(UIDKey);
         if (UIDString) {

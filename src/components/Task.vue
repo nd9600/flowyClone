@@ -98,6 +98,7 @@
             <div v-if="showChildren">
                 <tasks
                     v-if="task.tasks.length > 0"
+                    :outerTask="task"
                     :taskIDs="task.tasks"
                 >
                 </tasks>
@@ -125,7 +126,7 @@
         data() {
             return {
                 showContextMenu: false,
-                showChildren: true,
+                showChildren: false,
                 shouldUpdateTask: false,
 
                 //all task's properties must be added here, so they are reactive
@@ -170,7 +171,7 @@
             removeTask() {
                 let confirm = window.confirm("Are you sure you want to delete this?");
                 if (confirm) {
-                    this.$emit('removeTask', this.task);
+                    this.$emit('removeTask', this.task.id);
                 }
             }
         },
