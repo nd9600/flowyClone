@@ -25,9 +25,7 @@ export default {
     el: '#app',
     data: {
         currentComponent: "home",
-        componentProp: {tasks: []},
-        tasks: [],
-        shouldUpdateTasks: true
+        componentProp: {}
     },
     components: {
         Home,
@@ -35,39 +33,19 @@ export default {
     },
     methods: {
         ...mapMutations([
-            "initialiseTaskStorageUID",
+            "initialiseTasks",
             "changeSearchTerm"
         ]),
-        changeCurrentComponent(component, prop) {
+        changeCurrentComponent(component, prop={}) {
             if (this.currentComponent !== component) {
                 this.currentComponent = component;
             }
             this.componentProp = prop;
         }
     },
-    watch: {
-        // needs a deep watcher because the array has objects in it
-        tasks: {
-            handler: function (newTasks, oldTasks) { 
-                if (this.shouldUpdateTasks) {
-                    localStorage.setItem(STORAGE_KEY + "-tasks", JSON.stringify(newTasks));
-                }
-            },
-            deep: true
-        }
-    },
     created: function() {
-        this.initialiseTaskStorageUID();
-
-        this.shouldUpdateTasks = false;
-        if (localStorage.getItem(STORAGE_KEY + "-tasks") === null) {
-            this.tasks = [];
-        } else {
-            this.tasks = JSON.parse(localStorage.getItem(STORAGE_KEY + "-tasks"));
-        }
-        this.shouldUpdateTasks = true;
-
-        this.changeCurrentComponent("home", {tasks: this.tasks});
+        this.initialiseTasks();
+        this.changeCurrentComponent("home", {});
 
         this.$on("change-component-event", (component, prop) => {
             this.changeCurrentComponent(component, prop);

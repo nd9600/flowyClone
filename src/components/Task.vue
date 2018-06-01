@@ -98,7 +98,8 @@
             <div v-if="showChildren">
                 <tasks
                     v-if="task.tasks.length > 0"
-                    :tasks="task.tasks"
+                    :outerTask="task"
+                    :taskIDs="task.tasks"
                 >
                 </tasks>
             </div>
@@ -121,20 +122,35 @@
 
     export default {
         name: "task",
-        props: ["task"],
+        props: ["taskID"],
         data() {
             return {
                 showContextMenu: false,
-                showChildren: true
+                showChildren: false,
+                shouldUpdateTask: false,
+
+                //all task's properties must be added here, so they are reactive
+                task: {
+                    id: 0,
+                    content: "",
+                    description: "",
+                    complete: false,
+                    author: "",
+                    link: "",
+                    tasks: [],
+                    bold: false
+                }
             }
         },
         methods: {
             ...mapMutations([
-                "incrementTaskStorageUID"
+                "incrementTaskStorageUID",
+                "setTask",
+                "addTaskToTask"
             ]),
 
             goToDetailedTask() {
-                this.$root.$emit("change-component-event", "detailedTask", {task: this.task});
+                this.$root.$emit("change-component-event", "detailedTask", {taskID: this.taskID});
             },
             bold() {
                 this.task.bold = ! this.task.bold;
@@ -144,22 +160,27 @@
             },
             addNewTask() {
                 this.incrementTaskStorageUID();
-                this.task.tasks.push(new task.Task({
+                let newTask = new task.Task({
                     id: this.taskStorageUID,
                     content: "",
                     complete: false
-                }));
+                });
+                this.setTask(newTask);
+                this.addTaskToTask({taskID: this.task.id, newTaskID: newTask.id})
             },
             removeTask() {
                 let confirm = window.confirm("Are you sure you want to delete this?");
                 if (confirm) {
-                    this.$emit('removeTask', this.task);
+                    this.$emit('removeTask', this.task.id);
                 }
             }
         },
         computed: {
             ...mapGetters([
-                "taskStorageUID"
+                "taskStorageUID",
+                "taskByID",
+                "tasksInTask",
+                "tagsInTask"
             ]),
 
             showHideButtonText() {
@@ -171,15 +192,29 @@
             },
 
             tags() {
-                return task.getTagsInTask(this.task);
+                return this.tagsInTask(this.task);
             }
+        },
+        watch: {
+            task: {
+                handler: function (newTask) { 
+                    if (this.shouldUpdateTask) {
+                        this.setTask(newTask);
+                    }
+                },
+                deep: true
+            },
         },
         filters: {
             pluralise(n) {
                 return n === 1 ? "child" : "children";
             }
         },
-        mounted(){
+        created() {
+            this.task = this.taskByID(this.taskID);
+            this.shouldUpdateTask = true;
+        },
+        mounted() {
             //resizes the task content input when the task is first created
             Stretchy.resize(this.$refs.taskInput);
         }

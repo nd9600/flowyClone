@@ -48,7 +48,8 @@
         <div class="separator"></div>
 
         <tasks
-            :tasks="filteredTasks"
+            :outerTask="null"
+            :taskIDs="filteredTaskIDs"
         >
         </tasks>
 
@@ -64,7 +65,6 @@
 
     export default {
         name: "home",
-        props: ["tasks"],
         data() {
             return {
                 newTask: "",
@@ -75,7 +75,9 @@
         methods: {
             ...mapMutations([
                 "incrementTaskStorageUID",
-                "changeSearchTerm"
+                "changeSearchTerm",
+                "setTask",
+                "addTaskToRoot"
             ]),
 
             addTask(event) {
@@ -85,47 +87,47 @@
                 }
 
                 this.incrementTaskStorageUID();
-                this.tasks.push(new task.Task({
+                let newTaskObject = new task.Task({
                     id: this.taskStorageUID,
                     content: value
-                }));
+                });
+                this.setTask(newTaskObject);
+                this.addTaskToRoot(newTaskObject["id"]);
                 this.newTask = "";
             }
         },
         computed: {
             ...mapGetters([
+                "rootTasks",
+                "tagsInTasks",
                 "taskStorageUID",
-                "searchTerm"
+                "searchTerm",
             ]),
 
             //can filter tasks by a search term or visibiliity
             filteredTasks() {
                 let currentSearchTerm = this.searchTerm && this.searchTerm.trim();
                 if (! currentSearchTerm) {
-                    return task.filters[this.visibility](this.tasks);
+                    return task.filters[this.visibility](this.rootTasks);
                 }
                 
-                let tasksContainingSearchTerm = this.tasks.filter(task => 
+                let tasksContainingSearchTerm = this.rootTasks.filter(task => 
                     task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) > -1
                 );
                 return task.filters[this.visibility](tasksContainingSearchTerm);
                 
             },
 
-            tasksAsArrat() {
-                return task.tasksToArray(this.filteredTasks);
-            },
-
-            flattenedTasks() {
-                return task.tasksToArray(this.filteredTasks).flattenDeep();
+            filteredTaskIDs() {
+                return this.filteredTasks.map(task => task.id);
             },
 
             numberOfTasksRemaining() {
-                return this.flattenedTasks.filter(task => ! task.complete).length;
+                return this.filteredTasks.filter(task => ! task.complete).length;
             },
 
             tags() {
-                return task.getTagsInTasks(this.filteredTasks);
+                return this.tagsInTasks(this.filteredTaskIDs);
             },
 
             computedSearchTerm: {
