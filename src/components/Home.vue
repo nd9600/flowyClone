@@ -98,13 +98,14 @@
         },
         computed: {
             ...mapGetters([
+                "taskByID",
                 "rootTasks",
                 "tagsInTasks",
                 "taskStorageUID",
                 "searchTerm",
             ]),
 
-            //can filter tasks by a search term or visibiliity
+            //can filter tasks by a search term or visibility
             filteredTasks() {
                 let currentSearchTerm = this.searchTerm && this.searchTerm.trim();
                 if (!currentSearchTerm) {
@@ -123,7 +124,18 @@
             },
 
             numberOfTasksRemaining() {
-                return this.filteredTasks.filter(task => !task.complete).length;
+                let vm = this;
+                function recursiveNumber(taskID) {
+                    let thisTask = vm.taskByID(taskID);
+                    return thisTask.tasks.reduce((previousNumberActive, newTaskID) => {
+                        return previousNumberActive + recursiveNumber(newTaskID);
+                    }, ! thisTask.complete ? 1 : 0)
+                }
+
+                return this.filteredTasks.map(task => {
+                    recursiveNumber(task.id)
+                }).reduce((acc, val) => acc + val);
+                // return this.filteredTasks.filter(task => !task.complete).length;
             },
 
             tags() {
