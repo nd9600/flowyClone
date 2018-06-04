@@ -5,6 +5,7 @@ import tasksModule from "./modules/tasks.js";
 import searchTermModule from "./modules/searchTerm.js";
 
 import debounce from "lodash.debounce";
+import * as process from "babel-core/lib/transformation/file/options/config";
 
 Vue.use(Vuex);
 
@@ -13,13 +14,14 @@ const STORAGE_KEY = 'tasks-flowyClone';
 export {STORAGE_KEY, store};
 
 const store = new Vuex.Store({
-    strict: process.env.NODE_ENV !== 'production',    
+    strict: process.env.NODE_ENV !== 'production',
     modules: {
         tasksModule,
         searchTermModule
     }
 });
 
+//this is only called at maximum twice a second
 store.subscribe(
     debounce((mutation, state) => {
         if (["setTask", "removeTask", "addTaskToTask", "addTaskToRoot"].indexOf(mutation.type) > -1) {

@@ -1,6 +1,6 @@
 <template>
     <span class="taskFlexbox">
-        <div 
+        <div
             v-if="task.tasks.length > 0"
             @click="showChildren = ! showChildren"
             class="showHide"
@@ -9,11 +9,11 @@
         </div>
         <div class="task">
             <div class="mainTaskContainer">
-                <img 
-                    @click="goToDetailedTask" 
+                <img
+                    @click="goToDetailedTask"
                     @mouseover="showContextMenu = true"
                     @mouseleave="showContextMenu = false"
-                    class="bullet" 
+                    class="bullet"
                     src="../assets/bullet.svg">
                 <div
                     class="contextMenuLocation"
@@ -21,7 +21,7 @@
                     <div
                         v-if="showContextMenu"
                         @mouseover="showContextMenu = true"
-                        @mouseleave="showContextMenu = false" 
+                        @mouseleave="showContextMenu = false"
                         class="contextMenu"
                     >
                         <a
@@ -39,7 +39,7 @@
                     </div>
                 </div>
 
-                <span 
+                <span
                     :class="{ strikethrough: task.complete }"
                     style="margin-left: 5px;"
                 >
@@ -58,7 +58,7 @@
                 >+
                 </button>
 
-                <button 
+                <button
                     @click="removeTask"
                     class="btn dangerBtn"
                 >x
@@ -66,7 +66,7 @@
             </div>
 
             <div>
-                <p 
+                <p
                     v-if="task.description.length > 0"
                     class="description leftIndent"
                     style="margin-top: 0; margin-bottom: 0;"
@@ -80,7 +80,7 @@
                 >
                     link
                 </a>
-                <p 
+                <p
                     v-if="task.author.length > 0"
                     class="smallText"
                 >{{task.author}}
@@ -103,11 +103,11 @@
                 >
                 </tasks>
             </div>
-            <div 
+            <div
                 v-if="! showChildren"
                 class="leftIndent"
             >
-                <p 
+                <p
                     v-if="task.tasks.length > 0"
                     class="smallText"
                 >{{task.tasks.length}} {{task.tasks.length | pluralise}}</p>
@@ -153,7 +153,7 @@
                 this.$root.$emit("change-component-event", "detailedTask", {taskID: this.taskID});
             },
             bold() {
-                this.task.bold = ! this.task.bold;
+                this.task.bold = !this.task.bold;
                 setTimeout(() => {
                     Stretchy.resize(this.$refs.taskInput)
                 }, 10);
@@ -197,7 +197,7 @@
         },
         watch: {
             task: {
-                handler: function (newTask) { 
+                handler: function (newTask) {
                     if (this.shouldUpdateTask) {
                         this.setTask(newTask);
                     }
@@ -249,6 +249,7 @@
         background-color: #f6f6f6;
         border-radius: 8px;
     }
+
     .showHide:hover {
         color: #fff;
         background-color: var(--link-colour);
@@ -260,6 +261,7 @@
         z-index: 4;
         height: 0px;
     }
+
     .contextMenu {
         display: flex;
         flex-direction: column;
@@ -268,7 +270,7 @@
 
         padding: 5px;
         margin: 16px 0 10px -38px;
-        
+
         background: #f6f6f6;
         border: 1px solid #bbb;
         border-radius: 4px;
@@ -286,6 +288,7 @@
         border-radius: 32px;
         cursor: pointer;
     }
+
     .bullet:hover {
         background-color: #aaa;
     }
@@ -312,13 +315,15 @@
 
         text-decoration: none;
     }
+
     .btn:hover {
         background-color: var(--link-colour);
         border: 1px solid var(--link-colour);
-        
+
         transition: background-color 200ms ease 0s;
         color: #fff;
     }
+
     .dangerBtn:hover {
         background-color: #e00808;
         border: 1px solid #e00808;
@@ -328,6 +333,7 @@
         position: relative;
         color: #999;
     }
+
     .strikethrough:before {
         content: "";
         position: absolute;

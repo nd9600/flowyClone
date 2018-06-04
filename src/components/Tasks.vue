@@ -1,6 +1,6 @@
 <template>
     <div class="tasksList">
-        <task 
+        <task
             v-for="taskID in this.taskIDs"
             v-on:removeTask="removeTask"
             :taskID="taskID"
@@ -12,6 +12,7 @@
 
 <script>
     import {mapMutations} from "vuex";
+
     export default {
         props: ["outerTask", "taskIDs"],
         methods: {
@@ -25,14 +26,14 @@
                     let indexOfTask = this.outerTask.tasks.indexOf(taskID);
                     this.outerTask.tasks.splice(indexOfTask, 1);
                 }
-                this.removeTaskMutation(taskID);                
+                this.removeTaskMutation(taskID);
             }
         }
     }
 </script>
 
 <style>
-     ul {
+    ul {
         padding: 0;
     }
 

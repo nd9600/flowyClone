@@ -27,7 +27,7 @@ const filters = {
     },
     active: function (tasks) {
         return tasks.filter(function (task) {
-            return ! task.complete
+            return !task.complete
         });
     },
     completed: function (tasks) {

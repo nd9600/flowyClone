@@ -3,7 +3,7 @@
         <h1>Task</h1>
         <div class="separator"></div>
         <h3 @click="goHome"><a>Go home</a></h3>
-        
+
         <fieldset>
             <legend>content</legend>
             <textarea v-model="task.content"></textarea>
@@ -20,7 +20,7 @@
             </tags>
         </fieldset>
 
-        <br />
+        <br/>
 
         <fieldset>
             <p>complete <input type="checkbox" v-model="task.complete"></p>
@@ -35,7 +35,7 @@
             <p>author <input type="text" v-model="task.author"></p>
         </fieldset>
 
-        <br />
+        <br/>
 
         <fieldset>
             <p>bold <input type="checkbox" v-model="task.bold"></p>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import {mapMutations, mapGetters} from "vuex";
+    import {mapGetters, mapMutations} from "vuex";
 
     export default {
         name: "detailedTask",
@@ -89,7 +89,7 @@
         },
         watch: {
             task: {
-                handler: function (newTask) { 
+                handler: function (newTask) {
                     if (this.shouldUpdateTask) {
                         this.setTask(newTask);
                     }

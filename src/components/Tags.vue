@@ -1,7 +1,7 @@
 <template>
     <!-- #8203 is a zero width space, so we can set the height of the span when empty -->
     <span class="tags"> &#8203;
-        <a 
+        <a
             v-for="tag in this.tags"
             class="tagLink"
             @click.prevent="updateSearchTerm"
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import {mapMutations, mapGetters} from "vuex";
+    import {mapGetters, mapMutations} from "vuex";
 
     export default {
         props: ["tags"],
@@ -45,6 +45,7 @@
         color: #999;
         margin: 0 5px 0 0;
     }
+
     .tagLink:hover {
         background-color: #f2f2f2;
         color: #982c61;

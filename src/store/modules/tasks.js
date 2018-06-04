@@ -23,7 +23,7 @@ const getters = {
         return gettersArg.tasks.has(id);
     },
     tasksInTask: (state, gettersArg) => id => {
-        if (! gettersArg.hasTask(id)) {
+        if (!gettersArg.hasTask(id)) {
             return [];
         }
         let thisTask = gettersArg.taskByID(id);
