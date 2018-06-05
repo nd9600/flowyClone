@@ -1,13 +1,11 @@
 <template>
     <div class="taskFlexbox">
-        <div v-if="this.shouldShowChildren">
-            <div
-                v-if="task.tasks.length > 0"
-                @click="expandChildrenFlag = ! expandChildrenFlag"
-                class="showHide"
-            >
-                {{showHideButtonText}}
-            </div>
+        <div
+            v-if="this.shouldShowChildren && task.tasks.length > 0"
+            @click="expandChildrenFlag = ! expandChildrenFlag"
+            class="showHide"
+        >
+            {{showHideButtonText}}
         </div>
         <div class="task">
             <div class="mainTaskContainer">

@@ -4,6 +4,7 @@ import Vuex from "vuex";
 import tasksModule from "./modules/tasks.js";
 import searchTermModule from "./modules/searchTerm.js";
 import settingsModule from "./modules/settings.js";
+import clipboardModule from "./modules/clipboard.js";
 
 import debounce from "lodash.debounce";
 import * as process from "babel-core/lib/transformation/file/options/config";
@@ -19,7 +20,8 @@ const store = new Vuex.Store({
     modules: {
         tasksModule,
         searchTermModule,
-        settingsModule
+        settingsModule,
+        clipboardModule
     }
 });
 

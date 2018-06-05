@@ -1,10 +1,11 @@
 <template>
-    <div id="settings">
+    <fieldset id="settings">
+        <legend>Settings</legend>
         <label>
             <input type="checkbox" v-model="computedShowChildren">
             show children
         </label>
-    </div>
+    </fieldset>
 </template>
 
 <script>
