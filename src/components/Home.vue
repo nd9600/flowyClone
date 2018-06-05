@@ -1,74 +1,78 @@
 <template>
     <div id="home">
-        <h1>Home</h1>
-        <input
-            ref="newTaskInput"
-            v-model="newTask"
-            @keyup.enter="addTask"
-            class="inputBox"
-            placeholder="New task"
-        >
-
-        <!-- there are two divs so that the visibility switches are on a new line -->
         <div>
-            <div
-                @mouseover="showClearButton = true"
-                @mouseleave="showClearButton = false"
-                class="searchBoxWrapper"
+            <h1 style="display: inline-block;">Home</h1>
+            <input
+                ref="newTaskInput"
+                v-model="newTask"
+                @keyup.enter="addTask"
+                class="inputBox"
+                placeholder="New task"
             >
-                <input
-                    ref="searchInput"
-                    placeholder="Search"
-                    v-model="computedSearchTerm"
-                    type="search"
-                    class="inputBox"
+
+            <!-- there are two divs so that the visibility switches are on a new line -->
+            <div>
+                <div
+                    @mouseover="showClearButton = true"
+                    @mouseleave="showClearButton = false"
+                    class="searchBoxWrapper"
                 >
-                <a
-                    v-if="showClearButton"
-                    @click="computedSearchTerm = ''"
-                    class="clearButton"
-                >x</a>
+                    <input
+                        ref="searchInput"
+                        placeholder="Search"
+                        v-model="computedSearchTerm"
+                        type="search"
+                        class="inputBox"
+                    >
+                    <a
+                        v-if="showClearButton"
+                        @click="computedSearchTerm = ''"
+                        class="clearButton"
+                    >x</a>
+                </div>
             </div>
+
+            <span>
+                <a
+                    @click="visibility = 'all'"
+                    :class="{ selected: visibility === 'all' }"
+                >all</a>
+                <a
+                    @click="visibility = 'active'"
+                    :class="{ selected: visibility === 'active' }"
+                >active</a>
+                <a
+                    @click="visibility = 'completed'"
+                    :class="{ selected: visibility === 'completed' }"
+                >completed</a>
+            </span>
+
+            <tags
+                :tags="tags"
+            >
+            </tags>
+
+            <div class="separator"></div>
+
+            <tasks
+                :outerTask="null"
+                :taskIDs="filteredTaskIDs"
+            >
+            </tasks>
+
+            <p v-if="visibility !== 'completed'"
+               style="color: #999;"
+            >{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p>
+
         </div>
-
-        <span>
-            <a
-                @click="visibility = 'all'"
-                :class="{ selected: visibility === 'all' }"
-            >all</a>
-            <a
-                @click="visibility = 'active'"
-                :class="{ selected: visibility === 'active' }"
-            >active</a>
-            <a
-                @click="visibility = 'completed'"
-                :class="{ selected: visibility === 'completed' }"
-            >completed</a>
-        </span>
-
-        <tags
-            :tags="tags"
-        >
-        </tags>
-
-        <div class="separator"></div>
-
-        <tasks
-            :outerTask="null"
-            :taskIDs="filteredTaskIDs"
-        >
-        </tasks>
-
-        <p v-if="visibility !== 'completed'"
-           style="color: #999;"
-        >{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p>
-
+        <settings></settings>
     </div>
 </template>
 
 <script>
     import * as task from "../base/task.js";
     import {mapGetters, mapMutations} from "vuex";
+    import Settings from "./Settings.vue";
 
     export default {
         name: "home",
@@ -78,6 +82,9 @@
                 visibility: "all",
                 showClearButton: false
             }
+        },
+        components: {
+            Settings
         },
         methods: {
             ...mapMutations([
@@ -216,6 +223,7 @@
 <style>
     :root {
         --link-colour: #42b983;
+        --separator-colour: #d1d1d1;
     }
 
     a {
@@ -260,7 +268,7 @@
     }
 
     .separator {
-        background-color: #d1d1d1;
+        background-color: var(--separator-colour);
         height: 1px;
         margin: 10px 0 10px 0;
     }
