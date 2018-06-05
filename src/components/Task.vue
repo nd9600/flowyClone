@@ -1,9 +1,9 @@
 <template>
     <div class="taskFlexbox">
-        <div v-if="this.showInnerTasks">
+        <div v-if="this.shouldShowChildren">
             <div
                 v-if="task.tasks.length > 0"
-                @click="showChildren = ! showChildren"
+                @click="expandChildrenFlag = ! expandChildrenFlag"
                 class="showHide"
             >
                 {{showHideButtonText}}
@@ -28,7 +28,7 @@
                     >
                         <a
                             v-if="task.tasks.length > 0"
-                            @click="showChildren = ! showChildren"
+                            @click="expandChildrenFlag = ! expandChildrenFlag"
                         >
                             {{showHideText}}
                         </a>
@@ -97,8 +97,8 @@
                 </tags>
             </div>
 
-            <div v-if="this.showInnerTasks">
-                <div v-if="showChildren">
+            <div v-if="this.shouldShowChildren">
+                <div v-if="expandChildrenFlag">
                     <tasks
                         v-if="task.tasks.length > 0"
                         :outerTask="task"
@@ -107,7 +107,7 @@
                     </tasks>
                 </div>
                 <div
-                    v-if="! showChildren"
+                    v-if="! expandChildrenFlag"
                     class="leftIndent"
                 >
                     <p
@@ -131,7 +131,7 @@
         data() {
             return {
                 showContextMenu: false,
-                showChildren: true,
+                expandChildrenFlag: true,
                 shouldUpdateTask: false,
 
                 //all task's properties must be added here, so they are reactive
@@ -186,15 +186,16 @@
                 "taskByID",
                 "tasksInTask",
                 "tagsInTask",
-                "showInnerTasks"
+                "showInnerTasks",
+                "showChildren"
             ]),
 
             showHideButtonText() {
-                return (this.showChildren ? "[-]" : "[+]");
+                return (this.expandChildrenFlag ? "[-]" : "[+]");
             },
 
             showHideText() {
-                return (this.showChildren ? "Hide" : "Show");
+                return (this.expandChildrenFlag ? "Hide" : "Show");
             },
 
             tags() {
@@ -211,6 +212,10 @@
                 }
                 let mappedNumberOfActiveTasks = this.task.tasks.map(taskID => recursiveNumberOfChildren(taskID));
                 return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val, 0);
+            },
+
+            shouldShowChildren() {
+                return this.showInnerTasks || this.showChildren;
             }
         },
         watch: {

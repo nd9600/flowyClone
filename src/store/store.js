@@ -3,6 +3,7 @@ import Vuex from "vuex";
 
 import tasksModule from "./modules/tasks.js";
 import searchTermModule from "./modules/searchTerm.js";
+import settingsModule from "./modules/settings.js";
 
 import debounce from "lodash.debounce";
 import * as process from "babel-core/lib/transformation/file/options/config";
@@ -17,7 +18,8 @@ const store = new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
     modules: {
         tasksModule,
-        searchTermModule
+        searchTermModule,
+        settingsModule
     }
 });
 
