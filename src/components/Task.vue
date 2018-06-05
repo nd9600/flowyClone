@@ -111,9 +111,9 @@
                     class="leftIndent"
                 >
                     <p
-                        v-if="task.tasks.length > 0"
+                        v-if="this.numberOfChildren > 0"
                         class="smallText"
-                    >{{task.tasks.length}} {{task.tasks.length | pluralise}}</p>
+                    >{{this.numberOfChildren}} {{this.numberOfChildren | pluralise}}</p>
                 </div>
             </div>
 
@@ -131,7 +131,7 @@
         data() {
             return {
                 showContextMenu: false,
-                showChildrenFlag: false,
+                showChildrenFlag: true,
                 shouldUpdateTask: false,
 
                 //all task's properties must be added here, so they are reactive
@@ -199,6 +199,18 @@
 
             tags() {
                 return this.tagsInTask(this.task);
+            },
+
+            numberOfChildren() {
+                let vm = this;
+                function recursiveNumberOfChildren(taskID) {
+                    let thisTask = vm.taskByID(taskID);
+                    let innerChildren = thisTask.tasks.map(innerTaskID => recursiveNumberOfChildren(innerTaskID));
+                    let numberOfInnerChildren = innerChildren.reduce((acc, val) => acc + val, 0);
+                    return 1 + numberOfInnerChildren;
+                }
+                let mappedNumberOfActiveTasks = this.task.tasks.map(taskID => recursiveNumberOfChildren(taskID));
+                return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val, 0);
             }
         },
         watch: {
