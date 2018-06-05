@@ -31,13 +31,3 @@
         }
     }
 </script>
-
-<style>
-    ul {
-        padding: 0;
-    }
-
-    li {
-        margin: 0 10px;
-    }
-</style>
