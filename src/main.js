@@ -10,6 +10,13 @@ Vue.component("tasks", Tasks);
 Vue.component("tags", Tags);
 Vue.component("task", Task);
 
+// register a global custom directive called `v-resize-on-insert` that resizes an element when inserted into the DOM
+Vue.directive('resize-on-insert', {
+  inserted: function (el) {
+    Stretchy.resize(el);
+  }
+})
+
 Array.prototype.unique = function () {
     return this.map(JSON.stringify).reverse().filter(function (e, i, a) {
         return a.indexOf(e, i + 1) === -1;

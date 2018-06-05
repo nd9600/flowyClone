@@ -53,6 +53,7 @@
                 >
                     <input
                         ref="taskInput"
+                        v-resize-on-insert
                         v-model="task.content"
                         :class="{ bold: task.bold }"
                         type="text"
@@ -267,10 +268,6 @@
 
             //setTask is still called without this
             setTimeout(() => this.shouldUpdateTask = true, 0);
-        },
-        mounted() {
-            //resizes the task content input when the task is first created
-            Stretchy.resize(this.$refs.taskInput);
         }
     }
 </script>
