@@ -8,23 +8,27 @@
             class="inputBox"
             placeholder="New task"
         >
-        <div
-            @mouseover="showClearButton = true"
-            @mouseleave="showClearButton = false"
-            class="searchBoxWrapper"
-        >
-            <input
-                ref="searchInput"
-                placeholder="Search"
-                v-model="computedSearchTerm"
-                type="search"
-                class="inputBox"
+
+        <!-- there are two divs so that the visibility switches are on a new line -->
+        <div>
+            <div
+                @mouseover="showClearButton = true"
+                @mouseleave="showClearButton = false"
+                class="searchBoxWrapper"
             >
-            <a
-                v-if="showClearButton"
-                @click="computedSearchTerm = ''"
-                class="clearButton"
-            >x</a>
+                <input
+                    ref="searchInput"
+                    placeholder="Search"
+                    v-model="computedSearchTerm"
+                    type="search"
+                    class="inputBox"
+                >
+                <a
+                    v-if="showClearButton"
+                    @click="computedSearchTerm = ''"
+                    class="clearButton"
+                >x</a>
+            </div>
         </div>
 
         <span>
@@ -229,7 +233,7 @@
     }
 
     .searchBoxWrapper {
-        display: flex;
+        display: inline-flex;
         align-items: center;
     }
 
