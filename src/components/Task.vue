@@ -3,7 +3,7 @@
         <div v-if="this.showInnerTasks">
             <div
                 v-if="task.tasks.length > 0"
-                @click="showChildrenFlag = ! showChildrenFlag"
+                @click="showChildren = ! showChildren"
                 class="showHide"
             >
                 {{showHideButtonText}}
@@ -28,7 +28,7 @@
                     >
                         <a
                             v-if="task.tasks.length > 0"
-                            @click="showChildrenFlag = ! showChildrenFlag"
+                            @click="showChildren = ! showChildren"
                         >
                             {{showHideText}}
                         </a>
@@ -98,7 +98,7 @@
             </div>
 
             <div v-if="this.showInnerTasks">
-                <div v-if="showChildrenFlag">
+                <div v-if="showChildren">
                     <tasks
                         v-if="task.tasks.length > 0"
                         :outerTask="task"
@@ -107,7 +107,7 @@
                     </tasks>
                 </div>
                 <div
-                    v-if="! showChildrenFlag"
+                    v-if="! showChildren"
                     class="leftIndent"
                 >
                     <p
@@ -131,7 +131,7 @@
         data() {
             return {
                 showContextMenu: false,
-                showChildrenFlag: true,
+                showChildren: true,
                 shouldUpdateTask: false,
 
                 //all task's properties must be added here, so they are reactive
@@ -161,7 +161,7 @@
                 this.task.bold = !this.task.bold;
                 setTimeout(() => {
                     Stretchy.resize(this.$refs.taskInput)
-                }, 10);
+                }, 0);
             },
             addNewTask() {
                 this.incrementTaskStorageUID();
@@ -190,11 +190,11 @@
             ]),
 
             showHideButtonText() {
-                return (this.showChildrenFlag ? "[-]" : "[+]");
+                return (this.showChildren ? "[-]" : "[+]");
             },
 
             showHideText() {
-                return (this.showChildrenFlag ? "Hide" : "Show");
+                return (this.showChildren ? "Hide" : "Show");
             },
 
             tags() {
