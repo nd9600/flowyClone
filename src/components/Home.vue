@@ -181,21 +181,25 @@
             },
         },
         mounted: function() {
-            //focus on the new task field when n is pressed and you're not in the search input
-            window.addEventListener('keyup', (event) => {
-                if (event.keyCode === 78) {
-                    if (this.$refs.searchInput !== document.activeElement) {
-                        this.$refs.newTaskInput.focus();
-                    }
-                }
-            });
 
-            //focus on the search field when s is pressed and you're not in the new task input
             window.addEventListener('keyup', (event) => {
-                if (event.keyCode === 83) {
-                    if (this.$refs.newTaskInput !== document.activeElement) {
-                        this.$refs.searchInput.focus();
-                    }
+                let focusedElementIsntInput = document.activeElement.tagName.toLowerCase() !== "input";
+
+                switch (event.keyCode) {
+
+                    //focus on the new task field when n is pressed and you're not in an input
+                    case 78:
+                        if (focusedElementIsntInput) {
+                            this.$refs.newTaskInput.focus();
+                        }
+                        break;
+
+                    //focus on the search field when s is pressed
+                    case 83:
+                        if (focusedElementIsntInput) {
+                            this.$refs.searchInput.focus();
+                        }
+                        break;
                 }
             });
         }
