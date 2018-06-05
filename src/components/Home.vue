@@ -2,10 +2,11 @@
     <div id="home">
         <h1>Home</h1>
         <input
-            class="inputBox"
-            placeholder="New task"
+            ref="newTaskInput"
             v-model="newTask"
             @keyup.enter="addTask"
+            class="inputBox"
+            placeholder="New task"
         >
         <div
             @mouseover="showClearButton = true"
@@ -13,10 +14,11 @@
             class="searchBoxWrapper"
         >
             <input
-                type="search"
-                class="inputBox"
+                ref="searchInput"
                 placeholder="Search"
                 v-model="computedSearchTerm"
+                type="search"
+                class="inputBox"
             >
             <a
                 v-if="showClearButton"
@@ -177,6 +179,25 @@
                 let shouldShowInnerTasks = (this.visibility === "all" && this.searchTerm.trim().length === 0);
                 this.changeShowInnerTasks(shouldShowInnerTasks);
             },
+        },
+        mounted: function() {
+            //focus on the new task field when n is pressed and you're not in the search input
+            window.addEventListener('keyup', (event) => {
+                if (event.keyCode === 78) {
+                    if (this.$refs.searchInput !== document.activeElement) {
+                        this.$refs.newTaskInput.focus();
+                    }
+                }
+            });
+
+            //focus on the search field when s is pressed and you're not in the new task input
+            window.addEventListener('keyup', (event) => {
+                if (event.keyCode === 83) {
+                    if (this.$refs.newTaskInput !== document.activeElement) {
+                        this.$refs.searchInput.focus();
+                    }
+                }
+            });
         }
     }
 </script>

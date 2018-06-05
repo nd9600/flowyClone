@@ -45,7 +45,7 @@
                 this.componentProp = prop;
             }
         },
-        created: function () {
+        created: function() {
             this.initialiseTasks();
             this.changeCurrentComponent("home", {});
 
@@ -57,6 +57,7 @@
             //arrow function preserves context
             window.addEventListener('keyup', (event) => {
                 if (event.keyCode === 27) {
+                    document.activeElement.blur();
                     this.changeSearchTerm("");
                 }
             });
