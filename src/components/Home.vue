@@ -56,6 +56,7 @@
         <p v-if="visibility !== 'completed'"
            style="color: #999;"
         >{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p>
+
     </div>
 </template>
 
@@ -125,17 +126,20 @@
 
             numberOfTasksRemaining() {
                 let vm = this;
-                function recursiveNumber(taskID) {
+                function recursiveNumberOfActiveTasks(taskID) {
                     let thisTask = vm.taskByID(taskID);
-                    return thisTask.tasks.reduce((previousNumberActive, newTaskID) => {
-                        return previousNumberActive + recursiveNumber(newTaskID);
-                    }, ! thisTask.complete ? 1 : 0)
+                    let thisTaskIsActive = thisTask.complete ? 0 : 1;
+
+                    let activeInnerTasks = thisTask.tasks
+                        .map(innerTaskID => recursiveNumberOfActiveTasks(innerTaskID));
+                    let summedActiveInnerTasks = activeInnerTasks.reduce((acc, val) => acc + val, 0);
+
+                    return thisTaskIsActive + summedActiveInnerTasks;
+
                 }
 
-                return this.filteredTasks.map(task => {
-                    recursiveNumber(task.id)
-                }).reduce((acc, val) => acc + val);
-                // return this.filteredTasks.filter(task => !task.complete).length;
+                let mappedNumberOfActiveTasks = this.filteredTaskIDs.map(taskID => recursiveNumberOfActiveTasks(taskID));
+                return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val);
             },
 
             tags() {
