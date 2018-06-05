@@ -100,6 +100,7 @@
         },
         computed: {
             ...mapGetters([
+                "tasksAsArray",
                 "taskByID",
                 "rootTasks",
                 "tagsInTasks",
@@ -110,11 +111,17 @@
             //can filter tasks by a search term or visibility
             filteredTasks() {
                 let currentSearchTerm = this.searchTerm && this.searchTerm.trim();
-                if (!currentSearchTerm) {
-                    return task.filters[this.visibility](this.rootTasks);
+
+                let shouldShowInnerTasks = (this.visibility === "all" && currentSearchTerm.length === 0);
+                if (shouldShowInnerTasks) {
+                    return this.rootTasks;
                 }
 
-                let tasksContainingSearchTerm = this.rootTasks.filter(task =>
+                if (!currentSearchTerm) {
+                    return task.filters[this.visibility](this.tasksAsArray);
+                }
+
+                let tasksContainingSearchTerm = this.tasksAsArray.filter(task =>
                     task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) > -1
                 );
                 return task.filters[this.visibility](tasksContainingSearchTerm);

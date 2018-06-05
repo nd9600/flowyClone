@@ -15,6 +15,9 @@ const getters = {
     tasks(state, gettersArg) {
         return state.tasksChangeTracker && state.tasks;
     },
+    tasksAsArray(state, gettersArg) {
+        return Array.from(gettersArg.tasks.values());
+    },
     taskByID: (state, gettersArg) => id => {
         return gettersArg.tasks.get(id);
     },
