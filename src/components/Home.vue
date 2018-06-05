@@ -135,6 +135,9 @@
             },
 
             numberOfTasksRemaining() {
+                if (this.visibility === "active") {
+                    return this.filteredTaskIDs.length;
+                }
                 let vm = this;
                 function recursiveNumberOfActiveTasks(taskID) {
                     let thisTask = vm.taskByID(taskID);
