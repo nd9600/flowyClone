@@ -6,15 +6,14 @@ const state = {
     tasks: new Map(),
     tasksChangeTracker: 1,
     rootTaskIDs: [],
-    taskStorageUID: 0
-}
+    taskStorageUID: 0,
+
+    showInnerTasks: true
+};
 
 const getters = {
     tasks(state, gettersArg) {
         return state.tasksChangeTracker && state.tasks;
-    },
-    tasksAsArray(state, gettersArg) {
-        return Array.from(gettersArg.tasks.values());
     },
     taskByID: (state, gettersArg) => id => {
         return gettersArg.tasks.get(id);
@@ -42,7 +41,7 @@ const getters = {
         let tagsInDescription = getTagsInString(task.description);
         let tagsToReturn = tagsInContent.concat(tagsInDescription);
         if ((typeof task.tasks !== "undefined") && task.tasks.length > 0) {
-            let innerTasks = gettersArg.tagsInTasks(task.tasks)
+            let innerTasks = gettersArg.tagsInTasks(task.tasks);
             tagsToReturn = tagsToReturn.concat(innerTasks);
         }
         return tagsToReturn.unique();
@@ -57,17 +56,18 @@ const getters = {
 
     taskStorageUID(state, gettersArg) {
         return state.taskStorageUID;
-    }
-}
+    },
+
+    showInnerTasks(state, gettersArg) {
+        return state.showInnerTasks;
+    },
+};
 
 const mutations = {
     incrementTaskChangeTracker(state) {
         state.tasksChangeTracker += 1;
     },
-    setTasks(state, tasks) {
-        state.tasks = JSON.parse(JSON.stringify(tasks));
-        mutations.incrementTaskChangeTracker(state);
-    },
+
     setTask(state, task) {
         let taskID = task["id"];
         state.tasks.set(taskID, task);
@@ -125,8 +125,12 @@ const mutations = {
     },
     incrementTaskStorageUID: (state) => {
         state.taskStorageUID++;
+    },
+
+    changeShowInnerTasks: (state, newShowInnerTasks) => {
+        state.showInnerTasks = newShowInnerTasks;
     }
-}
+};
 
 export default {
     state,

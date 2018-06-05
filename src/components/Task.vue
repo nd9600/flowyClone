@@ -1,11 +1,13 @@
 <template>
-    <span class="taskFlexbox">
-        <div
-            v-if="task.tasks.length > 0"
-            @click="showChildren = ! showChildren"
-            class="showHide"
-        >
-            {{showHideButtonText}}
+    <div class="taskFlexbox">
+        <div v-if="this.showInnerTasks">
+            <div
+                v-if="task.tasks.length > 0"
+                @click="showChildrenFlag = ! showChildrenFlag"
+                class="showHide"
+            >
+                {{showHideButtonText}}
+            </div>
         </div>
         <div class="task">
             <div class="mainTaskContainer">
@@ -26,7 +28,7 @@
                     >
                         <a
                             v-if="task.tasks.length > 0"
-                            @click="showChildren = ! showChildren"
+                            @click="showChildrenFlag = ! showChildrenFlag"
                         >
                             {{showHideText}}
                         </a>
@@ -95,25 +97,28 @@
                 </tags>
             </div>
 
-            <div v-if="showChildren">
-                <tasks
-                    v-if="task.tasks.length > 0"
-                    :outerTask="task"
-                    :taskIDs="task.tasks"
+            <div v-if="this.showInnerTasks">
+                <div v-if="showChildrenFlag">
+                    <tasks
+                        v-if="task.tasks.length > 0"
+                        :outerTask="task"
+                        :taskIDs="task.tasks"
+                    >
+                    </tasks>
+                </div>
+                <div
+                    v-if="! showChildrenFlag"
+                    class="leftIndent"
                 >
-                </tasks>
+                    <p
+                        v-if="task.tasks.length > 0"
+                        class="smallText"
+                    >{{task.tasks.length}} {{task.tasks.length | pluralise}}</p>
+                </div>
             </div>
-            <div
-                v-if="! showChildren"
-                class="leftIndent"
-            >
-                <p
-                    v-if="task.tasks.length > 0"
-                    class="smallText"
-                >{{task.tasks.length}} {{task.tasks.length | pluralise}}</p>
-            </div>
+
         </div>
-    </span>
+    </div>
 </template>
 
 <script>
@@ -126,7 +131,7 @@
         data() {
             return {
                 showContextMenu: false,
-                showChildren: false,
+                showChildrenFlag: false,
                 shouldUpdateTask: false,
 
                 //all task's properties must be added here, so they are reactive
@@ -180,15 +185,16 @@
                 "taskStorageUID",
                 "taskByID",
                 "tasksInTask",
-                "tagsInTask"
+                "tagsInTask",
+                "showInnerTasks"
             ]),
 
             showHideButtonText() {
-                return (this.showChildren ? "[-]" : "[+]");
+                return (this.showChildrenFlag ? "[-]" : "[+]");
             },
 
             showHideText() {
-                return (this.showChildren ? "Hide" : "Show");
+                return (this.showChildrenFlag ? "Hide" : "Show");
             },
 
             tags() {
@@ -212,7 +218,9 @@
         },
         created() {
             this.task = this.taskByID(this.taskID);
-            this.shouldUpdateTask = true;
+
+            //setTask is still called without this
+            setTimeout(() => this.shouldUpdateTask = true, 0);
         },
         mounted() {
             //resizes the task content input when the task is first created
@@ -259,7 +267,7 @@
     .contextMenuLocation {
         position: absolute;
         z-index: 4;
-        height: 0px;
+        height: 0;
     }
 
     .contextMenu {

@@ -1,12 +1,12 @@
 const state = {
     searchTerm: ""
-}
+};
 
 const getters = {
     searchTerm: (state) => {
         return state.searchTerm;
     }
-}
+};
 
 const mutations = {
     changeSearchTerm: (state, newTerm) => {
@@ -14,7 +14,7 @@ const mutations = {
             state.searchTerm = newTerm;
         }
     }
-}
+};
 
 export default {
     state,

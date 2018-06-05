@@ -78,7 +78,8 @@
                 "incrementTaskStorageUID",
                 "changeSearchTerm",
                 "setTask",
-                "addTaskToRoot"
+                "addTaskToRoot",
+                "changeShowInnerTasks"
             ]),
 
             addTask() {
@@ -139,7 +140,7 @@
                 }
 
                 let mappedNumberOfActiveTasks = this.filteredTaskIDs.map(taskID => recursiveNumberOfActiveTasks(taskID));
-                return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val);
+                return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val, 0);
             },
 
             tags() {
@@ -153,12 +154,22 @@
                 set(value) {
                     this.changeSearchTerm(value);
                 }
-            }
+            },
         },
         filters: {
             pluralise(n) {
                 return n === 1 ? "item" : "items";
             }
+        },
+        watch: {
+            visibility() {
+                let shouldShowInnerTasks = (this.visibility === "all" && this.searchTerm.trim().length === 0);
+                this.changeShowInnerTasks(shouldShowInnerTasks);
+            },
+            searchTerm() {
+                let shouldShowInnerTasks = (this.visibility === "all" && this.searchTerm.trim().length === 0);
+                this.changeShowInnerTasks(shouldShowInnerTasks);
+            },
         }
     }
 </script>
