@@ -36,14 +36,16 @@
                         <a @click="goToDetailedTask">Edit</a>
                         <a @click="removeTask">Remove</a>
                         <a @click="addNewTask">Add new child</a>
-                        <div class="separator"></div>
-                        <a @click="copyTask">Copy</a>
-                        <a @click="cutTask">Cut</a>
-                        <a v-if="this.clipboard != null" @click="pasteBefore">Paste before</a>
+                        <div v-if="false">
+                            <div class="separator"></div>
+                            <a @click="copyTask">Copy</a>
+                            <a @click="cutTask">Cut</a>
+                            <a v-if="this.clipboard != null" @click="pasteBefore">Paste before</a>
 
-                        <!-- you shouldn't be able to paste a task into itself -->
-                        <a v-if="this.clipboard != null && this.clipboard !== this.taskID" @click="pasteInto">Paste into</a>
-                        <a v-if="this.clipboard != null" @click="pasteAfter">Paste after</a>
+                            <!-- you shouldn't be able to paste a task into itself -->
+                            <a v-if="this.clipboard != null && this.clipboard !== this.taskID" @click="pasteInto">Paste into</a>
+                            <a v-if="this.clipboard != null" @click="pasteAfter">Paste after</a>
+                        </div>
                     </div>
                 </div>
 
