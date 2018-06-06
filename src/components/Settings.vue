@@ -38,9 +38,6 @@
 
 <style>
     #settings {
-        position: absolute;
-        top: 10%;
-        right: 10%;
         padding: 10px;
         border: 1px solid var(--separator-colour);
         opacity: 0.1;

@@ -6,11 +6,11 @@
 
         <fieldset>
             <legend>content</legend>
-            <textarea v-model="task.content"></textarea>
+            <textarea v-resize-on-insert v-model="task.content"></textarea>
 
             <div style="padding-top: 15px;">
                 description
-                <textarea v-model="task.description"></textarea>
+                <textarea v-resize-on-insert v-model="task.description"></textarea>
             </div>
 
             <tags
@@ -29,10 +29,10 @@
                 <a :href="taskLink">
                     link
                 </a>
-                <input type="text" v-model="task.link">
+                <input type="text" v-resize-on-insert v-model="task.link">
             </div>
 
-            <p>author <input type="text" v-model="task.author"></p>
+            <p>author <input v-resize-on-insert type="text" v-model="task.author"></p>
         </fieldset>
 
         <br/>

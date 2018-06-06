@@ -65,7 +65,11 @@
             >{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p>
 
         </div>
-        <settings></settings>
+        <div id="topRight">
+            <settings></settings>
+            <br/>
+            <p>Clipboard</p>
+        </div>
     </div>
 </template>
 
@@ -261,6 +265,12 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         color: #2c3e50;
+    }
+
+    #topRight {
+        position: absolute;
+        top: 10%;
+        right: 10%;
     }
 
     .selected {

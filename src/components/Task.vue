@@ -36,16 +36,14 @@
                         <a @click="goToDetailedTask">Edit</a>
                         <a @click="removeTask">Remove</a>
                         <a @click="addNewTask">Add new child</a>
-                        <div v-if="false">
                         <div class="separator"></div>
-                            <a @click="copyTask">Copy</a>
-                            <a @click="cutTask">Cut</a>
-                            <a v-if="this.clipboard != null" @click="pasteBefore">Paste before</a>
+                        <a @click="copyTask">Copy</a>
+                        <a @click="cutTask">Cut</a>
+                        <a v-if="this.clipboard != null" @click="pasteBefore">Paste before</a>
 
-                            <!-- you shouldn't be able to paste a task into itself -->
-                            <a v-if="this.clipboard != null && this.clipboard !== this.taskID" @click="pasteInto">Paste into</a>
-                            <a v-if="this.clipboard != null" @click="pasteAfter">Paste after</a>
-                        </div>
+                        <!-- you shouldn't be able to paste a task into itself -->
+                        <a v-if="this.clipboard != null && this.clipboard !== this.taskID" @click="pasteInto">Paste into</a>
+                        <a v-if="this.clipboard != null" @click="pasteAfter">Paste after</a>
                     </div>
                 </div>
 
@@ -55,6 +53,7 @@
                 >
                     <input
                         ref="taskInput"
+                        v-resize-on-insert
                         v-model="task.content"
                         :class="{ bold: task.bold }"
                         type="text"
@@ -269,10 +268,6 @@
 
             //setTask is still called without this
             setTimeout(() => this.shouldUpdateTask = true, 0);
-        },
-        mounted() {
-            //resizes the task content input when the task is first created
-            Stretchy.resize(this.$refs.taskInput);
         }
     }
 </script>
