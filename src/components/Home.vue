@@ -68,7 +68,7 @@
         <div id="topRight">
             <settings></settings>
             <br/>
-            <p>Clipboard</p>
+            <clipboard></clipboard>
         </div>
     </div>
 </template>
@@ -88,7 +88,8 @@
             }
         },
         components: {
-            Settings
+            Settings,
+            Clipboard
         },
         methods: {
             ...mapMutations([
@@ -271,6 +272,10 @@
         position: absolute;
         top: 10%;
         right: 10%;
+        opacity: 0.1;
+    }
+    #topRight:hover {
+        opacity: 1;
     }
 
     .selected {

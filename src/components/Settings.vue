@@ -11,7 +11,7 @@
 <script>
     import {mapGetters, mapMutations} from "vuex";
     export default {
-        name: "Settings",
+        name: "settings",
         data() {
             return {};
         },
@@ -40,10 +40,6 @@
     #settings {
         padding: 10px;
         border: 1px solid var(--separator-colour);
-        opacity: 0.1;
-    }
-    #settings:hover {
-        opacity: 1;
     }
 
     .inputWrapper {
