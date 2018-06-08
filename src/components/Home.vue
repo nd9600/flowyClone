@@ -1,67 +1,64 @@
 <template>
     <div id="home">
-        <header id="header">
+        <header style="display: inline-block;">
+            <h1>Home</h1>
+            <input
+                ref="newTaskInput"
+                v-model="newTask"
+                @keyup.enter="addTask"
+                class="inputBox"
+                placeholder="New task"
+            >
+
+            <!-- there are two divs so that the visibility switches are on a new line -->
             <div>
-                <h1 style="display: inline-block;">Home</h1>
-                <input
-                    ref="newTaskInput"
-                    v-model="newTask"
-                    @keyup.enter="addTask"
-                    class="inputBox"
-                    placeholder="New task"
+                <div
+                    @mouseover="showClearButton = true"
+                    @mouseleave="showClearButton = false"
+                    class="searchBoxWrapper"
                 >
-
-                <!-- there are two divs so that the visibility switches are on a new line -->
-                <div>
-                    <div
-                        @mouseover="showClearButton = true"
-                        @mouseleave="showClearButton = false"
-                        class="searchBoxWrapper"
+                    <input
+                        ref="searchInput"
+                        placeholder="Search"
+                        v-model="computedSearchTerm"
+                        type="search"
+                        class="inputBox"
                     >
-                        <input
-                            ref="searchInput"
-                            placeholder="Search"
-                            v-model="computedSearchTerm"
-                            type="search"
-                            class="inputBox"
-                        >
-                        <a
-                            v-if="showClearButton"
-                            @click="computedSearchTerm = ''"
-                            class="clearButton"
-                        >x</a>
-                    </div>
+                    <a
+                        v-if="showClearButton"
+                        @click="computedSearchTerm = ''"
+                        class="clearButton"
+                    >x</a>
                 </div>
-
-                <span>
-                    <a
-                        @click="visibility = 'all'"
-                        :class="{ selected: visibility === 'all' }"
-                    >all</a>
-                    <a
-                        @click="visibility = 'active'"
-                        :class="{ selected: visibility === 'active' }"
-                    >active</a>
-                    <a
-                        @click="visibility = 'completed'"
-                        :class="{ selected: visibility === 'completed' }"
-                    >completed</a>
-                </span>
-
-                <tags
-                    :tags="tags"
-                >
-                </tags>
-
-                <div class="separator"></div>
             </div>
 
-            <div id="topRight">
+            <span>
+                <a
+                    @click="visibility = 'all'"
+                    :class="{ selected: visibility === 'all' }"
+                >all</a>
+                <a
+                    @click="visibility = 'active'"
+                    :class="{ selected: visibility === 'active' }"
+                >active</a>
+                <a
+                    @click="visibility = 'completed'"
+                    :class="{ selected: visibility === 'completed' }"
+                >completed</a>
+            </span>
+
+            <tags
+                :tags="tags"
+            >
+            </tags>
+
+            <div class="separator"></div>
+        </header>
+        <div id="topRight">
                 <settings></settings>
                 <br/>
                 <clipboard></clipboard>
             </div>
-        </header>
         <section>
             <tasks
                 :outerTask="null"
@@ -273,13 +270,11 @@
         color: #2c3e50;
     }
 
-    #header {
-        display: flex;
-        justify-content: space-between;
-    }
-
     #topRight {
-        max-width: 250px;
+        position: absolute;
+        top: 1%;
+        right: 1%;
+        max-width: 300px;
         opacity: 0.1;
     }
     #topRight:hover {
