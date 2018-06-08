@@ -1,5 +1,5 @@
 <template>
-    <fieldset id="settings">
+    <fieldset id="settings" class="normalText">
         <legend>Settings</legend>
         <label>
             <input type="checkbox" v-model="computedShowChildren">

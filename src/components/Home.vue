@@ -1,59 +1,68 @@
 <template>
     <div id="home">
-        <div>
-            <h1 style="display: inline-block;">Home</h1>
-            <input
-                ref="newTaskInput"
-                v-model="newTask"
-                @keyup.enter="addTask"
-                class="inputBox"
-                placeholder="New task"
-            >
-
-            <!-- there are two divs so that the visibility switches are on a new line -->
+        <header id="header">
             <div>
-                <div
-                    @mouseover="showClearButton = true"
-                    @mouseleave="showClearButton = false"
-                    class="searchBoxWrapper"
+                <h1 style="display: inline-block;">Home</h1>
+                <input
+                    ref="newTaskInput"
+                    v-model="newTask"
+                    @keyup.enter="addTask"
+                    class="inputBox"
+                    placeholder="New task"
                 >
-                    <input
-                        ref="searchInput"
-                        placeholder="Search"
-                        v-model="computedSearchTerm"
-                        type="search"
-                        class="inputBox"
+
+                <!-- there are two divs so that the visibility switches are on a new line -->
+                <div>
+                    <div
+                        @mouseover="showClearButton = true"
+                        @mouseleave="showClearButton = false"
+                        class="searchBoxWrapper"
                     >
-                    <a
-                        v-if="showClearButton"
-                        @click="computedSearchTerm = ''"
-                        class="clearButton"
-                    >x</a>
+                        <input
+                            ref="searchInput"
+                            placeholder="Search"
+                            v-model="computedSearchTerm"
+                            type="search"
+                            class="inputBox"
+                        >
+                        <a
+                            v-if="showClearButton"
+                            @click="computedSearchTerm = ''"
+                            class="clearButton"
+                        >x</a>
+                    </div>
                 </div>
+
+                <span>
+                    <a
+                        @click="visibility = 'all'"
+                        :class="{ selected: visibility === 'all' }"
+                    >all</a>
+                    <a
+                        @click="visibility = 'active'"
+                        :class="{ selected: visibility === 'active' }"
+                    >active</a>
+                    <a
+                        @click="visibility = 'completed'"
+                        :class="{ selected: visibility === 'completed' }"
+                    >completed</a>
+                </span>
+
+                <tags
+                    :tags="tags"
+                >
+                </tags>
+
+                <div class="separator"></div>
             </div>
 
-            <span>
-                <a
-                    @click="visibility = 'all'"
-                    :class="{ selected: visibility === 'all' }"
-                >all</a>
-                <a
-                    @click="visibility = 'active'"
-                    :class="{ selected: visibility === 'active' }"
-                >active</a>
-                <a
-                    @click="visibility = 'completed'"
-                    :class="{ selected: visibility === 'completed' }"
-                >completed</a>
-            </span>
-
-            <tags
-                :tags="tags"
-            >
-            </tags>
-
-            <div class="separator"></div>
-
+            <div id="topRight">
+                <settings></settings>
+                <br/>
+                <clipboard></clipboard>
+            </div>
+        </header>
+        <section>
             <tasks
                 :outerTask="null"
                 :taskIDs="filteredTaskIDs"
@@ -64,12 +73,7 @@
                style="color: #999;"
             >{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p>
 
-        </div>
-        <div id="topRight">
-            <settings></settings>
-            <br/>
-            <clipboard></clipboard>
-        </div>
+        </section>
     </div>
 </template>
 
@@ -77,6 +81,7 @@
     import * as task from "../base/task.js";
     import {mapGetters, mapMutations} from "vuex";
     import Settings from "./Settings.vue";
+    import Clipboard from "./Clipboard.vue";
 
     export default {
         name: "home",
@@ -268,10 +273,13 @@
         color: #2c3e50;
     }
 
+    #header {
+        display: flex;
+        justify-content: space-between;
+    }
+
     #topRight {
-        position: absolute;
-        top: 10%;
-        right: 10%;
+        max-width: 250px;
         opacity: 0.1;
     }
     #topRight:hover {
@@ -286,5 +294,9 @@
         background-color: var(--separator-colour);
         height: 1px;
         margin: 10px 0 10px 0;
+    }
+
+    .normalText {
+        font-weight: 100;
     }
 </style>

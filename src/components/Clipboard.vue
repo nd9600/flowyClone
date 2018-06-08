@@ -1,7 +1,20 @@
 <template>
-    <fieldset id="clipboard">
+    <fieldset 
+        v-if="clipboardNotEmpty" 
+        id="clipboard" 
+        class="normalText"
+    >
         <legend>Clipboard</legend>
-        <p>nothing yet</p>
+        <p style="margin: 0;">{{this.clipboard}}: {{taskContent}}</p>
+        <span>
+            <b style="display: inline;">mode: {{this.clipboardMode}}</b>
+            <button
+                @click="setClipboard(null)"
+                class="btn"
+                style="float: right;"
+            >x
+            </button>
+        </span>
     </fieldset>
 </template>
 
@@ -14,14 +27,21 @@
         },
         methods: {
             ...mapMutations([
-                
+                "setClipboard"                
             ])
         },
         computed: {
             ...mapGetters([
                 "clipboard",
-                "clipboardMode"
-            ])
+                "clipboardMode",
+                "taskByID"
+            ]),
+            clipboardNotEmpty() {
+                return this.clipboard !== null;
+            },
+            taskContent() {
+                return this.taskByID(this.clipboard).content;
+            }
         }
     }
 </script>
