@@ -198,14 +198,27 @@
                 this.setClipboardMode("cut");
                 this.setClipboard(this.taskID);
             },
+            getTaskIDToPaste() {
+                //we need to use a whole new task when copying
+                if (this.clipboardMode === "copy") {
+                    this.incrementTaskStorageUID();
+                    let copiedTask = this.taskByID(this.clipboard);
+                    let cloneOfCopiedTask = JSON.parse(JSON.stringify(copiedTask));
+                    cloneOfCopiedTask.id = this.taskStorageUID;
+                    this.setTask(cloneOfCopiedTask);
+                    return cloneOfCopiedTask.id;
+                }
+                return this.clipboard;
+            },
             pasteBefore() {
-
+                let taskIDToPaste = this.getTaskIDToPaste();
             },
             pasteInto() {
-                this.task.tasks.push(this.clipboard);
+                let taskIDToPaste = this.getTaskIDToPaste();
+                this.task.tasks.push(taskIDToPaste);
             },
             pasteAfter() {
-
+                let taskIDToPaste = this.getTaskIDToPaste();
             }            
         },
         computed: {
