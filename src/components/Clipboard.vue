@@ -1,10 +1,5 @@
 <template>
-    <fieldset 
-        v-if="clipboardNotEmpty" 
-        id="clipboard" 
-        class="normalText"
-    >
-        <legend>Clipboard</legend>
+    <div v-if="clipboardNotEmpty">
         <p style="margin: 0;">{{this.clipboard}}: {{taskContent}}</p>
         <span>
             <b style="display: inline;">mode: {{this.clipboardMode}}</b>
@@ -15,7 +10,7 @@
             >x
             </button>
         </span>
-    </fieldset>
+    </div>
 </template>
 
 <script>
@@ -46,9 +41,5 @@
     }
 </script>
 
-<style>
-    #clipboard {
-        padding: 10px;
-        border: 1px solid var(--separator-colour);
-    }
+<style scoped>
 </style>

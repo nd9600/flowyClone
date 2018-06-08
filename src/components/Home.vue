@@ -55,10 +55,13 @@
             <div class="separator"></div>
         </header>
         <div id="topRight">
-                <settings></settings>
-                <br/>
-                <clipboard></clipboard>
+            <div id="topRightButtons">
+                <button @click="topRightComponent='settings'" class="topRightButton">Settings</button><button @click="topRightComponent='clipboard'" class="topRightButton">Clipboard</button>
             </div>
+            <div>
+                <component :is="topRightComponent"></component>
+            </div>
+        </div>
         <section>
             <tasks
                 :outerTask="null"
@@ -84,6 +87,7 @@
         name: "home",
         data() {
             return {
+                topRightComponent: "settings",
                 newTask: "",
                 visibility: "all",
                 showClearButton: false
@@ -275,10 +279,27 @@
         top: 1%;
         right: 1%;
         max-width: 300px;
+        padding: 0 0 10px 10px;
+        border: 1px solid var(--separator-colour);
+
         opacity: 0.1;
     }
     #topRight:hover {
         opacity: 1;
+    }
+    #topRightButtons {
+        float: right;
+        margin-bottom: 10px;
+    }
+    .topRightButton {
+        padding: 6px 10px;
+        margin-bottom: -1px;
+        margin-right: -1px;
+
+        border: 1px solid #ccc;
+        cursor: pointer;
+        background: #f0f0f0;
+        color: #34495e;;
     }
 
     .selected {
@@ -289,9 +310,5 @@
         background-color: var(--separator-colour);
         height: 1px;
         margin: 10px 0 10px 0;
-    }
-
-    .normalText {
-        font-weight: 100;
     }
 </style>

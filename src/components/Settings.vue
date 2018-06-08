@@ -1,11 +1,10 @@
 <template>
-    <fieldset id="settings" class="normalText">
-        <legend>Settings</legend>
+    <div>
         <label>
             <input type="checkbox" v-model="computedShowChildren">
             show children
         </label>
-    </fieldset>
+    </div>
 </template>
 
 <script>
@@ -36,12 +35,7 @@
     }
 </script>
 
-<style>
-    #settings {
-        padding: 10px;
-        border: 1px solid var(--separator-colour);
-    }
-
+<style scoped>
     .inputWrapper {
         white-space: nowrap;
     }
