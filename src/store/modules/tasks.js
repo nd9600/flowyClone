@@ -78,7 +78,7 @@ const mutations = {
     },
 
     //this is how you make a recursive function inside an object
-    removeTask: function recursiveRemove(state, taskID) {
+    deleteTask: function recursiveRemove(state, taskID) {
 
         //removes any tasks that are inside the current one; they wouldn't be accessible after deletion anyway
         let task = state.tasks.get(taskID);
@@ -87,11 +87,24 @@ const mutations = {
         state.tasks.delete(taskID);
 
         //we might need to delete the task ID from the root too
+        mutations.removeTaskFromRoot(state, taskID)
+        mutations.incrementTaskChangeTracker(state);
+    },
+
+    removeTaskFromRoot(state, taskID) {
         let rootTaskIDIndex = state.rootTaskIDs.indexOf(taskID);
         if (rootTaskIDIndex > -1) {
             state.rootTaskIDs.splice(rootTaskIDIndex, 1);
         }
-        mutations.incrementTaskChangeTracker(state);
+    },
+    //only removes the taskID from the tasks array - doesn't delete the actual task
+    removeTaskFromParentTask(state, {parentTaskID, innerTaskID}) {
+        let parentTask = state.tasks.get(parentTaskID);
+        let parentTaskIDIndex = parentTask.tasks.indexOf(innerTaskID);
+        if (parentTaskIDIndex > -1) {
+            parentTask.tasks.splice(parentTaskIDIndex, 1);
+        }
+        mutations.setTask(state, parentTask);
     },
 
     addTaskToTask(state, {taskID, newTaskID}) {

@@ -28,7 +28,7 @@ const store = new Vuex.Store({
 //this is only called at maximum twice a second
 store.subscribe(
     debounce((mutation, state) => {
-        if (["setTask", "removeTask", "addTaskToTask", "addTaskToRoot"].indexOf(mutation.type) > -1) {
+        if (["setTask", "deleteTask", "addTaskToTask", "addTaskToRoot"].indexOf(mutation.type) > -1) {
             let localTasksKey = STORAGE_KEY + "-tasks";
             let mapString = JSON.stringify(Array.from(state.tasksModule.tasks.entries()));
             localStorage.setItem(localTasksKey, mapString);

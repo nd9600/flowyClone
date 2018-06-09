@@ -10,18 +10,13 @@
         <div class="task">
             <div class="mainTaskContainer">
                 <img
-                    @click="goToDetailedTask"
-                    @mouseover="showContextMenu = true"
-                    @mouseleave="showContextMenu = false"
+                    @click="toggleContextMenu"
+                    @dblclick="goToDetailedTask"
                     class="bullet"
                     src="../assets/bullet.svg">
-                <div
-                    class="contextMenuLocation"
-                >
+                <div class="contextMenuLocation">
                     <div
                         v-if="showContextMenu"
-                        @mouseover="showContextMenu = true"
-                        @mouseleave="showContextMenu = false"
                         class="contextMenu"
                     >
                         <a
@@ -30,12 +25,12 @@
                         >
                             {{showHideText}}
                         </a>
-                        <a @click="task.complete = ! task.complete">Complete</a>
+                        <a @click="toggleComplete">Complete</a>
                         <a @click="bold">Bold</a>
                         <div class="separator"></div>
                         <a @click="goToDetailedTask">Edit</a>
-                        <a @click="removeTask">Remove</a>
-                        <a @click="addNewTask">Add new child</a>
+                        <a @click="deleteTask(); toggleContextMenu()">Delete</a>
+                        <a @click="addNewTask(); toggleContextMenu()">Add new child</a>
                         <div class="separator"></div>
                         <a @click="copyTask">Copy</a>
                         <a @click="cutTask">Cut</a>
@@ -68,7 +63,7 @@
                 </button>
 
                 <button
-                    @click="removeTask"
+                    @click="deleteTask"
                     class="btn dangerBtn"
                 >x
                 </button>
@@ -108,7 +103,7 @@
                 <div v-if="expandChildrenFlag">
                     <tasks
                         v-if="task.tasks.length > 0"
-                        :outerTask="task"
+                        :outerTaskID="task.id"
                         :taskIDs="task.tasks"
                     >
                     </tasks>
@@ -160,8 +155,19 @@
                 "setTask",
                 "addTaskToTask",
                 "setClipboard",
-                "setClipboardMode"
+                "setClipboardMode",
+                "removeTaskFromRoot",
+                "removeTaskFromParentTask"
             ]),
+
+            toggleComplete() {
+                this.task.complete = ! this.task.complete;
+                this.toggleContextMenu();
+            },
+
+            toggleContextMenu() {
+                this.showContextMenu = ! this.showContextMenu;
+            },
 
             goToDetailedTask() {
                 this.$root.$emit("change-component-event", "detailedTask", {taskID: this.taskID});
@@ -171,21 +177,22 @@
                 setTimeout(() => {
                     Stretchy.resize(this.$refs.taskInput)
                 }, 0);
+                this.toggleContextMenu();
             },
             addNewTask() {
                 this.incrementTaskStorageUID();
                 let newTask = new task.Task({
                     id: this.taskStorageUID,
                     content: "",
-                    complete: false
+                    parent: this.task.id
                 });
                 this.setTask(newTask);
                 this.addTaskToTask({taskID: this.task.id, newTaskID: newTask.id})
             },
-            removeTask() {
+            deleteTask() {
                 let confirm = window.confirm("Are you sure you want to delete this?");
                 if (confirm) {
-                    this.$emit('removeTask', this.task.id);
+                    this.$emit('deleteTask', this.task.id);
                 }
             },
 
@@ -193,10 +200,26 @@
             copyTask() {
                 this.setClipboardMode("copy");
                 this.setClipboard(this.taskID);
+                this.toggleContextMenu();
             },
             cutTask() {
                 this.setClipboardMode("cut");
                 this.setClipboard(this.taskID);
+                this.toggleContextMenu();
+            },
+            removeOriginalTaskIfCutting(originalTaskID) {
+                if (this.clipboardMode === "copy") {
+                    return;
+                }
+                let originalTask = this.taskByID(originalTaskID);
+                if (originalTask.parent === "root") {
+                    this.removeTaskFromRoot(originalTaskID);
+                } else {
+                    this.removeTaskFromParentTask({
+                        parentTaskID: originalTask.parent,
+                        innerTaskID: originalTaskID
+                    });
+                }
             },
             getTaskIDToPaste() {
                 let vm = this;
@@ -218,15 +241,29 @@
                 }
                 return this.clipboard;
             },
-            pasteBefore() {
+            getTaskIDToPasteAndRemoveOriginalTask() {
                 let taskIDToPaste = this.getTaskIDToPaste();
+                this.removeOriginalTaskIfCutting(this.clipboard);
+
+                //have to set the new parent too - we are in the pasted task's parent here
+                let taskThatsBeingPasted = this.taskByID(taskIDToPaste);
+                taskThatsBeingPasted.parent = this.task.id;
+                this.setTask(taskThatsBeingPasted);
+
+                return taskIDToPaste;
+            },
+            pasteBefore() {
+                let taskIDToPaste = this.getTaskIDToPasteAndRemoveOriginalTask();
+                this.toggleContextMenu();
             },
             pasteInto() {
-                let taskIDToPaste = this.getTaskIDToPaste();
+                let taskIDToPaste = this.getTaskIDToPasteAndRemoveOriginalTask();
                 this.task.tasks.push(taskIDToPaste);
+                this.toggleContextMenu();
             },
             pasteAfter() {
-                let taskIDToPaste = this.getTaskIDToPaste();
+                let taskIDToPaste = this.getTaskIDToPasteAndRemoveOriginalTask();
+                this.toggleContextMenu();
             }            
         },
         computed: {

@@ -2,7 +2,7 @@
     <div class="tasksList">
         <task
             v-for="taskID in this.taskIDs"
-            v-on:removeTask="removeTask"
+            @deleteTask="deleteInnerTask"
             :taskID="taskID"
             :key="taskID"
         >
@@ -14,19 +14,22 @@
     import {mapMutations} from "vuex";
 
     export default {
-        props: ["outerTask", "taskIDs"],
+        props: ["outerTaskID", "taskIDs"],
         methods: {
-            ...mapMutations({
-                removeTaskMutation: "removeTask"
-            }),
+            ...mapMutations([
+                "removeTaskFromParentTask",
+                "deleteTask"
+            ]),
 
             //event is fired from a child task
-            removeTask(taskID) {
-                if (this.outerTask) {
-                    let indexOfTask = this.outerTask.tasks.indexOf(taskID);
-                    this.outerTask.tasks.splice(indexOfTask, 1);
+            deleteInnerTask(taskID) {
+                if (this.outerTaskID) {
+                    this.removeTaskFromParentTask({
+                        parentTaskID: this.outerTaskID,
+                        innerTaskID: taskID
+                    })
                 }
-                this.removeTaskMutation(taskID);
+                this.deleteTask(taskID);
             }
         }
     }

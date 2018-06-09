@@ -64,7 +64,7 @@
         </div>
         <section>
             <tasks
-                :outerTask="null"
+                :outerTaskID="null"
                 :taskIDs="filteredTaskIDs"
             >
             </tasks>
@@ -115,7 +115,8 @@
                 this.incrementTaskStorageUID();
                 let newTaskObject = new task.Task({
                     id: this.taskStorageUID,
-                    content: value
+                    content: value,
+                    parent: "root"
                 });
                 this.setTask(newTaskObject);
                 this.addTaskToRoot(newTaskObject["id"]);
