@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="settings">
         <label>
             <input type="checkbox" v-model="computedShowChildren">
             show children
@@ -36,7 +36,7 @@
 </script>
 
 <style scoped>
-    .inputWrapper {
-        white-space: nowrap;
+    #settings {
+        padding: 0 5px 0 5px;
     }
 </style>

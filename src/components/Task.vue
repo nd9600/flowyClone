@@ -34,11 +34,9 @@
                         <div class="separator"></div>
                         <a @click="copyTask">Copy</a>
                         <a @click="cutTask">Cut</a>
-                        <a v-if="this.clipboard != null" @click="pasteBefore">Paste before</a>
 
                         <!-- you shouldn't be able to paste a task into itself -->
                         <a v-if="this.clipboard != null && this.clipboard !== this.taskID" @click="pasteInto">Paste into</a>
-                        <a v-if="this.clipboard != null" @click="pasteAfter">Paste after</a>
                     </div>
                 </div>
 
@@ -252,19 +250,11 @@
 
                 return taskIDToPaste;
             },
-            pasteBefore() {
-                let taskIDToPaste = this.getTaskIDToPasteAndRemoveOriginalTask();
-                this.toggleContextMenu();
-            },
             pasteInto() {
                 let taskIDToPaste = this.getTaskIDToPasteAndRemoveOriginalTask();
                 this.task.tasks.push(taskIDToPaste);
                 this.toggleContextMenu();
-            },
-            pasteAfter() {
-                let taskIDToPaste = this.getTaskIDToPasteAndRemoveOriginalTask();
-                this.toggleContextMenu();
-            }            
+            },           
         },
         computed: {
             ...mapGetters([

@@ -4,7 +4,7 @@
         <span>
             <b style="display: inline;">mode: {{this.clipboardMode}}</b>
             <button
-                @click="setClipboard(null)"
+                @click="setClipboard(null); setCurrentTopRightTab('settings')"
                 class="btn"
                 style="float: right;"
             >x
@@ -22,7 +22,8 @@
         },
         methods: {
             ...mapMutations([
-                "setClipboard"                
+                "setClipboard",
+                "setCurrentTopRightTab"               
             ])
         },
         computed: {

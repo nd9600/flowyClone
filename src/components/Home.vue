@@ -56,10 +56,13 @@
         </header>
         <div id="topRight">
             <div id="topRightButtons">
-                <button @click="topRightComponent='settings'" class="topRightButton">Settings</button><button @click="topRightComponent='clipboard'" class="topRightButton">Clipboard</button>
+                <button @click="setCurrentTopRightTab('settings')" class="topRightButton">Settings</button><button 
+                    v-if="this.clipboard !== null"
+                    @click="setCurrentTopRightTab('clipboard')" 
+                    class="topRightButton">Clipboard</button>
             </div>
             <div>
-                <component :is="topRightComponent"></component>
+                <component :is="currentTopRightTab"></component>
             </div>
         </div>
         <section>
@@ -103,7 +106,8 @@
                 "changeSearchTerm",
                 "setTask",
                 "addTaskToRoot",
-                "changeShowInnerTasks"
+                "changeShowInnerTasks",
+                "setCurrentTopRightTab"
             ]),
 
             addTask() {
@@ -131,6 +135,8 @@
                 "tagsInTasks",
                 "taskStorageUID",
                 "searchTerm",
+                "clipboard",
+                "currentTopRightTab"
             ]),
 
             //can filter tasks by a search term or visibility
@@ -289,7 +295,8 @@
         opacity: 1;
     }
     #topRightButtons {
-        float: right;
+        display: flex;
+        justify-content: flex-end;
         margin-bottom: 10px;
     }
     .topRightButton {
