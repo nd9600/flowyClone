@@ -6,6 +6,7 @@
                 ref="newTaskInput"
                 v-model="newTask"
                 @keyup.enter="addTask"
+                type="search"
                 class="inputBox"
                 placeholder="New task"
             >
@@ -19,10 +20,10 @@
                 >
                     <input
                         ref="searchInput"
-                        placeholder="Search"
                         v-model="computedSearchTerm"
                         type="search"
                         class="inputBox"
+                        placeholder="Search"
                     >
                     <a
                         v-if="showClearButton"
