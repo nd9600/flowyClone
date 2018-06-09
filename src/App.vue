@@ -35,9 +35,10 @@
         },
         methods: {
             ...mapMutations([
-                "initialiseTasks",
+                "initialiseState",
                 "changeSearchTerm"
             ]),
+
             changeCurrentComponent(component, prop = {}) {
                 if (this.currentComponent !== component) {
                     this.currentComponent = component;
@@ -46,7 +47,7 @@
             }
         },
         created: function() {
-            this.initialiseTasks();
+            this.initialiseState();
             this.changeCurrentComponent("home", {});
 
             this.$on("change-component-event", (component, prop) => {

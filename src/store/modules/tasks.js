@@ -1,6 +1,5 @@
 import {getTagsInString} from "../../base/task.js";
-
-const STORAGE_KEY = 'tasks-flowyClone';
+import {STORAGE_KEY} from "../store.js";
 
 const state = {
     tasks: new Map(),
@@ -71,6 +70,27 @@ const mutations = {
         state.tasksChangeTracker += 1;
     },
 
+    initialiseState(state) {
+        let storageObjectString = localStorage.getItem(STORAGE_KEY);
+        if (! storageObjectString) {
+            return;
+        }
+        let storageObject = JSON.parse(storageObjectString);
+
+        if (storageObject.tasks) {
+            state.tasks = new Map(storageObject.tasks);
+        }
+
+        if (storageObject.rootTaskIDs) {
+            state.rootTaskIDs = storageObject.rootTaskIDs;
+        }
+
+        if (storageObject.taskStorageUID) {
+            state.taskStorageUID = storageObject.taskStorageUID;
+        }
+        state.tasksChangeTracker = state.tasksChangeTracker + 1;
+    },
+
     setTask(state, task) {
         let taskID = task["id"];
         state.tasks.set(taskID, task);
@@ -116,29 +136,6 @@ const mutations = {
         state.rootTaskIDs.push(taskID);
     },
 
-    initialiseTasks(state) {
-        // load the tasks map
-        let tasksKey = STORAGE_KEY + "-tasks";
-        let mapStringFromLocalStorage = localStorage.getItem(tasksKey);
-        if (mapStringFromLocalStorage) {
-            state.tasks = new Map(JSON.parse(mapStringFromLocalStorage));
-        }
-
-        //load the root task IDs
-        let rootTaskIDsKey = STORAGE_KEY + "-rootTaskIDs";
-        let rootTaskIDsString = localStorage.getItem(rootTaskIDsKey);
-        if (rootTaskIDsString) {
-            state.rootTaskIDs = JSON.parse(rootTaskIDsString);
-        }
-
-        // load the task storage UID
-        let UIDKey = STORAGE_KEY + "-taskStorageUID";
-        let UIDString = localStorage.getItem(UIDKey);
-        if (UIDString) {
-            state.taskStorageUID = JSON.parse(UIDString);
-        }
-        mutations.incrementTaskChangeTracker(state);
-    },
     incrementTaskStorageUID: (state) => {
         state.taskStorageUID++;
     },
