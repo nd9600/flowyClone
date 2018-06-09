@@ -199,14 +199,22 @@
                 this.setClipboard(this.taskID);
             },
             getTaskIDToPaste() {
-                //we need to use a whole new task when copying
-                if (this.clipboardMode === "copy") {
-                    this.incrementTaskStorageUID();
-                    let copiedTask = this.taskByID(this.clipboard);
+                let vm = this;
+
+                function cloneTaskToLeaves(taskID) {
+                    vm.incrementTaskStorageUID();
+                    let copiedTask = vm.taskByID(taskID);
                     let cloneOfCopiedTask = JSON.parse(JSON.stringify(copiedTask));
-                    cloneOfCopiedTask.id = this.taskStorageUID;
-                    this.setTask(cloneOfCopiedTask);
+                    cloneOfCopiedTask.id = vm.taskStorageUID;
+                    cloneOfCopiedTask.tasks = cloneOfCopiedTask.tasks
+                        .map(innerTaskID => cloneTaskToLeaves(innerTaskID));
+                    vm.setTask(cloneOfCopiedTask);
                     return cloneOfCopiedTask.id;
+                }
+
+                //we need to use a whole new task (including all inner tasks) when copying
+                if (this.clipboardMode === "copy") {
+                    return cloneTaskToLeaves(this.clipboard);
                 }
                 return this.clipboard;
             },
