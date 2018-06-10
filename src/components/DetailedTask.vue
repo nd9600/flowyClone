@@ -29,10 +29,10 @@
                 <a :href="taskLink">
                     link
                 </a>
-                <input type="text" v-resize-on-insert v-model="task.link">
+                <input v-resize-on-insert v-model="task.link" type="text" class="inputBox">
             </div>
 
-            <p>author <input v-resize-on-insert type="text" v-model="task.author"></p>
+            <p>author <input v-resize-on-insert v-model="task.author" type="text" class="inputBox"></p>
         </fieldset>
 
         <br/>
