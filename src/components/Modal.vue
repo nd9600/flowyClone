@@ -57,6 +57,7 @@
 
 .modal-wrapper {
   vertical-align: middle;
+  padding-top: 50px;
 }
 
 .modal-container {
