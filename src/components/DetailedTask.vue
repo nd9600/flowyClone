@@ -1,6 +1,6 @@
 <template>
     <div>
-        <fieldset>
+        <div>
             <legend>content</legend>
             <textarea v-resize-on-insert v-model="task.content"></textarea>
 
@@ -14,11 +14,11 @@
                 :tags="tags"
             >
             </tags>
-        </fieldset>
+        </div>
 
         <br/>
 
-        <fieldset>
+        <div>
             <span class="bottomInputContainer">
                 <span class="inputCol">
                     <span>
@@ -43,7 +43,7 @@
                     </span>
                 </span>
             </span>
-        </fieldset>
+        </div>
     </div>
 </template>
 
@@ -112,7 +112,7 @@
     .bottomInputContainer {
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: space-between;
     }
 
     .inputCol {
