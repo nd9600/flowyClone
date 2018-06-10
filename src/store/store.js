@@ -30,13 +30,15 @@ const store = new Vuex.Store({
 //this is only called at maximum twice a second
 store.subscribe(
     debounce((mutation, state) => {
-        if (["setTask", "deleteTask", "addTaskToTask", "addTaskToRoot"].indexOf(mutation.type) > -1) {
-            let storageObject = {
-                tasks: Array.from(state.tasksModule.tasks.entries()),
-                rootTaskIDs: state.tasksModule.rootTaskIDs,
-                taskStorageUID: state.tasksModule.taskStorageUID
-            }            
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(storageObject));
+        if (state.settingsModule.storageMethod === "localStorage") {
+            if (["setTask", "deleteTask", "addTaskToTask", "addTaskToRoot"].indexOf(mutation.type) > -1) {
+                let storageObject = {
+                    tasks: Array.from(state.tasksModule.tasks.entries()),
+                    rootTaskIDs: state.tasksModule.rootTaskIDs,
+                    taskStorageUID: state.tasksModule.taskStorageUID
+                }            
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(storageObject));
+            }
         }
     }, 500)
 );

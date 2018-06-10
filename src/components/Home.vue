@@ -57,10 +57,21 @@
         </header>
         <div id="topRight">
             <div id="topRightButtons">
-                <button @click="setCurrentTopRightTab('settings')" class="topRightButton">Settings</button><button 
+                <button @click="setCurrentTopRightTab('settings')" class="topRightButton"
+                >Settings
+                </button>
+                <button 
                     v-if="this.clipboard !== null"
                     @click="setCurrentTopRightTab('clipboard')" 
-                    class="topRightButton">Clipboard</button>
+                    class="topRightButton"
+                >Clipboard
+                </button>
+                <button 
+                    v-if="this.storageMethod === 'firebase'"
+                    @click="setCurrentTopRightTab('firebase')" 
+                    class="topRightButton"
+                >Firebase
+                </button>
             </div>
             <div>
                 <component :is="currentTopRightTab"></component>
@@ -86,6 +97,7 @@
     import {mapGetters, mapMutations} from "vuex";
     import Settings from "./Settings.vue";
     import Clipboard from "./Clipboard.vue";
+    import Firebase from "./Firebase.vue";
 
     export default {
         name: "home",
@@ -99,7 +111,8 @@
         },
         components: {
             Settings,
-            Clipboard
+            Clipboard,
+            Firebase
         },
         methods: {
             ...mapMutations([
@@ -137,7 +150,8 @@
                 "taskStorageUID",
                 "searchTerm",
                 "clipboard",
-                "currentTopRightTab"
+                "currentTopRightTab",
+                "storageMethod"
             ]),
 
             //can filter tasks by a search term or visibility

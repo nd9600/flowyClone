@@ -1,5 +1,6 @@
 import {getTagsInString} from "../../base/task.js";
 import {STORAGE_KEY} from "../store.js";
+import firebaseDB from "../../firebaseConfig.js";
 
 const state = {
     tasks: new Map(),
@@ -70,8 +71,7 @@ const mutations = {
         state.tasksChangeTracker += 1;
     },
 
-    initialiseState(state) {
-        let storageObjectString = localStorage.getItem(STORAGE_KEY);
+    initialiseStateWithObject(state, storageObjectString) {
         if (! storageObjectString) {
             return;
         }
@@ -145,8 +145,34 @@ const mutations = {
     }
 };
 
+const actions = {
+    initialiseState(context) {
+        if (context.getters.storageMethod === "localStorage") {
+            let storageObjectString = localStorage.getItem(STORAGE_KEY);
+            context.commit("initialiseStateWithObject", storageObjectString);
+        } else {
+            let stateKey = context.getters.firebaseStateKey;
+            firebaseDB.ref("states/" + stateKey).once("value").then(
+                (snapshot) => {
+                    //context.commit("initialiseStateWithObject", snapshot.val())
+                    console.log(snapshot.val());
+            });
+        }
+    },
+    saveStateToFirebase(content) {
+        let stateKey = context.getters.firebaseStateKey;
+        let storageObject = {
+            tasks: Array.from(context.getters.tasks.entries()),
+            rootTaskIDs: context.getters.rootTaskIDs,
+            taskStorageUID: context.getters.taskStorageUID
+        };
+        firebaseDB.ref("states/" + stateKey).set(JSON.stringify(storageObject));
+    }
+}
+
 export default {
     state,
     getters,
-    mutations
+    mutations,
+    actions
 }

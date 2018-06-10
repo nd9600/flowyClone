@@ -4,6 +4,16 @@
             <input type="checkbox" v-model="computedShowChildren">
             show children
         </label>
+        <br />
+        storage method
+        <label>
+            localStorage
+            <input type="radio" value="localStorage" v-model="computedStorageMethod">
+        </label>
+        <label>
+            firebase
+            <input type="radio" value="firebase" v-model="computedStorageMethod">
+        </label>
     </div>
 </template>
 
@@ -16,12 +26,14 @@
         },
         methods: {
             ...mapMutations([
-                "setShowChildren"
+                "setShowChildren",
+                "setStorageMethod"
             ])
         },
         computed: {
             ...mapGetters([
-                "showChildren"
+                "showChildren",
+                "storageMethod"
             ]),
             computedShowChildren: {
                 get() {
@@ -29,6 +41,14 @@
                 },
                 set(value) {
                     this.setShowChildren(value);
+                }
+            },
+            computedStorageMethod: {
+                get() {
+                    return this.storageMethod;
+                },
+                set(value) {
+                    this.setStorageMethod(value);
                 }
             }
         }

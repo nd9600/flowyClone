@@ -16,7 +16,7 @@
 <script>
     import Home from "./components/Home.vue";
     import DetailedTask from "./components/DetailedTask.vue";
-    import {mapMutations} from "vuex";
+    import {mapMutations, mapActions} from "vuex";
 
     import {store} from "./store/store.js";
 
@@ -35,8 +35,10 @@
         },
         methods: {
             ...mapMutations([
-                "initialiseState",
                 "changeSearchTerm"
+            ]),
+            ...mapActions([
+                "initialiseState"
             ]),
 
             changeCurrentComponent(component, prop = {}) {
