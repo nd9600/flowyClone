@@ -1,9 +1,5 @@
 <template>
     <div>
-        <h1>Task</h1>
-        <div class="separator"></div>
-        <h3 @click="goHome"><a>Go home</a></h3>
-
         <fieldset>
             <legend>content</legend>
             <textarea v-resize-on-insert v-model="task.content"></textarea>
@@ -23,22 +19,30 @@
         <br/>
 
         <fieldset>
-            <p>complete <input type="checkbox" v-model="task.complete"></p>
+            <span class="bottomInputContainer">
+                <span class="inputCol">
+                    <span>
+                        complete <input type="checkbox" v-model="task.complete">
+                    </span>
+                    <span>
+                        <a :href="taskLink">
+                            link
+                        </a>
+                        <textarea v-resize-on-insert v-model="task.link"></textarea>
+                    </span>
+                    
+                </span>
 
-            <div style="padding: 20px 0 20px 0;">
-                <a :href="taskLink">
-                    link
-                </a>
-                <input v-resize-on-insert v-model="task.link" type="text" class="inputBox">
-            </div>
+                <span class="inputCol">
+                    <span>
+                        bold <input type="checkbox" v-model="task.bold">
+                    </span>
 
-            <p>author <input v-resize-on-insert v-model="task.author" type="text" class="inputBox"></p>
-        </fieldset>
-
-        <br/>
-
-        <fieldset>
-            <p>bold <input type="checkbox" v-model="task.bold"></p>
+                    <span>
+                        author <textarea v-resize-on-insert v-model="task.author"></textarea>
+                    </span>
+                </span>
+            </span>
         </fieldset>
     </div>
 </template>
@@ -105,4 +109,17 @@
 </script>
 
 <style scoped>
+    .bottomInputContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .inputCol {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: flex-start;
+        max-width: 50%;
+    }
 </style>

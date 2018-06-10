@@ -11,9 +11,16 @@
             <div class="mainTaskContainer">
                 <img
                     @click="toggleContextMenu"
-                    @dblclick="goToDetailedTask"
+                    @dblclick="showModal = true"
                     class="bullet"
                     src="../assets/bullet.svg">
+                <modal
+                    v-if="showModal"
+                    @close="showModal = false"
+                >
+                    <h3 slot="header" style="margin: 0;">Task {{this.taskID}}</h3>
+                    <detailedTask slot="body" :taskID="taskID"></detailedTask>
+                </modal>
                 <div class="contextMenuLocation">
                     <div
                         v-if="showContextMenu"
@@ -28,7 +35,6 @@
                         <a @click="toggleComplete">Complete</a>
                         <a @click="bold">Bold</a>
                         <div class="separator"></div>
-                        <a @click="goToDetailedTask">Edit</a>
                         <a @click="deleteTask(); toggleContextMenu()">Delete</a>
                         <a @click="addNewTask(); toggleContextMenu()">Add new child</a>
                         <div class="separator"></div>
@@ -124,6 +130,7 @@
 <script>
     import * as task from "../base/task.js";
     import {mapGetters, mapMutations} from "vuex";
+    import DetailedTask from "./DetailedTask.vue";
 
     export default {
         name: "task",
@@ -131,8 +138,12 @@
         data() {
             return {
                 showContextMenu: false,
+                showModal: false,
                 expandChildrenFlag: true
             }
+        },
+        components: {
+            DetailedTask
         },
         methods: {
             ...mapMutations([
@@ -155,9 +166,6 @@
                 this.showContextMenu = ! this.showContextMenu;
             },
 
-            goToDetailedTask() {
-                this.$root.$emit("change-component-event", "detailedTask", {taskID: this.taskID});
-            },
             bold() {
                 this.task.bold = !this.task.bold;
                 setTimeout(() => {

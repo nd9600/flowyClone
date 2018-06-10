@@ -5,10 +5,12 @@ import App from './App.vue';
 import Tasks from "./components/Tasks.vue";
 import Tags from "./components/Tags.vue";
 import Task from "./components/Task.vue";
+import Modal from "./components/Modal.vue";
 
 Vue.component("tasks", Tasks);
 Vue.component("tags", Tags);
 Vue.component("task", Task);
+Vue.component("modal", Modal);
 
 // register a global custom directive called `v-resize-on-insert` that resizes an element when inserted into the DOM
 Vue.directive('resize-on-insert', {

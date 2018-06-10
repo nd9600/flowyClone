@@ -1,21 +1,10 @@
 <template>
-    <div>
-        <keep-alive>
-            <transition name="fade">
-                <component
-                    :is="this.currentComponent"
-                    v-bind="this.componentProp"
-                >
-                </component>
-            </transition>
-        </keep-alive>
-
-    </div>
+    <home>
+    </home>
 </template>
 
 <script>
     import Home from "./components/Home.vue";
-    import DetailedTask from "./components/DetailedTask.vue";
     import {mapMutations, mapActions} from "vuex";
 
     import {store} from "./store/store.js";
@@ -23,15 +12,8 @@
     export default {
         name: "app",
         el: '#app',
-        data() {
-            return {
-                currentComponent: "home",
-                componentProp: {}
-            }
-        },
         components: {
-            Home,
-            DetailedTask
+            Home
         },
         methods: {
             ...mapMutations([
@@ -40,22 +22,10 @@
             ...mapActions([
                 "initialiseTasks"
             ]),
-
-            changeCurrentComponent(component, prop = {}) {
-                if (this.currentComponent !== component) {
-                    this.currentComponent = component;
-                }
-                this.componentProp = prop;
-            }
         },
         created: function() {
             this.initialiseTasks();
-            this.changeCurrentComponent("home", {});
-
-            this.$on("change-component-event", (component, prop) => {
-                this.changeCurrentComponent(component, prop);
-            });
-
+            
             //clear the search term when escape is pressed
             //arrow function preserves context
             window.addEventListener('keyup', (event) => {
@@ -69,16 +39,57 @@
     }
 </script>
 
-<style scoped>
+<style>
+    :root {
+        --link-colour: #42b983;
+        --separator-colour: #d1d1d1;
+    }
+
     a {
+        color: var(--link-colour);
         text-decoration: none;
-        color: #2c8898;
         cursor: pointer;
     }
 
     a:hover {
         color: #982c61;
         border-bottom: 2px solid #4a4a4a;
+    }
+
+    button:focus, button:hover, input[type="submit"]:focus, input[type="submit"]:hover, input[type="reset"]:focus, input[type="reset"]:hover, input[type="button"]:focus, input[type="button"]:hover {
+        background-color: var(--link-colour);
+        border-color: var(--link-colour);
+        color: #fff;
+    }
+
+    input[type="search"]::-webkit-search-cancel-button {
+        display: none
+    }
+
+    .searchBoxWrapper {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .inputBox {
+        display: block;
+        margin: 10px 0 10px 0;
+        padding: 10px;
+        min-width: 200px;
+    }
+
+    .clearButton {
+        margin-left: -25px;
+    }
+
+    .selected {
+        color: #982c61;
+    }
+
+    .separator {
+        background-color: var(--separator-colour);
+        height: 1px;
+        margin: 10px 0 10px 0;
     }
 
     .fade-enter-active, .fade-leave-active {

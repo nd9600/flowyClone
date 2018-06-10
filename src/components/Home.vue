@@ -254,41 +254,6 @@
 </script>
 
 <style>
-    :root {
-        --link-colour: #42b983;
-        --separator-colour: #d1d1d1;
-    }
-
-    a {
-        color: var(--link-colour);
-    }
-
-    button:focus, button:hover, input[type="submit"]:focus, input[type="submit"]:hover, input[type="reset"]:focus, input[type="reset"]:hover, input[type="button"]:focus, input[type="button"]:hover {
-        background-color: var(--link-colour);
-        border-color: var(--link-colour);
-        color: #fff;
-    }
-
-    input[type="search"]::-webkit-search-cancel-button {
-        display: none
-    }
-
-    .searchBoxWrapper {
-        display: inline-flex;
-        align-items: center;
-    }
-
-    .inputBox {
-        display: block;
-        margin: 10px 0 10px 0;
-        padding: 10px;
-        min-width: 200px;
-    }
-
-    .clearButton {
-        margin-left: -25px;
-    }
-
     #home {
         font-family: Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -324,15 +289,5 @@
         cursor: pointer;
         background: #f0f0f0;
         color: #34495e;;
-    }
-
-    .selected {
-        color: #982c61;
-    }
-
-    .separator {
-        background-color: var(--separator-colour);
-        height: 1px;
-        margin: 10px 0 10px 0;
     }
 </style>
