@@ -320,7 +320,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .taskFlexbox {
         display: flex;
         margin: 10px 0 10px 0;

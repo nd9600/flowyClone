@@ -2,10 +2,10 @@
     <div>
         <label>
             state key
-            <input v-model="computedFirebaseStateKey" type="text">
+            <input v-resize-on-insert v-model="computedFirebaseStateKey" type="text">
         </label>
-        <button @click="initialiseState">load tasks</button>
-        <button @click="saveTasks">save tasks</button>
+        <button @click="initialiseTasks">load tasks</button>
+        <button @click="saveStateToFirebase">save tasks</button>
     </div>
 </template>
 
@@ -21,7 +21,7 @@
                 "setFirebaseStateKey",
             ]),
             ...mapActions([
-                "initialiseState",
+                "initialiseTasks",
                 "saveStateToFirebase"
             ])
         },

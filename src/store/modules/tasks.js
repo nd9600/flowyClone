@@ -71,7 +71,7 @@ const mutations = {
         state.tasksChangeTracker += 1;
     },
 
-    initialiseStateWithObject(state, storageObjectString) {
+    initialiseTasksWithObject(state, storageObjectString) {
         if (! storageObjectString) {
             return;
         }
@@ -88,7 +88,6 @@ const mutations = {
         if (storageObject.taskStorageUID) {
             state.taskStorageUID = storageObject.taskStorageUID;
         }
-        state.tasksChangeTracker = state.tasksChangeTracker + 1;
     },
 
     setTask(state, task) {
@@ -146,26 +145,28 @@ const mutations = {
 };
 
 const actions = {
-    initialiseState(context) {
+    initialiseTasks(context) {
         if (context.getters.storageMethod === "localStorage") {
             let storageObjectString = localStorage.getItem(STORAGE_KEY);
-            context.commit("initialiseStateWithObject", storageObjectString);
+            context.commit("initialiseTasksWithObject", storageObjectString);
+            context.commit("incrementTaskChangeTracker");
         } else {
             let stateKey = context.getters.firebaseStateKey;
             firebaseDB.ref("states/" + stateKey).once("value").then(
                 (snapshot) => {
-                    //context.commit("initialiseStateWithObject", snapshot.val())
-                    console.log(snapshot.val());
+                    context.commit("initialiseTasksWithObject", snapshot.val())
+                    context.commit("incrementTaskChangeTracker");
             });
         }
     },
-    saveStateToFirebase(content) {
+    saveStateToFirebase(context) {
         let stateKey = context.getters.firebaseStateKey;
         let storageObject = {
             tasks: Array.from(context.getters.tasks.entries()),
             rootTaskIDs: context.getters.rootTaskIDs,
             taskStorageUID: context.getters.taskStorageUID
         };
+        //have to stringify it because firebase doesn't store empty arrays
         firebaseDB.ref("states/" + stateKey).set(JSON.stringify(storageObject));
     }
 }

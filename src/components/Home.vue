@@ -300,7 +300,8 @@
         position: absolute;
         top: 1%;
         right: 1%;
-        max-width: 300px;
+        min-width: 275px;
+        max-width: 275px;
         padding: 0 0 10px 10px;
         border: 1px solid var(--separator-colour);
 

@@ -40,5 +40,5 @@ store.subscribe(
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(storageObject));
             }
         }
-    }, 500)
+    }, 300)
 );

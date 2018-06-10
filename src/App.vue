@@ -38,7 +38,7 @@
                 "changeSearchTerm"
             ]),
             ...mapActions([
-                "initialiseState"
+                "initialiseTasks"
             ]),
 
             changeCurrentComponent(component, prop = {}) {
@@ -49,7 +49,7 @@
             }
         },
         created: function() {
-            this.initialiseState();
+            this.initialiseTasks();
             this.changeCurrentComponent("home", {});
 
             this.$on("change-component-event", (component, prop) => {
@@ -69,7 +69,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     a {
         text-decoration: none;
         color: #2c8898;
