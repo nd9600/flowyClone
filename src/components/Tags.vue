@@ -36,7 +36,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     .tags {
         min-height: 24px;
     }

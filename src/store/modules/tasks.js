@@ -1,6 +1,6 @@
 import {getTagsInString} from "../../base/task.js";
-
-const STORAGE_KEY = 'tasks-flowyClone';
+import {STORAGE_KEY} from "../store.js";
+import firebaseDB from "../../firebaseConfig.js";
 
 const state = {
     tasks: new Map(),
@@ -71,6 +71,25 @@ const mutations = {
         state.tasksChangeTracker += 1;
     },
 
+    initialiseTasksWithObject(state, storageObjectString) {
+        if (! storageObjectString) {
+            return;
+        }
+        let storageObject = JSON.parse(storageObjectString);
+
+        if (storageObject.tasks) {
+            state.tasks = new Map(storageObject.tasks);
+        }
+
+        if (storageObject.rootTaskIDs) {
+            state.rootTaskIDs = storageObject.rootTaskIDs;
+        }
+
+        if (storageObject.taskStorageUID) {
+            state.taskStorageUID = storageObject.taskStorageUID;
+        }
+    },
+
     setTask(state, task) {
         let taskID = task["id"];
         state.tasks.set(taskID, task);
@@ -116,29 +135,6 @@ const mutations = {
         state.rootTaskIDs.push(taskID);
     },
 
-    initialiseTasks(state) {
-        // load the tasks map
-        let tasksKey = STORAGE_KEY + "-tasks";
-        let mapStringFromLocalStorage = localStorage.getItem(tasksKey);
-        if (mapStringFromLocalStorage) {
-            state.tasks = new Map(JSON.parse(mapStringFromLocalStorage));
-        }
-
-        //load the root task IDs
-        let rootTaskIDsKey = STORAGE_KEY + "-rootTaskIDs";
-        let rootTaskIDsString = localStorage.getItem(rootTaskIDsKey);
-        if (rootTaskIDsString) {
-            state.rootTaskIDs = JSON.parse(rootTaskIDsString);
-        }
-
-        // load the task storage UID
-        let UIDKey = STORAGE_KEY + "-taskStorageUID";
-        let UIDString = localStorage.getItem(UIDKey);
-        if (UIDString) {
-            state.taskStorageUID = JSON.parse(UIDString);
-        }
-        mutations.incrementTaskChangeTracker(state);
-    },
     incrementTaskStorageUID: (state) => {
         state.taskStorageUID++;
     },
@@ -148,8 +144,36 @@ const mutations = {
     }
 };
 
+const actions = {
+    initialiseTasks(context) {
+        if (context.getters.storageMethod === "localStorage") {
+            let storageObjectString = localStorage.getItem(STORAGE_KEY);
+            context.commit("initialiseTasksWithObject", storageObjectString);
+            context.commit("incrementTaskChangeTracker");
+        } else {
+            let stateKey = context.getters.firebaseStateKey;
+            firebaseDB.ref("states/" + stateKey).once("value").then(
+                (snapshot) => {
+                    context.commit("initialiseTasksWithObject", snapshot.val())
+                    context.commit("incrementTaskChangeTracker");
+            });
+        }
+    },
+    saveStateToFirebase(context) {
+        let stateKey = context.getters.firebaseStateKey;
+        let storageObject = {
+            tasks: Array.from(context.getters.tasks.entries()),
+            rootTaskIDs: context.getters.rootTaskIDs,
+            taskStorageUID: context.getters.taskStorageUID
+        };
+        //have to stringify it because firebase doesn't store empty arrays
+        firebaseDB.ref("states/" + stateKey).set(JSON.stringify(storageObject));
+    }
+}
+
 export default {
     state,
     getters,
-    mutations
+    mutations,
+    actions
 }

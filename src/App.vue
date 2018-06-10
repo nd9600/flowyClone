@@ -16,7 +16,7 @@
 <script>
     import Home from "./components/Home.vue";
     import DetailedTask from "./components/DetailedTask.vue";
-    import {mapMutations} from "vuex";
+    import {mapMutations, mapActions} from "vuex";
 
     import {store} from "./store/store.js";
 
@@ -35,9 +35,12 @@
         },
         methods: {
             ...mapMutations([
-                "initialiseTasks",
                 "changeSearchTerm"
             ]),
+            ...mapActions([
+                "initialiseTasks"
+            ]),
+
             changeCurrentComponent(component, prop = {}) {
                 if (this.currentComponent !== component) {
                     this.currentComponent = component;
@@ -66,7 +69,7 @@
     }
 </script>
 
-<style>
+<style scoped>
     a {
         text-decoration: none;
         color: #2c8898;

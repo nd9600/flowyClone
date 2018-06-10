@@ -47,7 +47,7 @@
                     <input
                         ref="taskInput"
                         v-resize-on-insert
-                        v-model="task.content"
+                        v-model="taskContent"
                         :class="{ bold: task.bold }"
                         type="text"
                         class="taskText"
@@ -131,20 +131,7 @@
         data() {
             return {
                 showContextMenu: false,
-                expandChildrenFlag: true,
-                shouldUpdateTask: false,
-
-                //all task's properties must be added here, so they are reactive
-                task: {
-                    id: 0,
-                    content: "",
-                    description: "",
-                    complete: false,
-                    author: "",
-                    link: "",
-                    tasks: [],
-                    bold: false
-                }
+                expandChildrenFlag: true
             }
         },
         methods: {
@@ -161,6 +148,7 @@
             toggleComplete() {
                 this.task.complete = ! this.task.complete;
                 this.toggleContextMenu();
+                this.setTask(this.task);
             },
 
             toggleContextMenu() {
@@ -176,6 +164,7 @@
                     Stretchy.resize(this.$refs.taskInput)
                 }, 0);
                 this.toggleContextMenu();
+                this.setTask(this.task);
             },
             addNewTask() {
                 this.incrementTaskStorageUID();
@@ -267,6 +256,18 @@
                 "clipboard",
                 "clipboardMode"
             ]),
+            task() {
+                return this.taskByID(this.taskID);
+            },
+            taskContent: {
+                get() {
+                    return this.task.content;
+                },
+                set(newContent) {
+                    this.task.content = newContent;
+                    this.setTask(this.task);
+                }
+            },
 
             showHideButtonText() {
                 return (this.expandChildrenFlag ? "[-]" : "[+]");
@@ -296,31 +297,15 @@
                 return this.showInnerTasks || this.showChildren;
             }
         },
-        watch: {
-            task: {
-                handler: function (newTask) {
-                    if (this.shouldUpdateTask) {
-                        this.setTask(newTask);
-                    }
-                },
-                deep: true
-            },
-        },
         filters: {
             pluralise(n) {
                 return n === 1 ? "child" : "children";
             }
-        },
-        created() {
-            this.task = this.taskByID(this.taskID);
-
-            //setTask is still called without this
-            setTimeout(() => this.shouldUpdateTask = true, 0);
         }
     }
 </script>
 
-<style>
+<style scoped>
     .taskFlexbox {
         display: flex;
         margin: 10px 0 10px 0;
