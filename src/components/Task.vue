@@ -35,8 +35,8 @@
                         <a @click="toggleComplete">Complete</a>
                         <a @click="bold">Bold</a>
                         <div class="separator"></div>
-                        <a @click="deleteTask(); toggleContextMenu()">Delete</a>
                         <a @click="addNewTask(); toggleContextMenu()">Add new child</a>
+                        <a @click="deleteTask(); toggleContextMenu()">Delete</a>
                         <div class="separator"></div>
                         <a @click="copyTask">Copy</a>
                         <a @click="cutTask">Cut</a>
@@ -47,17 +47,19 @@
                 </div>
 
                 <span
-                    :class="{ strikethrough: task.complete }"
                     style="margin-left: 5px;"
                 >
-                    <input
+                    <textarea
                         ref="taskInput"
                         v-resize-on-insert
                         v-model="taskContent"
-                        :class="{ bold: task.bold }"
+                        :class="{
+                            bold: task.bold, 
+                            completed: task.complete
+                        }"
                         type="text"
                         class="taskText"
-                    >       
+                    ></textarea> 
                 </span>
 
                 <button
@@ -73,53 +75,57 @@
                 </button>
             </div>
 
-            <div>
-                <p
-                    v-if="task.description.length > 0"
-                    class="description leftIndent"
-                    style="margin-top: 0; margin-bottom: 0;"
-                >{{task.description}}</p>
-            </div>
-
-            <div class="leftIndent">
-                <a
-                    v-if="task.link.length > 0"
-                    :href="task.link"
-                >
-                    link
-                </a>
-                <p
-                    v-if="task.author.length > 0"
-                    class="smallText"
-                >{{task.author}}
-                </p>
-            </div>
-
-            <div class="leftIndent">
-                <tags
-                    v-if="tags.length > 0"
-                    :tags="tags"
-                >
-                </tags>
-            </div>
-
-            <div v-if="this.shouldShowChildren">
-                <div v-if="expandChildrenFlag">
-                    <tasks
-                        v-if="task.tasks.length > 0"
-                        :outerTaskID="task.id"
-                        :taskIDs="task.tasks"
-                    >
-                    </tasks>
+            <div :class="{completed: task.complete}">
+                <div>
+                    <p
+                        v-if="task.description.length > 0"
+                        class="description leftIndent"
+                        style="margin-top: 0; margin-bottom: 0;"
+                    >{{task.description}}</p>
                 </div>
-                <div
-                    v-if="! expandChildrenFlag"
+
+                <div 
+                    v-if="task.link.length > 0"
                     class="leftIndent"
                 >
+                    <a
+                        :href="task.link"
+                    >
+                        link
+                    </a>
                     <p
-                        v-if="this.numberOfChildren > 0"
+                        v-if="task.author.length > 0"
                         class="smallText"
-                    >{{this.numberOfChildren}} {{this.numberOfChildren | pluralise}}</p>
+                    >{{task.author}}
+                    </p>
+                </div>
+
+                <div class="leftIndent">
+                    <tags
+                        v-if="tags.length > 0"
+                        :tags="tags"
+                    >
+                    </tags>
+                </div>
+
+                <div v-if="this.shouldShowChildren">
+                    <div v-if="expandChildrenFlag">
+                        <tasks
+                            v-if="task.tasks.length > 0"
+                            :outerTaskID="task.id"
+                            :taskIDs="task.tasks"
+                        >
+                        </tasks>
+                    </div>
+                    <div
+                        v-if="! expandChildrenFlag"
+                        class="leftIndent"
+                    >
+                        <p
+                            v-if="this.numberOfChildren > 0"
+                            class="smallText"
+                        >{{this.numberOfChildren}} {{this.numberOfChildren | pluralise}}</p>
+                    </div>
                 </div>
             </div>
 
@@ -334,9 +340,11 @@
         justify-content: flex-start;
         margin: 5px 0 0 33px;
     }
+    .completed {
+        opacity: 0.4;
+    }
 
     .showHide {
-        z-index: 2;
         min-width: 25px;
         max-width: 25px;
         padding: 4px;
@@ -359,7 +367,7 @@
 
     .contextMenuLocation {
         position: absolute;
-        z-index: 4;
+        z-index: 2;
         height: 0;
     }
 
@@ -394,18 +402,17 @@
         background-color: #aaa;
     }
 
-    .taskText, input[type="text"] {
+    .taskText, textarea, input[type="text"] {
         display: inline;
-        padding: 0 15px 0 5px;
+        padding: 6px 10px 0px 10px;
         margin: 0 0 3px 3px;
         line-height: 20px;
-        min-height: 32px;
-        min-width: 300px;
+        min-height: 11px;
+        min-width: 375px;
     }
 
     .btn {
         min-height: 32px;
-
         margin: 0 10px 0 10px;
 
         font-size: 18px;

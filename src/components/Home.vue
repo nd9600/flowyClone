@@ -230,7 +230,7 @@
         mounted: function() {
 
             window.addEventListener('keyup', (event) => {
-                let focusedElementIsntInput = document.activeElement.tagName.toLowerCase() !== "input";
+                let focusedElementIsntInput = (document.activeElement.tagName.toLowerCase() !== "input") && (document.activeElement.tagName.toLowerCase() !== "textarea");
 
                 switch (event.keyCode) {
 
