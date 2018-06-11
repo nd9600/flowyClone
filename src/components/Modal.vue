@@ -2,7 +2,7 @@
   
   <transition name="modal">
     <div class="modal-mask">
-      <div class="modal-wrapper">
+      <div @click="$emit('close')" class="modal-wrapper">
         <div class="modal-container">
 
           <div class="modal-header">
@@ -44,14 +44,17 @@
 
 <style scoped>
   .modal-mask {
-    position: absolute;
+    position: fixed;
+    overflow: auto;
     z-index: 9998;
     top: 0;
+    right: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, .5);
-    display: inline;
+    display: block;
     transition: opacity .3s ease;
   }
 
