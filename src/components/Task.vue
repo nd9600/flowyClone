@@ -11,12 +11,12 @@
             <div class="mainTaskContainer">
                 <img
                     @click="toggleContextMenu"
-                    @dblclick="showModal = true"
+                    @dblclick="displayModal"
                     class="bullet"
                     src="../assets/bullet.svg">
                 <modal
                     v-if="showModal"
-                    @close="showModal = false"
+                    @close="hideModal"
                 >
                     <h3 slot="header" style="margin: 0;">Task {{this.taskID}}</h3>
                     <detailedTask slot="body" :taskID="taskID"></detailedTask>
@@ -251,7 +251,16 @@
                 let taskIDToPaste = this.getTaskIDToPasteAndRemoveOriginalTask();
                 this.task.tasks.push(taskIDToPaste);
                 this.toggleContextMenu();
-            },           
+            },
+
+            displayModal() {
+                this.showModal = true;
+                document.getElementsByTagName('body')[0].classList.add('noscroll');
+            },
+            hideModal() {
+                this.showModal = false;
+                document.getElementsByTagName('body')[0].classList.remove('noscroll');
+            }     
         },
         computed: {
             ...mapGetters([

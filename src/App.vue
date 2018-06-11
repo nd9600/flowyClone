@@ -45,6 +45,10 @@
         --separator-colour: #d1d1d1;
     }
 
+    body.noscroll {
+        overflow: hidden;
+    }
+
     a {
         color: var(--link-colour);
         text-decoration: none;
