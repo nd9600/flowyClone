@@ -1,10 +1,13 @@
 <template>
   
   <transition name="modal">
-    <div class="modal-mask">
-      <div @click="$emit('close')" class="modal-wrapper">
-        <div class="modal-container">
+    <div>
 
+      <!-- the modal mask can't be a parent of the model, because it would above it then -->
+      <div @click="$emit('close')" class="modal-mask">
+      </div>
+      <div class="modal-wrapper">
+        <div class="modal-container">
           <div class="modal-header">
             <slot name="header">
             </slot>
@@ -32,21 +35,16 @@
 </template>
 
 <script>
-  export default {
-    name: 'modal',
-    methods: {
-      close() {
-        this.$emit('close');
-      },
-    },
-  };
+    export default {
+        name: 'modal'
+    };
 </script>
 
 <style scoped>
   .modal-mask {
     position: fixed;
     overflow: auto;
-    z-index: 9998;
+    z-index: 3;
     top: 0;
     right: 0;
     bottom: 0;
@@ -54,13 +52,19 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, .5);
-    display: block;
+    
     transition: opacity .3s ease;
   }
 
 .modal-wrapper {
+  position: fixed;
+  top: 10%;
   vertical-align: middle;
-  padding-top: 50px;
+  z-index: 100;
+
+  /* centers vertically */
+  left: 25%;
+  transform: translateX(-12.5%);
 }
 
 .modal-container {
@@ -87,15 +91,6 @@
 .modal-default-button {
   float: right;
 }
-
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
 
 .modal-enter {
   opacity: 0;
