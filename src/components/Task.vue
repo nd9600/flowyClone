@@ -291,6 +291,15 @@
                     this.setTask(this.task);
                 }
             },
+            innerTasks: {
+                get() {
+                    return this.task.tasks;
+                },
+                set(newTasks) {
+                    this.task.tasks = newTasks;
+                    this.setTask(this.task);
+                }
+            },
 
             showHideButtonText() {
                 return (this.expandChildrenFlag ? "[-]" : "[+]");

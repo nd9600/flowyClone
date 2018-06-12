@@ -2,7 +2,7 @@
     <div>
         <label>
             state key
-            <input v-resize-on-insert v-model="computedFirebaseStateKey" type="text">
+            <input v-resize-on-insert v-model="computedFirebaseStateKey" type="text" style="min-width: 125px;">
         </label>
         <button @click="initialiseTasks">load tasks</button>
         <button @click="saveStateToFirebase">save tasks</button>

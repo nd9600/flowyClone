@@ -1,7 +1,7 @@
 <template>
     <div class="tasksList">
         <task
-            v-for="taskID in this.taskIDs"
+            v-for="taskID in this.computedTaskIDs"
             @deleteTask="deleteInnerTask"
             :taskID="taskID"
             :key="taskID"
@@ -30,6 +30,12 @@
                     })
                 }
                 this.deleteTask(taskID);
+            }
+        },
+        computed: {
+            computedTaskIDs() {
+                //the v-for isn't updating on addition/deletion
+                return this.taskIDs;
             }
         }
     }
