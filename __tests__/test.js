@@ -1,9 +1,17 @@
-import { mount } from '@vue/test-utils';
+import Vuex from "vuex";
+import {store} from "../src/store/store.js";
+
+import { createLocalVue, shallowMount } from '@vue/test-utils';
 import Counter from '../src/components/Task.vue';
+
+const localVue = createLocalVue()
+
+localVue.use(Vuex)
 
 describe('Counter', () => {
   // Now mount the component and you have the wrapper
-  const wrapper = mount(Counter);
+  const wrapper = shallowMount(Counter, {store});
+  //const wrapper = mount(Counter);
 
   console.log(wrapper);
 
