@@ -1,5 +1,5 @@
 import {getTagsInString} from "../../base/task.js";
-import {STORAGE_KEY} from "../store.js";
+import STORAGE_KEY from "../key.js";
 import firebaseDB from "../../firebaseConfig.js";
 
 const state = {

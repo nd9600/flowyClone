@@ -6,7 +6,7 @@
     import Home from "./components/Home.vue";
     import {mapMutations, mapActions} from "vuex";
 
-    import {store} from "./store/store.js";
+    import store from "./store/store.js";
 
     export default {
         name: "app",

@@ -1,21 +1,32 @@
-import Vuex from "vuex";
-import {store} from "../src/store/store.js";
-
 import { createLocalVue, shallowMount } from '@vue/test-utils';
-import Counter from '../src/components/Task.vue';
+import Vuex from "vuex";
 
-const localVue = createLocalVue()
+import tasksModule from "../src/store/modules/tasks.js";
+import settingsModule from "../src/store/modules/settings.js";
+import clipboardModule from "../src/store/modules/clipboard.js";
 
-localVue.use(Vuex)
+import Task from '../src/components/Task.vue';
 
-describe('Counter', () => {
-  // Now mount the component and you have the wrapper
-  const wrapper = shallowMount(Counter, {store});
-  //const wrapper = mount(Counter);
+const localVue = createLocalVue();
+localVue.use(Vuex);
 
+describe('Task', () => {
+  let store
+  beforeEach(() => {
+    store = new Vuex.Store({
+      modules: {
+        tasksModule,
+        settingsModule,
+        clipboardModule
+      }
+    });
+  });
+
+  const wrapper = shallowMount(Task, {store, localVue});
   console.log(wrapper);
 
   it('renders the taskFlexbox', () => {
+
     expect(wrapper.html()).toContain('<div class="taskFlexbox">');
   })
 

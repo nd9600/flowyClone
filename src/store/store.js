@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import STORAGE_KEY from "./key.js";
 import tasksModule from "./modules/tasks.js";
 import searchTermModule from "./modules/searchTerm.js";
 import settingsModule from "./modules/settings.js";
@@ -12,11 +13,7 @@ import * as process from "babel-core/lib/transformation/file/options/config";
 
 Vue.use(Vuex);
 
-const STORAGE_KEY = "flowyClone";
-
-export {STORAGE_KEY, store};
-
-const store = new Vuex.Store({
+export default new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
     modules: {
         tasksModule,
