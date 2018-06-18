@@ -40,6 +40,17 @@ describe('Task', () => {
     expect(wrapper.html()).toContain('<div class="taskFlexbox">');
   })
 
+  it('has no inner tasks by default', () => {
+    const wrapper = shallowMount(Task, {
+      store, 
+      localVue,
+      propsData: {
+        taskID: testTask.id
+      }
+    });
+    expect(wrapper.vm.task.tasks).toHaveLength(0);
+  })
+
   // // it's also easy to check for the existence of elements
   // it('has a button', () => {
   //   const wrapper = shallowMount(Task, {
