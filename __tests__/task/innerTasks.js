@@ -77,7 +77,23 @@ describe('Task', () => {
     });
     wrapper.vm.addNewTask();
     wrapper.vm.addNewTask();
+
     expect(wrapper.vm.task.tasks).toHaveLength(2);
+
+    let showHideChildrenButton = wrapper.find(".showHide");
+    let innerTasksDiv = wrapper.find(".innerTasks");
+
+    //there should be 2 taskIDs after adding 2 tasks, but they only show up when you collapse and expand the children
+    console.log(innerTasksDiv.attributes().taskids);
+    expect(innerTasksDiv.attributes().taskids).toHaveLength(2);
+
+    showHideChildrenButton.trigger("click");
+    //wrapper.vm.$data.expandChildrenFlag = false;
+    //wrapper.vm.$data.expandChildrenFlag = true;
+    showHideChildrenButton.trigger("click");
+
+    expect(wrapper.vm.task.tasks).toHaveLength(2);
+    expect(innerTasksDiv.attributes().taskids).toHaveLength(2);
   })
 
 })

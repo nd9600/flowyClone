@@ -114,6 +114,7 @@
                             v-if="task.tasks.length > 0"
                             :outerTaskID="task.id"
                             :taskIDs="task.tasks"
+                            class="innerTasks"
                         >
                         </tasks>
                     </div>
