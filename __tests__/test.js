@@ -1,4 +1,5 @@
-import { createLocalVue, shallowMount } from '@vue/test-utils';
+import {mount, shallowMount} from '@vue/test-utils';
+import {localVue, TaskObject} from "../testMain.js";
 import Vuex from "vuex";
 
 import tasksModule from "../src/store/modules/tasks.js";
@@ -6,10 +7,6 @@ import settingsModule from "../src/store/modules/settings.js";
 import clipboardModule from "../src/store/modules/clipboard.js";
 
 import Task from '../src/components/Task.vue';
-import * as task from "../base/task.js";
-
-const localVue = createLocalVue();
-localVue.use(Vuex);
 
 describe('Task', () => {
   let store
@@ -25,7 +22,7 @@ describe('Task', () => {
     });
 
     store.commit("incrementTaskStorageUID");
-    testTask = new task.Task({
+    testTask = new TaskObject({
         id: store.getters.taskStorageUID,
         content: ""
     });
@@ -40,22 +37,21 @@ describe('Task', () => {
         taskID: testTask.id
       }
     });
-    console.log(wrapper);
     expect(wrapper.html()).toContain('<div class="taskFlexbox">');
   })
 
-  // it's also easy to check for the existence of elements
-  it('has a button', () => {
-    const wrapper = shallowMount(Task, {
-      store, 
-      localVue,
-      propsData: {
-        taskID: testTask.id
-      }
-    });
-    console.log(wrapper);
-    expect(wrapper.contains('button')).toBe(true)
-  })
+  // // it's also easy to check for the existence of elements
+  // it('has a button', () => {
+  //   const wrapper = shallowMount(Task, {
+  //     store, 
+  //     localVue,
+  //     propsData: {
+  //       taskID: testTask.id
+  //     }
+  //   });
+  //   console.log(wrapper);
+  //   expect(wrapper.contains('button')).toBe(true)
+  // })
 
 //   it('button should increment the count', () => {
 //     expect(wrapper.vm.count).toBe(0)
