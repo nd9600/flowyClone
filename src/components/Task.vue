@@ -113,7 +113,7 @@
                         <tasks
                             v-if="task.tasks.length > 0"
                             :outerTaskID="task.id"
-                            v-bind:taskIDs="task.tasks"
+                            :taskIDs="task.tasks"
                             class="innerTasks"
                         >
                         </tasks>

@@ -88,12 +88,12 @@ describe('Task', () => {
     console.log(wrapper.vm.task.tasks);
     console.log(innerTasksDiv.attributes().taskids);
     expect(wrapper.vm.task.tasks).toHaveLength(2);
-    expect(innerTasksDiv.attributes().taskids).toHaveLength(2);
+    //expect(innerTasksDiv.attributes().taskids).toHaveLength(2);
 
+    showHideChildrenButton.trigger("click");
     showHideChildrenButton.trigger("click");
     //wrapper.vm.$data.expandChildrenFlag = false;
     //wrapper.vm.$data.expandChildrenFlag = true;
-    showHideChildrenButton.trigger("click");
 
     expect(wrapper.vm.task.tasks).toHaveLength(2);
     expect(innerTasksDiv.attributes().taskids).toHaveLength(2);
