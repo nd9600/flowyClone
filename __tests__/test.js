@@ -29,7 +29,7 @@ describe('Task', () => {
     store.commit("setTask", testTask);
   });
 
-  it('renders the taskFlexbox', () => {
+  it("renders the taskFlexbox", () => {
     const wrapper = shallowMount(Task, {
       store, 
       localVue,
@@ -40,7 +40,7 @@ describe('Task', () => {
     expect(wrapper.html()).toContain('<div class="taskFlexbox">');
   })
 
-  it('has no inner tasks by default', () => {
+  it("has no inner tasks by default", () => {
     const wrapper = shallowMount(Task, {
       store, 
       localVue,
@@ -51,23 +51,16 @@ describe('Task', () => {
     expect(wrapper.vm.task.tasks).toHaveLength(0);
   })
 
-  // // it's also easy to check for the existence of elements
-  // it('has a button', () => {
-  //   const wrapper = shallowMount(Task, {
-  //     store, 
-  //     localVue,
-  //     propsData: {
-  //       taskID: testTask.id
-  //     }
-  //   });
-  //   console.log(wrapper);
-  //   expect(wrapper.contains('button')).toBe(true)
-  // })
+  it("1 inner task is added correctly", () => {
+    const wrapper = shallowMount(Task, {
+      store, 
+      localVue,
+      propsData: {
+        taskID: testTask.id
+      }
+    });
+    wrapper.vm.addNewTask();
+    expect(wrapper.vm.task.tasks).toHaveLength(0);
+  })
 
-//   it('button should increment the count', () => {
-//     expect(wrapper.vm.count).toBe(0)
-//     const button = wrapper.find('button')
-//     button.trigger('click')
-//     expect(wrapper.vm.count).toBe(1)
-//   })
 })
