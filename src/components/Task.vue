@@ -113,7 +113,7 @@
                         <tasks
                             v-if="task.tasks.length > 0"
                             :outerTaskID="task.id"
-                            :taskIDs="task.tasks"
+                            v-bind:taskIDs="task.tasks"
                             class="innerTasks"
                         >
                         </tasks>
@@ -205,7 +205,10 @@
                     parent: this.task.id
                 });
                 this.setTask(newTask);
-                this.addTaskToTask({taskID: this.task.id, newTaskID: newTask.id})
+                console.log(this.task.tasks);
+                this.addTaskToTask({taskID: this.task.id, newTaskID: newTask.id});
+                console.log(this.task.tasks);
+                this.setTask(this.task);
             },
             deleteTask() {
                 let confirm = window.confirm("Are you sure you want to delete this?");
@@ -305,15 +308,6 @@
                 },
                 set(newContent) {
                     this.task.content = newContent;
-                    this.setTask(this.task);
-                }
-            },
-            innerTasks: {
-                get() {
-                    return this.task.tasks;
-                },
-                set(newTasks) {
-                    this.task.tasks = newTasks;
                     this.setTask(this.task);
                 }
             },

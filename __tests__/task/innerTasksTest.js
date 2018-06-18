@@ -84,7 +84,10 @@ describe('Task', () => {
     let innerTasksDiv = wrapper.find(".innerTasks");
 
     //there should be 2 taskIDs after adding 2 tasks, but they only show up when you collapse and expand the children
+    console.log(wrapper.html());
+    console.log(wrapper.vm.task.tasks);
     console.log(innerTasksDiv.attributes().taskids);
+    expect(wrapper.vm.task.tasks).toHaveLength(2);
     expect(innerTasksDiv.attributes().taskids).toHaveLength(2);
 
     showHideChildrenButton.trigger("click");
