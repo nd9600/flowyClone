@@ -67,4 +67,17 @@ describe('Task', () => {
     expect(wrapper.vm.task.tasks).toHaveLength(1);
   })
 
+  it("2 inner tasks are added correctly", () => {
+    const wrapper = mount(Task, {
+      store, 
+      localVue,
+      propsData: {
+        taskID: testTask.id
+      }
+    });
+    wrapper.vm.addNewTask();
+    wrapper.vm.addNewTask();
+    expect(wrapper.vm.task.tasks).toHaveLength(2);
+  })
+
 })
