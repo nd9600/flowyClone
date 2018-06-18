@@ -14,6 +14,7 @@
     import {mapMutations} from "vuex";
 
     export default {
+        name: "tasks",
         props: ["outerTaskID", "taskIDs"],
         methods: {
             ...mapMutations([

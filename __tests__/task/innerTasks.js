@@ -1,18 +1,19 @@
 import {mount, shallowMount} from '@vue/test-utils';
-import {localVue, TaskObject} from "../testMain.js";
+import {localVue, TaskObject} from "../testMain-ignore.js";
 import Vuex from "vuex";
 
-import tasksModule from "../src/store/modules/tasks.js";
-import settingsModule from "../src/store/modules/settings.js";
-import clipboardModule from "../src/store/modules/clipboard.js";
+import tasksModule from "../../src/store/modules/tasks.js";
+import settingsModule from "../../src/store/modules/settings.js";
+import clipboardModule from "../../src/store/modules/clipboard.js";
 
-import Task from '../src/components/Task.vue';
+import Task from '../../src/components/Task.vue';
+import GenericStub from "../GenericStub.vue";
 
 describe('Task', () => {
   let store
   let testTask
 
-  beforeEach(() => {
+  beforeEach(() => {    
     store = new Vuex.Store({
       modules: {
         tasksModule,
@@ -57,10 +58,13 @@ describe('Task', () => {
       localVue,
       propsData: {
         taskID: testTask.id
+      },
+      stubs: {
+        "tasks": GenericStub
       }
     });
     wrapper.vm.addNewTask();
-    expect(wrapper.vm.task.tasks).toHaveLength(0);
+    expect(wrapper.vm.task.tasks).toHaveLength(1);
   })
 
 })

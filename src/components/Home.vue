@@ -93,7 +93,6 @@
 </template>
 
 <script>
-    import * as task from "../base/task.js";
     import {mapGetters, mapMutations} from "vuex";
     import Settings from "./Settings.vue";
     import Clipboard from "./Clipboard.vue";
@@ -131,7 +130,7 @@
                 }
 
                 this.incrementTaskStorageUID();
-                let newTaskObject = new task.Task({
+                let newTaskObject = new TaskObject({
                     id: this.taskStorageUID,
                     content: value,
                     parent: "root"

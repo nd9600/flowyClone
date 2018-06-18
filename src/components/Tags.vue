@@ -15,6 +15,7 @@
     import {mapGetters, mapMutations} from "vuex";
 
     export default {
+        name: "tags",
         props: ["tags"],
         methods: {
             ...mapMutations([
