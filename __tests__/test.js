@@ -6,21 +6,16 @@ import settingsModule from "../src/store/modules/settings.js";
 import clipboardModule from "../src/store/modules/clipboard.js";
 
 import Task from '../src/components/Task.vue';
+import * as task from "../base/task.js";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 
 describe('Task', () => {
   let store
-  let getters
-  let mutations
+  let testTask
 
   beforeEach(() => {
-    getters = {
-      showInnerTasks: jest.fn(),
-      showChildren: jest.fn(),
-    };
-
     store = new Vuex.Store({
       modules: {
         tasksModule,
@@ -28,17 +23,36 @@ describe('Task', () => {
         clipboardModule
       }
     });
+
+    store.commit("incrementTaskStorageUID");
+    testTask = new task.Task({
+        id: store.getters.taskStorageUID,
+        content: ""
+    });
+    store.commit("setTask", testTask);
   });
 
   it('renders the taskFlexbox', () => {
-    const wrapper = shallowMount(Task, {store, localVue});
+    const wrapper = shallowMount(Task, {
+      store, 
+      localVue,
+      propsData: {
+        taskID: testTask.id
+      }
+    });
     console.log(wrapper);
     expect(wrapper.html()).toContain('<div class="taskFlexbox">');
   })
 
   // it's also easy to check for the existence of elements
   it('has a button', () => {
-    const wrapper = shallowMount(Task, {store, localVue});
+    const wrapper = shallowMount(Task, {
+      store, 
+      localVue,
+      propsData: {
+        taskID: testTask.id
+      }
+    });
     console.log(wrapper);
     expect(wrapper.contains('button')).toBe(true)
   })
