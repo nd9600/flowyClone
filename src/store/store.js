@@ -13,7 +13,7 @@ import * as process from "babel-core/lib/transformation/file/options/config";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
     strict: process.env.NODE_ENV !== 'production',
     modules: {
         tasksModule,
@@ -23,6 +23,8 @@ export default new Vuex.Store({
         topRightTabsModule
     }
 });
+
+export default store;
 
 //this is only called at maximum twice a second
 store.subscribe(

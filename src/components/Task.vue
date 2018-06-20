@@ -110,10 +110,11 @@
 
                 <div v-if="this.shouldShowChildren">
                     <div v-if="expandChildrenFlag">
+                        <!-- you need to bind arrays like this for them to work properly -->
                         <tasks
                             v-if="task.tasks.length > 0"
                             :outerTaskID="task.id"
-                            :taskIDs="task.tasks"
+                            :taskIDs="[...task.tasks]"
                             class="innerTasks"
                         >
                         </tasks>
@@ -205,10 +206,7 @@
                     parent: this.task.id
                 });
                 this.setTask(newTask);
-                console.log(this.task.tasks);
                 this.addTaskToTask({taskID: this.task.id, newTaskID: newTask.id});
-                console.log(this.task.tasks);
-                this.setTask(this.task);
             },
             deleteTask() {
                 let confirm = window.confirm("Are you sure you want to delete this?");

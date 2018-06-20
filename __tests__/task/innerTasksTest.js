@@ -41,17 +41,6 @@ describe('Task', () => {
     expect(wrapper.html()).toContain('<div class="taskFlexbox">');
   })
 
-  it("has no inner tasks by default", () => {
-    const wrapper = shallowMount(Task, {
-      store, 
-      localVue,
-      propsData: {
-        taskID: testTask.id
-      }
-    });
-    expect(wrapper.vm.task.tasks).toHaveLength(0);
-  })
-
   it("1 inner task is added correctly", () => {
     const wrapper = shallowMount(Task, {
       store, 
@@ -63,8 +52,15 @@ describe('Task', () => {
         "tasks": GenericStub
       }
     });
-    wrapper.vm.addNewTask();
-    expect(wrapper.vm.task.tasks).toHaveLength(1);
+    const vm = wrapper.vm;
+    vm.addNewTask();
+    
+    let innerTasksDiv = wrapper.find(".innerTasks");
+    let taskIDsAsAttribute = innerTasksDiv.attributes().taskids;
+    let evaluatedTaskIDs = eval("[" + taskIDsAsAttribute + "]");
+
+    expect(vm.task.tasks).toHaveLength(1);
+    expect(evaluatedTaskIDs).toHaveLength(1);
   })
 
   it("2 inner tasks are added correctly", () => {
@@ -75,28 +71,47 @@ describe('Task', () => {
         taskID: testTask.id
       }
     });
-    wrapper.vm.addNewTask();
-    wrapper.vm.addNewTask();
+    const vm = wrapper.vm;
+    vm.addNewTask();
+    vm.addNewTask();
 
-    expect(wrapper.vm.task.tasks).toHaveLength(2);
-
-    let showHideChildrenButton = wrapper.find(".showHide");
     let innerTasksDiv = wrapper.find(".innerTasks");
+    let taskIDsAsAttribute = innerTasksDiv.attributes().taskids;
+    let evaluatedTaskIDs = eval("[" + taskIDsAsAttribute + "]");
 
-    //there should be 2 taskIDs after adding 2 tasks, but they only show up when you collapse and expand the children
-    console.log(wrapper.html());
-    console.log(wrapper.vm.task.tasks);
-    console.log(innerTasksDiv.attributes().taskids);
-    expect(wrapper.vm.task.tasks).toHaveLength(2);
-    //expect(innerTasksDiv.attributes().taskids).toHaveLength(2);
+    expect(vm.task.tasks).toHaveLength(2);
+    expect(evaluatedTaskIDs).toHaveLength(2);
+  })
 
-    showHideChildrenButton.trigger("click");
-    showHideChildrenButton.trigger("click");
-    //wrapper.vm.$data.expandChildrenFlag = false;
-    //wrapper.vm.$data.expandChildrenFlag = true;
+  it("6 inner tasks are added, and then 1 is removed, correctly", () => {
+    const wrapper = mount(Task, {
+      store, 
+      localVue,
+      propsData: {
+        taskID: testTask.id
+      }
+    });
+    const vm = wrapper.vm;
+    vm.addNewTask();
+    vm.addNewTask();
+    vm.addNewTask();
+    vm.addNewTask();
+    vm.addNewTask();
+    vm.addNewTask();
 
-    expect(wrapper.vm.task.tasks).toHaveLength(2);
-    expect(innerTasksDiv.attributes().taskids).toHaveLength(2);
+    let lastTaskID = vm.task.tasks[vm.task.tasks.length - 1];
+    store.commit("removeTaskFromParentTask", {
+      parentTaskID: testTask.id,
+      innerTaskID: lastTaskID
+    });
+    store.commit("deleteTask", lastTaskID);
+
+    let innerTasksDiv = wrapper.find(".innerTasks");
+    let taskIDsAsAttribute = innerTasksDiv.attributes().taskids;
+    let evaluatedTaskIDs = eval("[" + taskIDsAsAttribute + "]");
+
+    expect(vm.task.tasks).toHaveLength(5);
+    expect(evaluatedTaskIDs).toHaveLength(5);
   })
 
 })
