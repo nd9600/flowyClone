@@ -1,5 +1,5 @@
 import {mount, shallowMount} from '@vue/test-utils';
-import {localVue, TaskObject} from "../testMain-ignore.js";
+import {localVue} from "../testMain-ignore.js";
 import Vuex from "vuex";
 
 import tasksModule from "../../src/store/modules/tasks.js";
@@ -8,6 +8,7 @@ import clipboardModule from "../../src/store/modules/clipboard.js";
 
 import Task from '../../src/components/Task.vue';
 import GenericStub from "../GenericStub.vue";
+import * as task from "../../src/base/task.js";
 
 describe('Task', () => {
   let store
@@ -23,7 +24,7 @@ describe('Task', () => {
     });
 
     store.commit("incrementTaskStorageUID");
-    testTask = new TaskObject({
+    testTask = new task.TaskObject({
         id: store.getters.taskStorageUID,
         content: ""
     });

@@ -131,7 +131,7 @@
                 }
 
                 this.incrementTaskStorageUID();
-                let newTaskObject = new TaskObject({
+                let newTaskObject = new task.TaskObject({
                     id: this.taskStorageUID,
                     content: value,
                     parent: "root"

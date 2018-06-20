@@ -26,6 +26,7 @@
     "babel-core": "^6.26.0",
     "babel-jest": "^23.0.1",
     "babel-loader": "^7.1.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^5.1.6",
@@ -40,14 +41,17 @@
   },
   "babel": {
     "presets": [
-      [
-        "env",
-        {
-          "modules": false
-        }
-      ],
+      "env",
       "stage-3"
-    ]
+    ],
+    "env": {
+      "development": {
+        "plugins": ["transform-es2015-modules-commonjs"]
+      },
+      "test": {
+        "plugins": ["transform-es2015-modules-commonjs"]
+      }
+    }
   },
   "jest": {
     "moduleFileExtensions": [
