@@ -41,13 +41,10 @@
   },
   "babel": {
     "presets": [
-      "env",
+      ["env", {"modules": false}],
       "stage-3"
     ],
     "env": {
-      "development": {
-        "plugins": ["transform-es2015-modules-commonjs"]
-      },
       "test": {
         "plugins": ["transform-es2015-modules-commonjs"]
       }
