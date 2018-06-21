@@ -1,7 +1,7 @@
 export {TaskObject, getTagsInString, filters};
 
-class TaskObject {
-    constructor(obj) {
+// constructors don't work with Jest apparently (since it uses Node?), so we can't use them
+function TaskObject(obj) {
         this.id = obj.id;
         this.content = obj.content;
         this.description = obj.description || "";
@@ -14,7 +14,6 @@ class TaskObject {
         this.parent = obj.parent || null;
 
         this.bold = obj.bold || false;
-    }
 }
 
 // a tag is a word that starts with a #

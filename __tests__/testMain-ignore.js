@@ -1,8 +1,6 @@
 import { createLocalVue } from '@vue/test-utils';
 import Vuex from "vuex";
 
-//import App from '../src/App.vue';
-
 import Tasks from "../src/components/Tasks.vue";
 
 //imported so that we get the array functions
