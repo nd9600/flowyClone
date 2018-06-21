@@ -184,7 +184,7 @@
             },
             addNewTask() {
                 this.incrementTaskStorageUID();
-                let newTask = new TaskObject({
+                let newTask = new task.TaskObject({
                     id: this.taskStorageUID,
                     content: "",
                     parent: this.task.id
