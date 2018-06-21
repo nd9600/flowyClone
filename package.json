@@ -51,6 +51,9 @@
     }
   },
   "jest": {
+    "globals": {
+      "NODE_ENV": "test"
+    },
     "moduleFileExtensions": [
       "js",
       "vue"
