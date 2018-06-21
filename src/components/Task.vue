@@ -107,27 +107,27 @@
                     >
                     </tags>
                 </div>
+            </div>
 
-                <div v-if="this.shouldShowChildren">
-                    <div v-if="expandChildrenFlag">
-                        <!-- you need to bind arrays like this for them to work properly -->
-                        <tasks
-                            v-if="task.tasks.length > 0"
-                            :outerTaskID="task.id"
-                            :taskIDs="[...task.tasks]"
-                            class="innerTasks"
-                        >
-                        </tasks>
-                    </div>
-                    <div
-                        v-if="! expandChildrenFlag"
-                        class="leftIndent"
+            <div v-if="this.shouldShowChildren">
+                <div v-if="expandChildrenFlag">
+                    <!-- you need to bind arrays like this for them to work properly -->
+                    <tasks
+                        v-if="task.tasks.length > 0"
+                        :outerTaskID="task.id"
+                        :taskIDs="[...task.tasks]"
+                        class="innerTasks"
                     >
-                        <p
-                            v-if="this.numberOfChildren > 0"
-                            class="smallText"
-                        >{{this.numberOfChildren}} {{this.numberOfChildren | pluralise}}</p>
-                    </div>
+                    </tasks>
+                </div>
+                <div
+                    v-if="! expandChildrenFlag"
+                    class="leftIndent"
+                >
+                    <p
+                        v-if="this.numberOfChildren > 0"
+                        class="smallText"
+                    >{{this.numberOfChildren}} {{this.numberOfChildren | pluralise}}</p>
                 </div>
             </div>
 
