@@ -24,8 +24,6 @@ const store = new Vuex.Store({
     }
 });
 
-export default store;
-
 //this is only called at maximum three times a second
 store.subscribe(
     debounce((mutation, state) => {
@@ -41,3 +39,5 @@ store.subscribe(
         }
     }, 300)
 );
+
+export default store;
