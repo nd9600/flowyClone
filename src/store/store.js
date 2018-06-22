@@ -26,7 +26,7 @@ const store = new Vuex.Store({
 
 export default store;
 
-//this is only called at maximum twice a second
+//this is only called at maximum three times a second
 store.subscribe(
     debounce((mutation, state) => {
         if (state.settingsModule.storageMethod === "localStorage") {
