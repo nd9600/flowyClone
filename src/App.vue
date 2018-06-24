@@ -10,7 +10,6 @@
 
     export default {
         name: "app",
-        el: '#app',
         components: {
             Home
         },

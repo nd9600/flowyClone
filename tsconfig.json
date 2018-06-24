@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "outDir": "./built/",
+        "sourceMap": true,
+        "allowJs": true,
+        "strict": true,
+        "noImplicitReturns": true,
+        "module": "es2015",
+        "moduleResolution": "node",
+        "target": "es5",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "src/*"
+            ],
+            "components/*": [
+                "src/components/*"
+            ]
+        },
+        "types": [
+            "node",
+            "jest"
+        ],
+        "typeRoots": [
+            "./node_modules/@types",
+            "./typings"
+        ]        
+    },
+    "include": [
+        "./src/**/*",
+        "./__tests__/**/*",
+        "./typings/**"
+    ],
+    "exclude": [
+      "node_modules"
+    ]
+}

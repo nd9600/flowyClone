@@ -1,4 +1,4 @@
-import {getTagsInString} from "../../base/task.js";
+import {getTagsInString} from "../../base/task.ts";
 import STORAGE_KEY from "../key.js";
 import firebaseDB from "../../firebaseConfig.js";
 

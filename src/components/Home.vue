@@ -97,7 +97,7 @@
     import Settings from "./Settings.vue";
     import Clipboard from "./Clipboard.vue";
     import Firebase from "./Firebase.vue";
-    import * as task from "../base/task.js";
+    import * as task from "../base/task.ts";
 
     export default {
         name: "home",

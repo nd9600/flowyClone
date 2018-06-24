@@ -27,7 +27,7 @@ Array.prototype.diff = function (a) {
 };
 
 // extracts all keys in vs from an object
-function extract(obj, vs) {
+function extract(obj: Object, vs: string[]) {
     let new_obj = {};
     vs.forEach((v) => {
         new_obj[v] = obj[v];
@@ -36,6 +36,6 @@ function extract(obj, vs) {
 }
 
 // clones an object and changes some of its properties
-function cloneAndModify(obj, properties) {
+function cloneAndModify(obj: Object, properties: Object) {
     return Object.assign(JSON.parse(JSON.stringify(obj)), properties);
 }

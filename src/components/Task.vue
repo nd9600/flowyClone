@@ -138,7 +138,7 @@
 <script>
     import {mapGetters, mapMutations} from "vuex";
     import DetailedTask from "./DetailedTask.vue";
-    import * as task from "../base/task.js";
+    import * as task from "../base/task.ts";
 
     export default {
         name: "task",

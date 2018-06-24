@@ -1,13 +1,16 @@
 var path = require('path')
 var webpack = require('webpack')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
-  entry: './src/main.js',
+  entry: './src/main.ts',
   output: {
     path: path.resolve(__dirname, './static/js/tasks'),
     publicPath: 'static/js/tasks/',
     filename: 'build.js'
   },
+  mode: process.env.NODE_ENV || 'development',
   module: {
     rules: [
       {
@@ -25,10 +28,17 @@ module.exports = {
           // other vue-loader options go here
         }
       },
+      //no need to use babel-loader too - https://stackoverflow.com/a/49081970
       {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+
+          // disable type checker - we will use it in fork plugin
+          transpileOnly: true 
+        }
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
@@ -39,11 +49,16 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new VueLoaderPlugin(),
+    new ForkTsCheckerWebpackPlugin()
+  ],
   resolve: {
+    extensions: ['.ts', '.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js'
-    },
-    extensions: ['*', '.js', '.vue', '.json']
+      'vue$': 'vue/dist/vue.esm.js',
+      'components': path.resolve(__dirname, 'src/components/'),
+    }
   },
   devServer: {
     historyApiFallback: true,

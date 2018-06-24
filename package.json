@@ -5,6 +5,15 @@
   "author": "Nathan Douglas <nd9600@gmail.com>",
   "license": "MIT",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nd9600/flowyClone.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nd9600/flowyClone/issues"
+  },
+  "homepage": "https://github.com/nd9600/flowyClone#readme",
+  "main": "main.ts",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
@@ -16,28 +25,32 @@
     "vue": "^2.5.11",
     "vuex": "^3.0.1"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
   "devDependencies": {
+    "@types/jest": "^23.1.1",
     "@vue/test-utils": "^1.0.0-beta.18",
     "babel-core": "^6.26.0",
     "babel-jest": "^23.0.1",
-    "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^5.1.6",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
+    "fork-ts-checker-webpack-plugin": "^0.4.2",
     "jest": "^23.1.0",
+    "ts-jest": "^22.4.6",
+    "ts-loader": "^4.4.1",
+    "typescript": "^2.9.2",
     "vue-jest": "^2.6.0",
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
   },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
   "babel": {
     "presets": [
       [
@@ -68,15 +81,21 @@
     "globals": {
       "NODE_ENV": "test"
     },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
+      "ts",
+      "tsx",
       "js",
-      "vue"
+      "jsx",
+      "json",
+      "node"
     ],
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
     },
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest",
       ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
     },
     "testPathIgnorePatterns": [

@@ -8,7 +8,30 @@ import Task from "./components/Task.vue";
 import Modal from "./components/Modal.vue";
 
 //imported so that we get the array functions
-import {extract, cloneAndModify} from "./base/useful_functions.js";
+import {extract, cloneAndModify} from "./base/useful_functions.ts";
+
+interface Array {
+  unique(): Array;
+  flatten(): Array;
+  flattenDeep(): Array;
+  diff(a: Array): Array;
+}
+
+interface Object {
+  assign(): Object;
+}
+
+interface Task {
+  id: number,
+  content: string,
+  description: string,
+  complete: string,
+  author: string,
+  link: string,
+  tasks: Task[],
+  parent?: string|number,
+  bold: boolean
+}
 
 Vue.component("tasks", Tasks);
 Vue.component("tags", Tags);
@@ -22,4 +45,6 @@ Vue.directive('resize-on-insert', {
   }
 });
 
-new Vue(App);
+new App({
+  el: "#app"
+});
