@@ -19,11 +19,11 @@
                 "changeSearchTerm"
             ]),
             ...mapActions([
-                "initialiseTasks"
+                "initialiseApp"
             ]),
         },
         created: function() {
-            this.initialiseTasks();
+            this.initialiseApp();
             
             //clear the search term when escape is pressed
             //arrow function preserves context

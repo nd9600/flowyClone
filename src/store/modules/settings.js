@@ -1,3 +1,5 @@
+import STORAGE_KEY from "../key.js";
+
 const state = {
     showChildren: true,
     storageMethod: "localStorage",
@@ -25,11 +27,31 @@ const mutations = {
     },
     setFirebaseStateKey: (state, newValue) => {
         state.firebaseStateKey = newValue;
-    }
+    },
+
+    initialiseSettingsWithObject: (state, storageObjectString) => {
+        if (! storageObjectString) {
+            return;
+        }
+        let storageObject = JSON.parse(storageObjectString);
+
+        if (storageObject.settings) {
+            state.storageMethod = storageObject.settings.storageMethod;
+            state.firebaseStateKey = storageObject.settings.firebaseStateKey;
+        }
+    },
 };
+
+const actions = {
+    initialiseSettings(context) {
+        let storageObjectString = localStorage.getItem(STORAGE_KEY);
+        context.commit("initialiseSettingsWithObject", storageObjectString);
+    },
+}
 
 export default {
     state,
     getters,
-    mutations
+    mutations,
+    actions
 }
