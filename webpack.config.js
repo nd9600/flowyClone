@@ -1,6 +1,8 @@
 var path = require('path')
 var webpack = require('webpack')
 
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 module.exports = {
   entry: './src/main.js',
   output: {
@@ -53,7 +55,10 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+  plugins: [
+    new BundleAnalyzerPlugin()
+  ]
 }
 
 if (process.env.NODE_ENV === 'production') {
