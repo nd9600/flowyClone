@@ -5,7 +5,7 @@
             <input
                 ref="newTaskInput"
                 v-model="newTask"
-                @keyup.enter="addTask"
+                @keyup.enter="addTaskFromInput"
                 type="search"
                 class="inputBox"
                 placeholder="New task"
@@ -87,8 +87,11 @@
             <p v-if="visibility !== 'completed'"
                style="color: #999;"
             >{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p>
-
         </section>
+        <div
+            @click="addTask()"
+            class="bottomRightButton"
+        >+</div>
     </div>
 </template>
 
@@ -125,12 +128,14 @@
                 "setCurrentTopRightTab"
             ]),
 
-            addTask() {
+            addTaskFromInput() {
                 let value = this.newTask && this.newTask.trim();
                 if (!value) {
                     return;
                 }
-
+                this.addTask(value);
+            },
+            addTask(value = "") {
                 this.incrementTaskStorageUID();
                 let newTask = new task.TaskObject({
                     id: this.taskStorageUID,
@@ -295,4 +300,33 @@
         background: #f0f0f0;
         color: #34495e;;
     }
+
+    .bottomRightButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: absolute;
+        bottom: 25%;
+        right: 22%;
+        width: 30px;
+        height: 30px;
+        border-radius:100%;
+        padding: 10px;
+        cursor: pointer;
+
+        background-color: #F44336;
+        background: #F44336;
+        border: none;
+        outline: none;
+        color: #FFF;
+        opacity: 0.5;
+        font-size: 36px;
+        box-shadow: 6px 6px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
+    .bottomRightButton:hover {
+        opacity: 1;
+        box-shadow: 6px 6px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46);
+    }
+
 </style>
