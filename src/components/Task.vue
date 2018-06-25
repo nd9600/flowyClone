@@ -36,6 +36,7 @@
                         <a @click="bold">Bold</a>
                         <div class="separator"></div>
                         <a @click="addNewTask(); toggleContextMenu()">Add new child</a>
+                        <a @click="displayModal(); toggleContextMenu()">Edit</a>
                         <a @click="deleteTask(); toggleContextMenu()">Delete</a>
                         <div class="separator"></div>
                         <a @click="copyTask">Copy</a>
@@ -53,6 +54,7 @@
                         ref="taskInput"
                         v-resize-on-insert
                         v-model="taskContent"
+                        :id="`task-${task.id}-input`"
                         :class="{
                             bold: task.bold, 
                             completed: task.complete
@@ -136,6 +138,7 @@
 </template>
 
 <script>
+    import Vue from "vue";
     import {mapGetters, mapMutations} from "vuex";
     import DetailedTask from "./DetailedTask.vue";
     import * as task from "../base/task.js";
@@ -176,9 +179,9 @@
 
             bold() {
                 this.task.bold = !this.task.bold;
-                setTimeout(() => {
+                Vue.nextTick(() => {
                     Stretchy.resize(this.$refs.taskInput)
-                }, 0);
+                });
                 this.toggleContextMenu();
                 this.setTask(this.task);
             },
@@ -191,6 +194,10 @@
                 });
                 this.setTask(newTask);
                 this.addTaskToTask({taskID: this.task.id, newTaskID: newTask.id});
+
+                Vue.nextTick(() => {
+                    document.getElementById(`task-${newTask.id}-input`).focus();
+                });
             },
             deleteTask() {
                 let confirm = window.confirm("Are you sure you want to delete this?");

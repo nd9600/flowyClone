@@ -93,6 +93,7 @@
 </template>
 
 <script>
+    import Vue from "vue";
     import {mapGetters, mapMutations} from "vuex";
     import Settings from "./Settings.vue";
     import Clipboard from "./Clipboard.vue";
@@ -131,14 +132,18 @@
                 }
 
                 this.incrementTaskStorageUID();
-                let newTaskObject = new task.TaskObject({
+                let newTask = new task.TaskObject({
                     id: this.taskStorageUID,
                     content: value,
                     parent: "root"
                 });
-                this.setTask(newTaskObject);
-                this.addTaskToRoot(newTaskObject["id"]);
+                this.setTask(newTask);
+                this.addTaskToRoot(newTask.id);
                 this.newTask = "";
+
+                Vue.nextTick(() => {
+                    document.getElementById(`task-${newTask.id}-input`).focus();
+                });
             }
         },
         computed: {
