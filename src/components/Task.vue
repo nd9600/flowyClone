@@ -138,7 +138,6 @@
 </template>
 
 <script>
-    import Vue from "vue";
     import {mapGetters, mapMutations} from "vuex";
     import DetailedTask from "./DetailedTask.vue";
     import * as task from "../base/task.js";
@@ -179,7 +178,7 @@
 
             bold() {
                 this.task.bold = !this.task.bold;
-                Vue.nextTick(() => {
+                this.$nextTick(() => {
                     Stretchy.resize(this.$refs.taskInput)
                 });
                 this.toggleContextMenu();
@@ -195,7 +194,7 @@
                 this.setTask(newTask);
                 this.addTaskToTask({taskID: this.task.id, newTaskID: newTask.id});
 
-                Vue.nextTick(() => {
+                this.$nextTick(() => {
                     document.getElementById(`task-${newTask.id}-input`).focus();
                 });
             },

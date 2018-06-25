@@ -96,7 +96,6 @@
 </template>
 
 <script>
-    import Vue from "vue";
     import {mapGetters, mapMutations} from "vuex";
     import Settings from "./Settings.vue";
     import Clipboard from "./Clipboard.vue";
@@ -146,7 +145,7 @@
                 this.addTaskToRoot(newTask.id);
                 this.newTask = "";
 
-                Vue.nextTick(() => {
+                this.$nextTick(() => {
                     document.getElementById(`task-${newTask.id}-input`).focus();
                 });
             }
