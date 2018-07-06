@@ -28,7 +28,11 @@ export default {
                     return this.undone.length > 0;
                 },
                 canUndo() {
-                    return this.done.length > 0;
+                    let lastMutation = this.done[this.done.length - 1];
+                    if (lastMutation) {
+                        console.log(lastMutation.type);
+                    }
+                    return (this.done.length > 0) && (lastMutation) && (lastMutation.type !== "initialiseSettingsWithObject") && (lastMutation.type !== "initialiseTasksWithObject");
                 }
             },
             methods: {
@@ -50,6 +54,7 @@ export default {
                     this.newMutation = false;
                     this.$store.commit(EMPTY_STATE);
                     this.done.forEach(mutation => {
+                        console.log(mutation);
                         this.$store.commit(`${mutation.type}`, Object.assign({}, mutation.payload));
                         this.done.pop();
                     });

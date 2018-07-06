@@ -22,9 +22,11 @@
                 "initialiseApp"
             ]),
         },
-        created: function() {
-            this.initialiseApp();
-            
+        mounted: function() {
+            setTimeout(() => {
+                this.initialiseApp();
+            }, 1000);
+
             //clear the search term when escape is pressed
             //arrow function preserves context
             window.addEventListener('keyup', (event) => {

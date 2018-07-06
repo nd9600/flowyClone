@@ -25,7 +25,7 @@ Vue.directive('resize-on-insert', {
 
 Vue.use(UndoRedoPlugin, {
     ignoreMutations: [
-        "initialiseSettingsWithObject", "incrementTaskChangeTracker" , "initialiseTasksWithObject", "setClipboard", "setClipboardMode", "changeSearchTerm", "setShowChildren", "incrementTaskStorageUID", "changeShowInnerTasks", "setCurrentTopRightTab"
+        "incrementTaskChangeTracker", "setClipboard", "setClipboardMode", "changeSearchTerm", "setShowChildren", "incrementTaskStorageUID", "changeShowInnerTasks", "setCurrentTopRightTab"
     ]
 });
 
