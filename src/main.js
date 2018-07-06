@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import UndoRedoPlugin from "./store/UndoRedoPlugin.js";
 
 import App from './App.vue';
 
@@ -20,6 +21,12 @@ Vue.directive('resize-on-insert', {
   inserted: function (el) {
     Stretchy.resize(el);
   }
+});
+
+Vue.use(UndoRedoPlugin, {
+    ignoreMutations: [
+        "initialiseSettingsWithObject", "incrementTaskChangeTracker" , "initialiseTasksWithObject", "setClipboard", "setClipboardMode", "changeSearchTerm", "setShowChildren", "incrementTaskStorageUID", "changeShowInnerTasks", "setCurrentTopRightTab"
+    ]
 });
 
 new Vue(App);

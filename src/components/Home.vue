@@ -1,7 +1,15 @@
 <template>
     <div id="home">
         <header style="display: inline-block;">
-            <h1>Home</h1>
+            <div>
+                <h1>Home</h1>
+
+                <button v-if="this.canUndo" @click="this.undo">Undo</button>
+                <button v-else disabled>Undo</button>
+
+                <button v-if="this.canRedo" @click="this.redo">Redo</button>
+                <button v-else disabled>Redo</button>
+            </div>
             <input
                 ref="newTaskInput"
                 v-model="newTask"

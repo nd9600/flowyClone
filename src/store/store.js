@@ -23,6 +23,32 @@ const store = new Vuex.Store({
         settingsModule,
         clipboardModule,
         topRightTabsModule
+    },
+    mutations: {
+        emptyState() {
+            let initialState = {
+                "storageModule": {},
+                "tasksModule": {
+                    "tasks": {
+                        "_custom": {
+                            "type": "map",
+                            "display": "Map",
+                            "value": [],
+                            "readOnly": true,
+                            "fields": {"abstract": true}
+                        }
+                    }, "tasksChangeTracker": 1, "rootTaskIDs": [], "taskStorageUID": 0, "showInnerTasks": true
+                },
+                "searchTermModule": {"searchTerm": ""},
+                "settingsModule": {"showChildren": true, "storageMethod": "localStorage", "firebaseStateKey": "test"},
+                "clipboardModule": {"clipboard": null, "clipboardMode": "copy"},
+                "topRightTabsModule": {"currentTopRightTab": "settings"}
+            };
+            this.replaceState(initialState);
+
+            //maps aren't replaced properly
+            this.state.tasksModule.tasks = new Map();
+        }
     }
 });
 

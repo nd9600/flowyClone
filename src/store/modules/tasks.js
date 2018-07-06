@@ -169,7 +169,7 @@ const actions = {
         //have to stringify it because firebase doesn't store empty arrays
         firebaseDB.ref("states/" + stateKey).set(JSON.stringify(storageObject));
     }
-}
+};
 
 export default {
     state,
