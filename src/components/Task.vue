@@ -86,11 +86,11 @@
                     >{{task.description}}</p>
                 </div>
 
-                <div 
-                    v-if="task.link.length > 0"
+                <div
                     class="leftIndent"
                 >
                     <a
+                        v-if="task.link.length > 0"
                         :href="task.link"
                     >
                         link
@@ -350,6 +350,7 @@
     }
     .completed {
         opacity: 0.4;
+        text-decoration: line-through solid currentcolor;
     }
 
     .showHide {
@@ -443,20 +444,6 @@
     .dangerBtn:hover {
         background-color: #e00808;
         border: 1px solid #e00808;
-    }
-
-    .strikethrough {
-        position: relative;
-        color: #999;
-    }
-
-    .strikethrough:before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 0;
-        border-bottom: 1px solid #111;
-        width: 100%;
     }
 
     .bold {

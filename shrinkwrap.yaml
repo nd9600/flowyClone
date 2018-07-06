@@ -14,6 +14,7 @@ devDependencies:
   css-loader: 0.28.11
   file-loader: 1.1.11
   jest: 23.3.0
+  vue-hot-reload-api: 2.3.0
   vue-jest: 2.6.0
   vue-loader: 13.7.2
   vue-style-loader: 4.1.0
@@ -7200,6 +7201,7 @@ specifiers:
   jest: ^23.1.0
   lodash.debounce: ^4.0.8
   vue: ^2.5.11
+  vue-hot-reload-api: ^2.3.0
   vue-jest: ^2.6.0
   vue-loader: ^13.7.2
   vue-style-loader: ^4.1.0
