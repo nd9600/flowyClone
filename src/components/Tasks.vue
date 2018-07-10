@@ -1,5 +1,6 @@
 <template>
     <div class="tasksList">
+        <p>{{this.shownTaskIDs}}</p>
         <task
             v-for="taskID in this.taskIDs"
             @deleteTask="deleteInnerTask"
@@ -11,7 +12,7 @@
 </template>
 
 <script>
-    import {mapMutations} from "vuex";
+    import {mapGetters, mapMutations} from "vuex";
 
     export default {
         name: "tasks",
@@ -31,6 +32,14 @@
                     })
                 }
                 this.deleteTask(taskID);
+            }
+        },
+        computed: {
+            ...mapGetters([
+                "shownTaskIDs"
+            ]),
+            filteredTaskIDs() {
+                return this.taskIDs.filter(id => this.shownTaskIDs.indexOf(id) > 0);
             }
         }
     }

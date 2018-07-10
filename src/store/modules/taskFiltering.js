@@ -1,3 +1,5 @@
+import {filters as taskFilters} from "../../base/task.js";
+
 const state = {
     searchTerm: "",
     visibility: "all"
@@ -12,21 +14,34 @@ const getters = {
     },
 
     shownTaskIDs(state, gettersArg) {
-        let currentSearchTerm = gettersArg.searchTerm && gettersArg.searchTerm.trim();
+        let filteredTaskIDs = gettersArg.filteredTaskIDs;
+        let shownTaskIDs = filteredTaskIDs;
+        //now recurse up to the root, adding all parent IDs
 
-        let shouldShowInnerTasks = (gettersArg.visibility === "all" && currentSearchTerm.length === 0);
-        if (shouldShowInnerTasks) {
-            return gettersArg.rootTasks;
+        return shownTaskIDs;
+    },
+
+    filteredTaskIDs(state, gettersArg) {
+        const allTaskIDs = gettersArg.tasksAsArray.map(task => task.id);
+        console.log(allTaskIDs);
+
+        let currentSearchTerm = gettersArg.searchTerm && gettersArg.searchTerm.trim();
+        let shouldShowAllTasks = (gettersArg.visibility === "all" && currentSearchTerm.length === 0);
+        if (shouldShowAllTasks) {
+            return allTaskIDs;
         }
 
         if (!currentSearchTerm) {
-            return task.filters[gettersArg.visibility](gettersArg.tasksAsArray);
+            return taskFilters[gettersArg.visibility](gettersArg.tasksAsArray)
+                .map(task => task.id);
         }
 
-        let tasksContainingSearchTerm = gettersArg.tasksAsArray.filter(task =>
-            task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) > -1
-        );
-        return task.filters[gettersArg.visibility](tasksContainingSearchTerm);
+        let tasksContainingSearchTerm = gettersArg.tasksAsArray.filter(task => {
+            console.log(task);
+            return task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) > -1
+        });
+        return taskFilters[gettersArg.visibility](tasksContainingSearchTerm)
+            .map(task => task.id);
     }
 };
 
