@@ -146,7 +146,10 @@
                 this.newTask = "";
 
                 this.$nextTick(() => {
-                    document.getElementById(`task-${newTask.id}-input`).focus();
+                    let addedTaskInput = document.getElementById(`task-${newTask.id}-input`);
+                    if (addedTaskInput) {
+                        addedTaskInput.focus();
+                    }
                 });
             }
         },
