@@ -63,7 +63,7 @@ const getters = {
 
     showInnerTasks(state, gettersArg) {
         return state.showInnerTasks;
-    },
+    }
 };
 
 const mutations = {

@@ -4,7 +4,7 @@ import Vuex from "vuex";
 import STORAGE_KEY from "./key.js";
 import storageModule from "./modules/storage.js";
 import tasksModule from "./modules/tasks.js";
-import searchTermModule from "./modules/searchTerm.js";
+import taskFilteringModule from "./modules/taskFiltering.js";
 import settingsModule from "./modules/settings.js";
 import clipboardModule from "./modules/clipboard.js";
 import topRightTabsModule from "./modules/topRightTabs.js";
@@ -19,7 +19,7 @@ const store = new Vuex.Store({
     modules: {
         storageModule,
         tasksModule,
-        searchTermModule,
+        taskFilteringModule,
         settingsModule,
         clipboardModule,
         topRightTabsModule
