@@ -8,7 +8,7 @@ import Task from "./components/Task.vue";
 import Modal from "./components/Modal.vue";
 
 //imported so that we get the array functions
-import {extract, cloneAndModify} from "./base/useful_functions.js";
+import {extract, cloneAndModify, arraymove} from "./base/useful_functions.js";
 
 Vue.component("tasks", Tasks);
 Vue.component("tags", Tags);

@@ -44,6 +44,10 @@
 
                         <!-- you shouldn't be able to paste a task into itself -->
                         <a v-if="this.clipboard != null && this.clipboard !== this.taskID" @click="pasteInto">Paste into</a>
+
+                        <div class="separator"></div>
+                        <a @click="moveUp">Move up</a>
+                        <a @click="moveDown">Move down</a>
                     </div>
                 </div>
 
@@ -141,6 +145,7 @@
     import {mapGetters, mapMutations} from "vuex";
     import DetailedTask from "./DetailedTask.vue";
     import * as task from "../base/task.js";
+    import {arraymove} from "../base/useful_functions.js";
 
     export default {
         name: "task",
@@ -159,6 +164,7 @@
             ...mapMutations([
                 "incrementTaskStorageUID",
                 "setTask",
+                "setRootTaskIDs",
                 "addTaskToTask",
                 "setClipboard",
                 "setClipboardMode",
@@ -269,6 +275,53 @@
                 this.task.tasks.push(taskIDToPaste);
                 this.toggleContextMenu();
             },
+            moveUp() {
+                let parentTaskID = this.task.parent;
+                if (parentTaskID === "root"){
+                    let rootTaskIDs = JSON.parse(JSON.stringify(this.rootTaskIDs));
+                    let parentTaskIDIndex = rootTaskIDs.indexOf(this.task.id);
+                    let newPosition = parentTaskIDIndex - 1;
+                    if (newPosition < 0) {
+                        newPosition = rootTaskIDs.length;
+                    }
+                    arraymove(rootTaskIDs, parentTaskIDIndex, newPosition);
+                    this.setRootTaskIDs(rootTaskIDs);
+                } else {
+                    let parentTask = this.taskByID(parentTaskID);
+                    let parentTaskIDIndex = parentTask.tasks.indexOf(this.task.id);
+                    let newPosition = parentTaskIDIndex - 1;
+                    if (newPosition < 0) {
+                        newPosition = parentTask.tasks.length;
+                    }
+                    arraymove(parentTask.tasks, parentTaskIDIndex, newPosition);
+                    this.setTask(parentTask);
+                }
+                this.toggleContextMenu();
+            },
+
+            moveDown() {
+                let parentTaskID = this.task.parent;
+                if (parentTaskID === "root"){
+                    let rootTaskIDs = JSON.parse(JSON.stringify(this.rootTaskIDs));
+                    let parentTaskIDIndex = rootTaskIDs.indexOf(this.task.id);
+                    let newPosition = parentTaskIDIndex + 1;
+                    if (newPosition === rootTaskIDs.length) {
+                        newPosition = 0;
+                    }
+                    arraymove(rootTaskIDs, parentTaskIDIndex, newPosition);
+                    this.setRootTaskIDs(rootTaskIDs);
+                } else {
+                    let parentTask = this.taskByID(parentTaskID);
+                    let parentTaskIDIndex = parentTask.tasks.indexOf(this.task.id);
+                    let newPosition = parentTaskIDIndex + 1;
+                    if (newPosition === parentTask.tasks.length) {
+                        newPosition = 0;
+                    }
+                    arraymove(parentTask.tasks, parentTaskIDIndex, newPosition);
+                    this.setTask(parentTask);
+                }
+                this.toggleContextMenu();
+            },
 
             displayModal() {
                 this.showModal = true;
@@ -282,6 +335,7 @@
         computed: {
             ...mapGetters([
                 "taskStorageUID",
+                "rootTaskIDs",
                 "taskByID",
                 "tasksInTask",
                 "tagsInTask",
@@ -455,8 +509,6 @@
 
     .smallText {
         display: inline;
-        margin-top: 0;
-        margin-bottom: 0;
         font-size: 1.2rem;
         color: #696969;
     }

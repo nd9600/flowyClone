@@ -21,7 +21,7 @@
           <div class="separator"></div>
           <div class="modal-footer">
             <slot name="footer">
-              &#8203
+              &#8203;
               <button class="modal-default-button" @click="$emit('close')">
                 OK
               </button>

@@ -110,6 +110,10 @@ const mutations = {
         mutations.incrementTaskChangeTracker(state);
     },
 
+    setRootTaskIDs(state, newRootTaskIDs) {
+        state.rootTaskIDs = newRootTaskIDs;
+    },
+
     removeTaskFromRoot(state, taskID) {
         let rootTaskIDIndex = state.rootTaskIDs.indexOf(taskID);
         if (rootTaskIDIndex > -1) {

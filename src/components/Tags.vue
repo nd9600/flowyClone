@@ -3,6 +3,7 @@
     <span class="tags"> &#8203;
         <a
             v-for="tag in this.tags"
+            :key="tag"
             class="tagLink"
             @click.prevent="updateSearchTerm"
         >

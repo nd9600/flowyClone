@@ -1,4 +1,4 @@
-export {extract, cloneAndModify};
+export {extract, cloneAndModify, arraymove};
 
 Array.prototype.unique = function () {
     return this.map(JSON.stringify).reverse().filter(function (e, i, a) {
@@ -38,4 +38,10 @@ function extract(obj, vs) {
 // clones an object and changes some of its properties
 function cloneAndModify(obj, properties) {
     return Object.assign(JSON.parse(JSON.stringify(obj)), properties);
+}
+
+function arraymove(arr, fromIndex, toIndex) {
+    var element = arr[fromIndex];
+    arr.splice(fromIndex, 1);
+    arr.splice(toIndex, 0, element);
 }
