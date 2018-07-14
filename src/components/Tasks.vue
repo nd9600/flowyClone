@@ -35,10 +35,33 @@
         },
         computed: {
             ...mapGetters([
-                "shownTaskIDs"
+                "shownTaskIDs",
+                "searchTerm"
             ]),
+
+            //or set a variable in all tasks to show all children?
+            
+            parentContainsTheSearchedTag() {
+                if (! (this.searchTerm && this.searchTerm[0] === "#")) {
+                    return false;
+                }
+
+                //at the root
+                if (this.outerTaskID) {
+                    return false;
+                }
+
+                function recurse(taskID) {
+                    //get parent
+                    //if parent contains tag, return true
+                    //if parent has parent, check
+                    //if parent doesn't have parent, return false
+                }
+
+                return true;
+            },
             filteredTaskIDs() {
-                return this.taskIDs.filter(id => this.shownTaskIDs.indexOf(id) > -1);
+                return (this.parentContainsTheSearchedTag) ? this.taskIDs : this.taskIDs.filter(id => this.shownTaskIDs.indexOf(id) > -1);
             }
         }
     }
