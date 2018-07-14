@@ -1,6 +1,5 @@
 <template>
     <div class="tasksList">
-        <p>taskIDs: {{this.taskIDs}}, shown: {{this.shownTaskIDs}}, filtered: {{this.filteredTaskIDs}}</p>
         <task
             v-for="taskID in this.filteredTaskIDs"
             @deleteTask="deleteInnerTask"

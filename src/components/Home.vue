@@ -80,7 +80,7 @@
         <section>
             <tasks
                 :outerTaskID="null"
-                :taskIDs="filteredTaskIDs"
+                :taskIDs="rootTaskIDs"
             >
             </tasks>
 
@@ -160,6 +160,7 @@ export default {
       "tasksAsArray",
       "taskByID",
       "rootTasks",
+      "rootTaskIDs",
       "tagsInTasks",
       "taskStorageUID",
       "searchTerm",

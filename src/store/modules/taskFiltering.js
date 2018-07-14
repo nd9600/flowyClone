@@ -20,8 +20,6 @@ const getters = {
 
         function getParentTasks(taskID) {
             let thisTask = gettersArg.taskByID(taskID);
-            console.log(taskID);
-            console.log(thisTask);
             if (thisTask.parent && thisTask.parent !== "root") {
                 return [taskID].concat(...getParentTasks(thisTask.parent));
             }
@@ -33,7 +31,6 @@ const getters = {
 
     filteredTaskIDs(state, gettersArg) {
         const allTaskIDs = gettersArg.tasksAsArray.map(task => task.id);
-        console.log(allTaskIDs);
 
         let currentSearchTerm = gettersArg.searchTerm && gettersArg.searchTerm.trim();
         let shouldShowAllTasks = (gettersArg.visibility === "all" && currentSearchTerm.length === 0);
@@ -47,7 +44,6 @@ const getters = {
         }
 
         let tasksContainingSearchTerm = gettersArg.tasksAsArray.filter(task => {
-            console.log(task);
             return task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) > -1
         });
         return taskFilters[gettersArg.visibility](tasksContainingSearchTerm)
