@@ -1,8 +1,8 @@
 <template>
     <div class="tasksList">
-        <p>{{this.shownTaskIDs}}</p>
+        <p>taskIDs: {{this.taskIDs}}, shown: {{this.shownTaskIDs}}, filtered: {{this.filteredTaskIDs}}</p>
         <task
-            v-for="taskID in this.taskIDs"
+            v-for="taskID in this.filteredTaskIDs"
             @deleteTask="deleteInnerTask"
             :taskID="taskID"
             :key="taskID"
@@ -39,7 +39,7 @@
                 "shownTaskIDs"
             ]),
             filteredTaskIDs() {
-                return this.taskIDs.filter(id => this.shownTaskIDs.indexOf(id) > 0);
+                return this.taskIDs.filter(id => this.shownTaskIDs.indexOf(id) > -1);
             }
         }
     }

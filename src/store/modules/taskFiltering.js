@@ -18,7 +18,17 @@ const getters = {
         let shownTaskIDs = filteredTaskIDs;
         //now recurse up to the root, adding all parent IDs
 
-        return shownTaskIDs;
+        function getParentTasks(taskID) {
+            let thisTask = gettersArg.taskByID(taskID);
+            console.log(taskID);
+            console.log(thisTask);
+            if (thisTask.parent && thisTask.parent !== "root") {
+                return [taskID].concat(...getParentTasks(thisTask.parent));
+            }
+            return [taskID];
+        }
+
+        return shownTaskIDs.map(getParentTasks).flatten().unique();
     },
 
     filteredTaskIDs(state, gettersArg) {

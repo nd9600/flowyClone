@@ -182,9 +182,9 @@ export default {
     filteredTasks() {
       let currentSearchTerm = this.searchTerm && this.searchTerm.trim();
 
-      let shouldShowInnerTasks =
+      let shouldShowAllTasks =
         this.visibility === "all" && currentSearchTerm.length === 0;
-      if (shouldShowInnerTasks) {
+      if (shouldShowAllTasks) {
         return this.rootTasks;
       }
 
