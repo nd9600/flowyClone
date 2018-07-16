@@ -3,7 +3,7 @@
   <transition name="modal">
     <div>
 
-      <!-- the modal mask can't be a parent of the model, because it would above it then -->
+      <!-- the modal mask can't be a parent of the model, because the mask would be on-top of it, and you wouldn't be able to click on the modal -->
       <div @click="$emit('close')" class="modal-mask">
       </div>
       <div class="modal-wrapper">
