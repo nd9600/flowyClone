@@ -45,6 +45,7 @@ module.exports = {
         ]
     },
     plugins: [
+        // new webpack.HashedModuleIdsPlugin(),
         new VueLoaderPlugin()
     ],
     resolve: {
@@ -53,9 +54,25 @@ module.exports = {
         },
         extensions: ['*', '.js', '.vue', '.json']
     },
+    optimization: {
+        minimize: true,
+        // runtimeChunk: {
+        //     name: "runtime"
+        // },
+        // splitChunks: {
+        //     cacheGroups: {
+        //         vendor: {
+        //             test: /[\\/]node_modules[\\/]/,
+        //             name: "vendors",
+        //             chunks: "all",
+        //             minChunks: 1
+        //         }
+        //     }
+        // }
+    },
     devServer: {
         historyApiFallback: true,
-        noInfo: true,
+        noInfo: false,
         overlay: true
     },
     performance: {
