@@ -1,58 +1,66 @@
 <template>
     <div id="settings">
         <label>
-            <input type="checkbox" v-model="computedShowChildren">
+            <input 
+                v-model="computedShowChildren" 
+                type="checkbox">
             show children
         </label>
         <br />
         storage method
         <label>
             localStorage
-            <input type="radio" value="localStorage" v-model="computedStorageMethod">
+            <input 
+                v-model="computedStorageMethod" 
+                type="radio" 
+                value="localStorage">
         </label>
         <label>
             firebase
-            <input type="radio" value="firebase" v-model="computedStorageMethod">
+            <input 
+                v-model="computedStorageMethod" 
+                type="radio" 
+                value="firebase">
         </label>
     </div>
 </template>
 
 <script>
-    import {mapGetters, mapMutations} from "vuex";
-    export default {
-        name: "settings",
-        data() {
-            return {};
-        },
-        methods: {
-            ...mapMutations([
-                "setShowChildren",
-                "setStorageMethod"
-            ])
-        },
-        computed: {
-            ...mapGetters([
-                "showChildren",
-                "storageMethod"
-            ]),
-            computedShowChildren: {
-                get() {
-                    return this.showChildren;
-                },
-                set(value) {
-                    this.setShowChildren(value);
-                }
+import {mapGetters, mapMutations} from "vuex";
+export default {
+    name: "Settings",
+    data() {
+        return {};
+    },
+    methods: {
+        ...mapMutations([
+            "setShowChildren",
+            "setStorageMethod"
+        ])
+    },
+    computed: {
+        ...mapGetters([
+            "showChildren",
+            "storageMethod"
+        ]),
+        computedShowChildren: {
+            get() {
+                return this.showChildren;
             },
-            computedStorageMethod: {
-                get() {
-                    return this.storageMethod;
-                },
-                set(value) {
-                    this.setStorageMethod(value);
-                }
+            set(value) {
+                this.setShowChildren(value);
+            }
+        },
+        computedStorageMethod: {
+            get() {
+                return this.storageMethod;
+            },
+            set(value) {
+                this.setStorageMethod(value);
             }
         }
     }
+};
 </script>
 
 <style scoped>

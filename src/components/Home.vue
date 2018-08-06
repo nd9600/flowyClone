@@ -5,18 +5,18 @@
             <input
                 ref="newTaskInput"
                 v-model="newTask"
-                @keyup.enter="addTaskFromInput"
                 type="search"
                 class="inputBox"
                 placeholder="New task"
+                @keyup.enter="addTaskFromInput"
             >
 
             <!-- there are two divs so that the visibility switches are on a new line -->
             <div>
                 <div
+                    class="searchBoxWrapper"
                     @mouseover="showClearButton = true"
                     @mouseleave="showClearButton = false"
-                    class="searchBoxWrapper"
                 >
                     <input
                         ref="searchInput"
@@ -27,24 +27,24 @@
                     >
                     <a
                         v-if="showClearButton"
-                        @click="computedSearchTerm = ''"
                         class="clearButton"
+                        @click="computedSearchTerm = ''"
                     >x</a>
                 </div>
             </div>
 
             <span>
                 <a
-                    @click="localVisibility = 'all'"
                     :class="{ selected: localVisibility === 'all' }"
+                    @click="localVisibility = 'all'"
                 >all</a>
                 <a
-                    @click="localVisibility = 'active'"
                     :class="{ selected: localVisibility === 'active' }"
+                    @click="localVisibility = 'active'"
                 >active</a>
                 <a
-                    @click="localVisibility = 'completed'"
                     :class="{ selected: localVisibility === 'completed' }"
+                    @click="localVisibility = 'completed'"
                 >completed</a>
             </span>
 
@@ -57,19 +57,21 @@
         </header>
         <div id="topRight">
             <div id="topRightButtons">
-                <button @click="setCurrentTopRightTab('settings')" class="topRightButton"
+                <button 
+                    class="topRightButton" 
+                    @click="setCurrentTopRightTab('settings')"
                 >Settings
                 </button>
                 <button 
                     v-if="this.clipboard !== null"
-                    @click="setCurrentTopRightTab('clipboard')" 
-                    class="topRightButton"
+                    class="topRightButton" 
+                    @click="setCurrentTopRightTab('clipboard')"
                 >Clipboard
                 </button>
                 <button 
                     v-if="this.storageMethod === 'firebase'"
-                    @click="setCurrentTopRightTab('firebase')" 
-                    class="topRightButton"
+                    class="topRightButton" 
+                    @click="setCurrentTopRightTab('firebase')"
                 >Firebase
                 </button>
             </div>
@@ -79,18 +81,19 @@
         </div>
         <section>
             <tasks
-                :outerTaskID="null"
-                :taskIDs="rootTaskIDs"
+                :outer-task-id="null"
+                :task-ids="rootTaskIDs"
             >
             </tasks>
 
-            <p v-if="localVisibility !== 'completed'"
-               style="color: #999;"
-            >{{numberOfTasksRemaining}} {{numberOfTasksRemaining | pluralise}} left</p>
+            <p 
+                v-if="localVisibility !== 'completed'"
+                style="color: #999;"
+            >{{ numberOfTasksRemaining }} {{ numberOfTasksRemaining | pluralise }} left</p>
         </section>
         <div
-            @click="addTask()"
             class="bottomRightButton"
+            @click="addTask()"
         >+</div>
     </div>
 </template>
@@ -103,187 +106,187 @@ import Firebase from "./Firebase.vue";
 import * as task from "../base/task.js";
 
 export default {
-  name: "home",
-  data() {
-    return {
-      topRightComponent: "settings",
-      newTask: "",
-      showClearButton: false
-    };
-  },
-  components: {
-    Settings,
-    Clipboard,
-    Firebase
-  },
-  methods: {
-    ...mapMutations([
-      "incrementTaskStorageUID",
-      "changeSearchTerm",
-      "changeVisibility",
-      "setTask",
-      "addTaskToRoot",
-      "changeShowInnerTasks",
-      "setCurrentTopRightTab"
-    ]),
-
-    addTaskFromInput() {
-      let value = this.newTask && this.newTask.trim();
-      if (!value) {
-        return;
-      }
-      this.addTask(value);
+    name: "Home",
+    components: {
+        Settings,
+        Clipboard,
+        Firebase
     },
-    addTask(value = "") {
-      this.incrementTaskStorageUID();
-      let newTask = new task.TaskObject({
-        id: this.taskStorageUID,
-        content: value,
-        parent: "root"
-      });
-      this.setTask(newTask);
-      this.addTaskToRoot(newTask.id);
-      this.newTask = "";
+    data() {
+        return {
+            topRightComponent: "settings",
+            newTask: "",
+            showClearButton: false
+        };
+    },
+    methods: {
+        ...mapMutations([
+            "incrementTaskStorageUID",
+            "changeSearchTerm",
+            "changeVisibility",
+            "setTask",
+            "addTaskToRoot",
+            "changeShowInnerTasks",
+            "setCurrentTopRightTab"
+        ]),
 
-      this.$nextTick(() => {
-        let addedTaskInput = document.getElementById(
-          `task-${newTask.id}-input`
-        );
-        if (addedTaskInput) {
-          addedTaskInput.focus();
+        addTaskFromInput() {
+            let value = this.newTask && this.newTask.trim();
+            if (!value) {
+                return;
+            }
+            this.addTask(value);
+        },
+        addTask(value = "") {
+            this.incrementTaskStorageUID();
+            let newTask = new task.TaskObject({
+                id: this.taskStorageUID,
+                content: value,
+                parent: "root"
+            });
+            this.setTask(newTask);
+            this.addTaskToRoot(newTask.id);
+            this.newTask = "";
+
+            this.$nextTick(() => {
+                let addedTaskInput = document.getElementById(
+                    `task-${newTask.id}-input`
+                );
+                if (addedTaskInput) {
+                    addedTaskInput.focus();
+                }
+            });
         }
-      });
-    }
-  },
-  computed: {
-    ...mapGetters([
-      "tasksAsArray",
-      "taskByID",
-      "rootTasks",
-      "rootTaskIDs",
-      "tagsInTasks",
-      "taskStorageUID",
-      "searchTerm",
-      "visibility",
-      "clipboard",
-      "currentTopRightTab",
-      "storageMethod"
-    ]),
-
-    localVisibility: {
-      get() {
-        return this.visibility;
-      },
-      set(newValue) {
-        this.changeVisibility(newValue);
-      }
     },
+    computed: {
+        ...mapGetters([
+            "tasksAsArray",
+            "taskByID",
+            "rootTasks",
+            "rootTaskIDs",
+            "tagsInTasks",
+            "taskStorageUID",
+            "searchTerm",
+            "visibility",
+            "clipboard",
+            "currentTopRightTab",
+            "storageMethod"
+        ]),
 
-    //can filter tasks by a search term or visibility
-    filteredTasks() {
-      let currentSearchTerm = this.searchTerm && this.searchTerm.trim();
+        localVisibility: {
+            get() {
+                return this.visibility;
+            },
+            set(newValue) {
+                this.changeVisibility(newValue);
+            }
+        },
 
-      let shouldShowAllTasks =
+        //can filter tasks by a search term or visibility
+        filteredTasks() {
+            let currentSearchTerm = this.searchTerm && this.searchTerm.trim();
+
+            let shouldShowAllTasks =
         this.visibility === "all" && currentSearchTerm.length === 0;
-      if (shouldShowAllTasks) {
-        return this.rootTasks;
-      }
+            if (shouldShowAllTasks) {
+                return this.rootTasks;
+            }
 
-      if (!currentSearchTerm) {
-        return task.filters[this.visibility](this.tasksAsArray);
-      }
+            if (!currentSearchTerm) {
+                return task.filters[this.visibility](this.tasksAsArray);
+            }
 
-      let tasksContainingSearchTerm = this.tasksAsArray.filter(
-        task =>
-          task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) >
+            let tasksContainingSearchTerm = this.tasksAsArray.filter(
+                task =>
+                    task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) >
           -1
-      );
-      return task.filters[this.visibility](tasksContainingSearchTerm);
+            );
+            return task.filters[this.visibility](tasksContainingSearchTerm);
+        },
+
+        filteredTaskIDs() {
+            return this.filteredTasks.map(task => task.id);
+        },
+
+        numberOfTasksRemaining() {
+            if (this.visibility === "active") {
+                return this.filteredTaskIDs.length;
+            }
+            let vm = this;
+            function recursiveNumberOfActiveTasks(taskID) {
+                let thisTask = vm.taskByID(taskID);
+                let thisTaskIsActive = thisTask.complete ? 0 : 1;
+
+                let activeInnerTasks = thisTask.tasks.map(innerTaskID =>
+                    recursiveNumberOfActiveTasks(innerTaskID)
+                );
+                let summedActiveInnerTasks = activeInnerTasks.reduce(
+                    (acc, val) => acc + val,
+                    0
+                );
+
+                return thisTaskIsActive + summedActiveInnerTasks;
+            }
+
+            let mappedNumberOfActiveTasks = this.filteredTaskIDs.map(taskID =>
+                recursiveNumberOfActiveTasks(taskID)
+            );
+            return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val, 0);
+        },
+
+        tags() {
+            return this.tagsInTasks(this.filteredTaskIDs);
+        },
+
+        computedSearchTerm: {
+            get() {
+                return this.searchTerm;
+            },
+            set(value) {
+                this.changeSearchTerm(value);
+            }
+        }
     },
-
-    filteredTaskIDs() {
-      return this.filteredTasks.map(task => task.id);
+    filters: {
+        pluralise(n) {
+            return n === 1 ? "item" : "items";
+        }
     },
-
-    numberOfTasksRemaining() {
-      if (this.visibility === "active") {
-        return this.filteredTaskIDs.length;
-      }
-      let vm = this;
-      function recursiveNumberOfActiveTasks(taskID) {
-        let thisTask = vm.taskByID(taskID);
-        let thisTaskIsActive = thisTask.complete ? 0 : 1;
-
-        let activeInnerTasks = thisTask.tasks.map(innerTaskID =>
-          recursiveNumberOfActiveTasks(innerTaskID)
-        );
-        let summedActiveInnerTasks = activeInnerTasks.reduce(
-          (acc, val) => acc + val,
-          0
-        );
-
-        return thisTaskIsActive + summedActiveInnerTasks;
-      }
-
-      let mappedNumberOfActiveTasks = this.filteredTaskIDs.map(taskID =>
-        recursiveNumberOfActiveTasks(taskID)
-      );
-      return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val, 0);
-    },
-
-    tags() {
-      return this.tagsInTasks(this.filteredTaskIDs);
-    },
-
-    computedSearchTerm: {
-      get() {
-        return this.searchTerm;
-      },
-      set(value) {
-        this.changeSearchTerm(value);
-      }
-    }
-  },
-  filters: {
-    pluralise(n) {
-      return n === 1 ? "item" : "items";
-    }
-  },
-  watch: {
-    localVisibility() {
-      let shouldShowInnerTasks =
+    watch: {
+        localVisibility() {
+            let shouldShowInnerTasks =
         this.visibility === "all" && this.searchTerm.trim().length === 0;
-      this.changeShowInnerTasks(shouldShowInnerTasks);
-    },
-    searchTerm() {
-      let shouldShowInnerTasks =
+            this.changeShowInnerTasks(shouldShowInnerTasks);
+        },
+        searchTerm() {
+            let shouldShowInnerTasks =
         this.visibility === "all" && this.searchTerm.trim().length === 0;
-      this.changeShowInnerTasks(shouldShowInnerTasks);
-    }
-  },
-  mounted: function() {
-    window.addEventListener("keyup", event => {
-      let focusedElementIsntInput =
+            this.changeShowInnerTasks(shouldShowInnerTasks);
+        }
+    },
+    mounted: function() {
+        window.addEventListener("keyup", event => {
+            let focusedElementIsntInput =
         document.activeElement.tagName.toLowerCase() !== "input" &&
         document.activeElement.tagName.toLowerCase() !== "textarea";
 
-      switch (event.keyCode) {
-        //focus on the new task field when n is pressed and you're not in an input
-        case 78:
-          if (focusedElementIsntInput) {
-            this.$refs.newTaskInput.focus();
-          }
-          break;
+            switch (event.keyCode) {
+            //focus on the new task field when n is pressed and you're not in an input
+            case 78:
+                if (focusedElementIsntInput) {
+                    this.$refs.newTaskInput.focus();
+                }
+                break;
 
-        //focus on the search field when s is pressed
-        case 83:
-          if (focusedElementIsntInput) {
-            this.$refs.searchInput.focus();
-          }
-          break;
-      }
-    });
-  }
+                //focus on the search field when s is pressed
+            case 83:
+                if (focusedElementIsntInput) {
+                    this.$refs.searchInput.focus();
+                }
+                break;
+            }
+        });
+    }
 };
 </script>
 

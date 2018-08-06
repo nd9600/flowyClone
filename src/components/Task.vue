@@ -2,24 +2,28 @@
     <div class="taskFlexbox">
         <div
             v-if="this.shouldShowChildren && task.tasks.length > 0"
-            @click="expandChildrenFlag = ! expandChildrenFlag"
             class="showHide"
+            @click="expandChildrenFlag = ! expandChildrenFlag"
         >
-            {{showHideButtonText}}
+            {{ showHideButtonText }}
         </div>
         <div class="task">
             <div class="mainTaskContainer">
                 <img
-                    @click="toggleContextMenu"
-                    @dblclick="displayModal"
                     class="bullet"
-                    src="../assets/bullet.svg">
+                    src="../assets/bullet.svg"
+                    @click="toggleContextMenu"
+                    @dblclick="displayModal">
                 <modal
                     v-if="showModal"
                     @close="hideModal"
                 >
-                    <h3 slot="header" style="margin: 0;">Task {{this.taskID}}</h3>
-                    <detailedTask slot="body" :taskID="taskID"></detailedTask>
+                    <h3 
+                        slot="header" 
+                        style="margin: 0;">Task {{ this.taskID }}</h3>
+                    <detailedTask 
+                        slot="body" 
+                        :task-id="taskID"></detailedTask>
                 </modal>
                 <div class="contextMenuLocation">
                     <div
@@ -30,7 +34,7 @@
                             v-if="task.tasks.length > 0"
                             @click="expandChildrenFlag = ! expandChildrenFlag"
                         >
-                            {{showHideText}}
+                            {{ showHideText }}
                         </a>
                         <a @click="toggleComplete">Complete</a>
                         <a @click="bold">Bold</a>
@@ -43,7 +47,9 @@
                         <a @click="cutTask">Cut</a>
 
                         <!-- you shouldn't be able to paste a task into itself -->
-                        <a v-if="this.clipboard != null && this.clipboard !== this.taskID" @click="pasteInto">Paste into</a>
+                        <a 
+                            v-if="this.clipboard != null && this.clipboard !== this.taskID" 
+                            @click="pasteInto">Paste into</a>
 
                         <div class="separator"></div>
                         <a @click="moveUp">Move up</a>
@@ -55,8 +61,8 @@
                     style="margin-left: 5px;"
                 >
                     <textarea
-                        ref="taskInput"
                         v-resize-on-insert
+                        ref="taskInput"
                         v-model="taskContent"
                         :id="`task-${task.id}-input`"
                         :class="{
@@ -69,14 +75,14 @@
                 </span>
 
                 <button
-                    @click="addNewTask"
                     class="btn"
+                    @click="addNewTask"
                 >+
                 </button>
 
                 <button
-                    @click="deleteTask"
                     class="btn dangerBtn"
+                    @click="deleteTask"
                 >x
                 </button>
             </div>
@@ -87,7 +93,7 @@
                         v-if="task.description.length > 0"
                         class="description leftIndent"
                         style="margin-top: 0; margin-bottom: 0;"
-                    >{{task.description}}</p>
+                    >{{ task.description }}</p>
                 </div>
 
                 <div
@@ -102,7 +108,7 @@
                     <p
                         v-if="task.author.length > 0"
                         class="smallText"
-                    >{{task.author}}
+                    >{{ task.author }}
                     </p>
                 </div>
 
@@ -120,8 +126,8 @@
                     <!-- you need to bind arrays like this for them to work properly -->
                     <tasks
                         v-if="task.tasks.length > 0"
-                        :outerTaskID="task.id"
-                        :taskIDs="[...task.tasks]"
+                        :outer-task-id="task.id"
+                        :task-ids="[...task.tasks]"
                         class="innerTasks"
                     >
                     </tasks>
@@ -133,7 +139,7 @@
                     <p
                         v-if="this.numberOfChildren > 0"
                         class="smallText"
-                    >{{this.numberOfChildren}} {{this.numberOfChildren | pluralise}}</p>
+                    >{{ this.numberOfChildren }} {{ this.numberOfChildren | pluralise }}</p>
                 </div>
             </div>
 
@@ -142,255 +148,255 @@
 </template>
 
 <script>
-    import {mapGetters, mapMutations} from "vuex";
-    import DetailedTask from "./DetailedTask.vue";
-    import * as task from "../base/task.js";
-    import {arraymove} from "../base/useful_functions.js";
+import {mapGetters, mapMutations} from "vuex";
+import DetailedTask from "./DetailedTask.vue";
+import * as task from "../base/task.js";
+import {arraymove} from "../base/useful_functions.js";
 
-    export default {
-        name: "task",
-        props: ["taskID"],
-        data() {
-            return {
-                showContextMenu: false,
-                showModal: false,
-                expandChildrenFlag: true
+export default {
+    name: "Task",
+    components: {
+        DetailedTask
+    },
+    props: ["taskID"],
+    data() {
+        return {
+            showContextMenu: false,
+            showModal: false,
+            expandChildrenFlag: true
+        };
+    },
+    methods: {
+        ...mapMutations([
+            "incrementTaskStorageUID",
+            "setTask",
+            "setRootTaskIDs",
+            "addTaskToTask",
+            "setClipboard",
+            "setClipboardMode",
+            "removeTaskFromRoot",
+            "removeTaskFromParentTask"
+        ]),
+
+        toggleComplete() {
+            this.task.complete = !this.task.complete;
+            this.toggleContextMenu();
+            this.setTask(this.task);
+        },
+
+        toggleContextMenu() {
+            this.showContextMenu = !this.showContextMenu;
+        },
+
+        bold() {
+            this.task.bold = !this.task.bold;
+            this.$nextTick(() => {
+                Stretchy.resize(this.$refs.taskInput);
+            });
+            this.toggleContextMenu();
+            this.setTask(this.task);
+        },
+        addNewTask() {
+            this.incrementTaskStorageUID();
+            let newTask = new task.TaskObject({
+                id: this.taskStorageUID,
+                content: "",
+                parent: this.task.id
+            });
+            this.setTask(newTask);
+            this.addTaskToTask({taskID: this.task.id, newTaskID: newTask.id});
+
+            this.$nextTick(() => {
+                let addedTaskInput = document.getElementById(`task-${newTask.id}-input`);
+                if (addedTaskInput) {
+                    addedTaskInput.focus();
+                }
+            });
+        },
+        deleteTask() {
+            let confirm = window.confirm("Are you sure you want to delete this?");
+            if (confirm) {
+                this.$emit("deleteTask", this.task.id);
             }
         },
-        components: {
-            DetailedTask
-        },
-        methods: {
-            ...mapMutations([
-                "incrementTaskStorageUID",
-                "setTask",
-                "setRootTaskIDs",
-                "addTaskToTask",
-                "setClipboard",
-                "setClipboardMode",
-                "removeTaskFromRoot",
-                "removeTaskFromParentTask"
-            ]),
 
-            toggleComplete() {
-                this.task.complete = ! this.task.complete;
-                this.toggleContextMenu();
+        //clipboard
+        copyTask() {
+            this.setClipboardMode("copy");
+            this.setClipboard(this.taskID);
+            this.toggleContextMenu();
+        },
+        cutTask() {
+            this.setClipboardMode("cut");
+            this.setClipboard(this.taskID);
+            this.toggleContextMenu();
+        },
+        removeOriginalTaskIfCutting(originalTaskID) {
+            if (this.clipboardMode === "copy") {
+                return;
+            }
+            let originalTask = this.taskByID(originalTaskID);
+            if (originalTask.parent === "root") {
+                this.removeTaskFromRoot(originalTaskID);
+            } else {
+                this.removeTaskFromParentTask({
+                    parentTaskID: originalTask.parent,
+                    innerTaskID: originalTaskID
+                });
+            }
+        },
+        getTaskIDToPaste() {
+            let vm = this;
+
+            function cloneTaskToLeaves(taskID) {
+                vm.incrementTaskStorageUID();
+                let copiedTask = vm.taskByID(taskID);
+                let cloneOfCopiedTask = JSON.parse(JSON.stringify(copiedTask));
+                cloneOfCopiedTask.id = vm.taskStorageUID;
+                cloneOfCopiedTask.tasks = cloneOfCopiedTask.tasks
+                    .map(innerTaskID => cloneTaskToLeaves(innerTaskID));
+                vm.setTask(cloneOfCopiedTask);
+                return cloneOfCopiedTask.id;
+            }
+
+            //we need to use a whole new task (including all inner tasks) when copying
+            if (this.clipboardMode === "copy") {
+                return cloneTaskToLeaves(this.clipboard);
+            }
+            return this.clipboard;
+        },
+        getTaskIDToPasteAndRemoveOriginalTask() {
+            let taskIDToPaste = this.getTaskIDToPaste();
+            this.removeOriginalTaskIfCutting(this.clipboard);
+
+            //have to set the new parent too - we are in the pasted task's parent here
+            let taskThatsBeingPasted = this.taskByID(taskIDToPaste);
+            taskThatsBeingPasted.parent = this.task.id;
+            this.setTask(taskThatsBeingPasted);
+
+            return taskIDToPaste;
+        },
+        pasteInto() {
+            let taskIDToPaste = this.getTaskIDToPasteAndRemoveOriginalTask();
+            this.task.tasks.push(taskIDToPaste);
+            this.toggleContextMenu();
+        },
+        moveUp() {
+            let parentTaskID = this.task.parent;
+            if (parentTaskID === "root") {
+                let rootTaskIDs = JSON.parse(JSON.stringify(this.rootTaskIDs));
+                let parentTaskIDIndex = rootTaskIDs.indexOf(this.task.id);
+                let newPosition = parentTaskIDIndex - 1;
+                if (newPosition < 0) {
+                    newPosition = rootTaskIDs.length;
+                }
+                arraymove(rootTaskIDs, parentTaskIDIndex, newPosition);
+                this.setRootTaskIDs(rootTaskIDs);
+            } else {
+                let parentTask = this.taskByID(parentTaskID);
+                let parentTaskIDIndex = parentTask.tasks.indexOf(this.task.id);
+                let newPosition = parentTaskIDIndex - 1;
+                if (newPosition < 0) {
+                    newPosition = parentTask.tasks.length;
+                }
+                arraymove(parentTask.tasks, parentTaskIDIndex, newPosition);
+                this.setTask(parentTask);
+            }
+            this.toggleContextMenu();
+        },
+
+        moveDown() {
+            let parentTaskID = this.task.parent;
+            if (parentTaskID === "root") {
+                let rootTaskIDs = JSON.parse(JSON.stringify(this.rootTaskIDs));
+                let parentTaskIDIndex = rootTaskIDs.indexOf(this.task.id);
+                let newPosition = parentTaskIDIndex + 1;
+                if (newPosition === rootTaskIDs.length) {
+                    newPosition = 0;
+                }
+                arraymove(rootTaskIDs, parentTaskIDIndex, newPosition);
+                this.setRootTaskIDs(rootTaskIDs);
+            } else {
+                let parentTask = this.taskByID(parentTaskID);
+                let parentTaskIDIndex = parentTask.tasks.indexOf(this.task.id);
+                let newPosition = parentTaskIDIndex + 1;
+                if (newPosition === parentTask.tasks.length) {
+                    newPosition = 0;
+                }
+                arraymove(parentTask.tasks, parentTaskIDIndex, newPosition);
+                this.setTask(parentTask);
+            }
+            this.toggleContextMenu();
+        },
+
+        displayModal() {
+            this.showModal = true;
+            document.getElementsByTagName("body")[0].classList.add("noscroll");
+        },
+        hideModal() {
+            this.showModal = false;
+            document.getElementsByTagName("body")[0].classList.remove("noscroll");
+        }     
+    },
+    computed: {
+        ...mapGetters([
+            "taskStorageUID",
+            "rootTaskIDs",
+            "taskByID",
+            "tasksInTask",
+            "tagsInTask",
+            "showInnerTasks",
+            "showChildren",
+            "clipboard",
+            "clipboardMode"
+        ]),
+        task() {
+            return this.taskByID(this.taskID);
+        },
+        taskContent: {
+            get() {
+                return this.task.content;
+            },
+            set(newContent) {
+                this.task.content = newContent;
                 this.setTask(this.task);
-            },
-
-            toggleContextMenu() {
-                this.showContextMenu = ! this.showContextMenu;
-            },
-
-            bold() {
-                this.task.bold = !this.task.bold;
-                this.$nextTick(() => {
-                    Stretchy.resize(this.$refs.taskInput)
-                });
-                this.toggleContextMenu();
-                this.setTask(this.task);
-            },
-            addNewTask() {
-                this.incrementTaskStorageUID();
-                let newTask = new task.TaskObject({
-                    id: this.taskStorageUID,
-                    content: "",
-                    parent: this.task.id
-                });
-                this.setTask(newTask);
-                this.addTaskToTask({taskID: this.task.id, newTaskID: newTask.id});
-
-                this.$nextTick(() => {
-                    let addedTaskInput = document.getElementById(`task-${newTask.id}-input`);
-                    if (addedTaskInput) {
-                        addedTaskInput.focus();
-                    }
-                });
-            },
-            deleteTask() {
-                let confirm = window.confirm("Are you sure you want to delete this?");
-                if (confirm) {
-                    this.$emit('deleteTask', this.task.id);
-                }
-            },
-
-            //clipboard
-            copyTask() {
-                this.setClipboardMode("copy");
-                this.setClipboard(this.taskID);
-                this.toggleContextMenu();
-            },
-            cutTask() {
-                this.setClipboardMode("cut");
-                this.setClipboard(this.taskID);
-                this.toggleContextMenu();
-            },
-            removeOriginalTaskIfCutting(originalTaskID) {
-                if (this.clipboardMode === "copy") {
-                    return;
-                }
-                let originalTask = this.taskByID(originalTaskID);
-                if (originalTask.parent === "root") {
-                    this.removeTaskFromRoot(originalTaskID);
-                } else {
-                    this.removeTaskFromParentTask({
-                        parentTaskID: originalTask.parent,
-                        innerTaskID: originalTaskID
-                    });
-                }
-            },
-            getTaskIDToPaste() {
-                let vm = this;
-
-                function cloneTaskToLeaves(taskID) {
-                    vm.incrementTaskStorageUID();
-                    let copiedTask = vm.taskByID(taskID);
-                    let cloneOfCopiedTask = JSON.parse(JSON.stringify(copiedTask));
-                    cloneOfCopiedTask.id = vm.taskStorageUID;
-                    cloneOfCopiedTask.tasks = cloneOfCopiedTask.tasks
-                        .map(innerTaskID => cloneTaskToLeaves(innerTaskID));
-                    vm.setTask(cloneOfCopiedTask);
-                    return cloneOfCopiedTask.id;
-                }
-
-                //we need to use a whole new task (including all inner tasks) when copying
-                if (this.clipboardMode === "copy") {
-                    return cloneTaskToLeaves(this.clipboard);
-                }
-                return this.clipboard;
-            },
-            getTaskIDToPasteAndRemoveOriginalTask() {
-                let taskIDToPaste = this.getTaskIDToPaste();
-                this.removeOriginalTaskIfCutting(this.clipboard);
-
-                //have to set the new parent too - we are in the pasted task's parent here
-                let taskThatsBeingPasted = this.taskByID(taskIDToPaste);
-                taskThatsBeingPasted.parent = this.task.id;
-                this.setTask(taskThatsBeingPasted);
-
-                return taskIDToPaste;
-            },
-            pasteInto() {
-                let taskIDToPaste = this.getTaskIDToPasteAndRemoveOriginalTask();
-                this.task.tasks.push(taskIDToPaste);
-                this.toggleContextMenu();
-            },
-            moveUp() {
-                let parentTaskID = this.task.parent;
-                if (parentTaskID === "root"){
-                    let rootTaskIDs = JSON.parse(JSON.stringify(this.rootTaskIDs));
-                    let parentTaskIDIndex = rootTaskIDs.indexOf(this.task.id);
-                    let newPosition = parentTaskIDIndex - 1;
-                    if (newPosition < 0) {
-                        newPosition = rootTaskIDs.length;
-                    }
-                    arraymove(rootTaskIDs, parentTaskIDIndex, newPosition);
-                    this.setRootTaskIDs(rootTaskIDs);
-                } else {
-                    let parentTask = this.taskByID(parentTaskID);
-                    let parentTaskIDIndex = parentTask.tasks.indexOf(this.task.id);
-                    let newPosition = parentTaskIDIndex - 1;
-                    if (newPosition < 0) {
-                        newPosition = parentTask.tasks.length;
-                    }
-                    arraymove(parentTask.tasks, parentTaskIDIndex, newPosition);
-                    this.setTask(parentTask);
-                }
-                this.toggleContextMenu();
-            },
-
-            moveDown() {
-                let parentTaskID = this.task.parent;
-                if (parentTaskID === "root"){
-                    let rootTaskIDs = JSON.parse(JSON.stringify(this.rootTaskIDs));
-                    let parentTaskIDIndex = rootTaskIDs.indexOf(this.task.id);
-                    let newPosition = parentTaskIDIndex + 1;
-                    if (newPosition === rootTaskIDs.length) {
-                        newPosition = 0;
-                    }
-                    arraymove(rootTaskIDs, parentTaskIDIndex, newPosition);
-                    this.setRootTaskIDs(rootTaskIDs);
-                } else {
-                    let parentTask = this.taskByID(parentTaskID);
-                    let parentTaskIDIndex = parentTask.tasks.indexOf(this.task.id);
-                    let newPosition = parentTaskIDIndex + 1;
-                    if (newPosition === parentTask.tasks.length) {
-                        newPosition = 0;
-                    }
-                    arraymove(parentTask.tasks, parentTaskIDIndex, newPosition);
-                    this.setTask(parentTask);
-                }
-                this.toggleContextMenu();
-            },
-
-            displayModal() {
-                this.showModal = true;
-                document.getElementsByTagName('body')[0].classList.add('noscroll');
-            },
-            hideModal() {
-                this.showModal = false;
-                document.getElementsByTagName('body')[0].classList.remove('noscroll');
-            }     
-        },
-        computed: {
-            ...mapGetters([
-                "taskStorageUID",
-                "rootTaskIDs",
-                "taskByID",
-                "tasksInTask",
-                "tagsInTask",
-                "showInnerTasks",
-                "showChildren",
-                "clipboard",
-                "clipboardMode"
-            ]),
-            task() {
-                return this.taskByID(this.taskID);
-            },
-            taskContent: {
-                get() {
-                    return this.task.content;
-                },
-                set(newContent) {
-                    this.task.content = newContent;
-                    this.setTask(this.task);
-                }
-            },
-
-            showHideButtonText() {
-                return (this.expandChildrenFlag ? "[-]" : "[+]");
-            },
-
-            showHideText() {
-                return (this.expandChildrenFlag ? "Hide" : "Show");
-            },
-
-            tags() {
-                return this.tagsInTask(this.task);
-            },
-
-            numberOfChildren() {
-                let vm = this;
-                function recursiveNumberOfChildren(taskID) {
-                    let thisTask = vm.taskByID(taskID);
-                    let innerChildren = thisTask.tasks.map(innerTaskID => recursiveNumberOfChildren(innerTaskID));
-                    let numberOfInnerChildren = innerChildren.reduce((acc, val) => acc + val, 0);
-                    return 1 + numberOfInnerChildren;
-                }
-                let mappedNumberOfActiveTasks = this.task.tasks.map(taskID => recursiveNumberOfChildren(taskID));
-                return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val, 0);
-            },
-
-            shouldShowChildren() {
-                return this.showInnerTasks || this.showChildren;
             }
         },
-        filters: {
-            pluralise(n) {
-                return n === 1 ? "child" : "children";
+
+        showHideButtonText() {
+            return (this.expandChildrenFlag ? "[-]" : "[+]");
+        },
+
+        showHideText() {
+            return (this.expandChildrenFlag ? "Hide" : "Show");
+        },
+
+        tags() {
+            return this.tagsInTask(this.task);
+        },
+
+        numberOfChildren() {
+            let vm = this;
+            function recursiveNumberOfChildren(taskID) {
+                let thisTask = vm.taskByID(taskID);
+                let innerChildren = thisTask.tasks.map(innerTaskID => recursiveNumberOfChildren(innerTaskID));
+                let numberOfInnerChildren = innerChildren.reduce((acc, val) => acc + val, 0);
+                return 1 + numberOfInnerChildren;
             }
+            let mappedNumberOfActiveTasks = this.task.tasks.map(taskID => recursiveNumberOfChildren(taskID));
+            return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val, 0);
+        },
+
+        shouldShowChildren() {
+            return this.showInnerTasks || this.showChildren;
+        }
+    },
+    filters: {
+        pluralise(n) {
+            return n === 1 ? "child" : "children";
         }
     }
+};
 </script>
 
 <style scoped>

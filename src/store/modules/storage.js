@@ -12,11 +12,11 @@ const actions = {
         context.dispatch("initialiseSettings", null, { root: true });
         context.dispatch("initialiseTasks", null, { root: true });
     }
-}
+};
 
 export default {
     state,
     getters,
     mutations,
     actions
-}
+};

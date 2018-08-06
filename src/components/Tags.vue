@@ -7,35 +7,35 @@
             class="tagLink"
             @click.prevent="updateSearchTerm"
         >
-            {{tag}}
+            {{ tag }}
         </a>
     </span>
 </template>
 
 <script>
-    import {mapGetters, mapMutations} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 
-    export default {
-        name: "tags",
-        props: ["tags"],
-        methods: {
-            ...mapMutations([
-                "changeSearchTerm"
-            ]),
-            updateSearchTerm(event) {
-                //only adds the text following the #, if it has changed
-                let newSearchTerm = event.target.innerText.slice(0).trim();
-                if (this.searchTerm !== newSearchTerm) {
-                    this.changeSearchTerm(newSearchTerm);
-                }
+export default {
+    name: "Tags",
+    props: ["tags"],
+    methods: {
+        ...mapMutations([
+            "changeSearchTerm"
+        ]),
+        updateSearchTerm(event) {
+            //only adds the text following the #, if it has changed
+            let newSearchTerm = event.target.innerText.slice(0).trim();
+            if (this.searchTerm !== newSearchTerm) {
+                this.changeSearchTerm(newSearchTerm);
             }
-        },
-        computed: {
-            ...mapGetters([
-                "searchTerm"
-            ])
         }
+    },
+    computed: {
+        ...mapGetters([
+            "searchTerm"
+        ])
     }
+};
 </script>
 
 <style scoped>

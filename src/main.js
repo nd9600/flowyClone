@@ -1,6 +1,6 @@
-import Vue from 'vue';
+import Vue from "vue";
 
-import App from './App.vue';
+import App from "./App.vue";
 
 import Tasks from "./components/Tasks.vue";
 import Tags from "./components/Tags.vue";
@@ -16,10 +16,10 @@ Vue.component("task", Task);
 Vue.component("modal", Modal);
 
 // register a global custom directive called `v-resize-on-insert` that resizes an element when inserted into the DOM
-Vue.directive('resize-on-insert', {
-  inserted: function (el) {
-    Stretchy.resize(el);
-  }
+Vue.directive("resize-on-insert", {
+    inserted: function (el) {
+        Stretchy.resize(el);
+    }
 });
 
 new Vue(App);

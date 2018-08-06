@@ -3,7 +3,7 @@ export {extract, cloneAndModify, arraymove};
 Array.prototype.unique = function () {
     return this.map(JSON.stringify).reverse().filter(function (e, i, a) {
         return a.indexOf(e, i + 1) === -1;
-    }).reverse().map(JSON.parse)
+    }).reverse().map(JSON.parse);
 };
 
 Array.prototype.flatten = function () {
@@ -17,7 +17,7 @@ Array.prototype.flattenDeep = function () {
             return acc.concat(val.flattenDeep());
         }
         return acc.concat(val);
-    }, [])
+    }, []);
 };
 
 Array.prototype.diff = function (a) {

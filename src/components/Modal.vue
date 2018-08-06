@@ -1,43 +1,47 @@
 <template>
   
-  <transition name="modal">
-    <div>
+    <transition name="modal">
+        <div>
 
-      <!-- the modal mask can't be a parent of the model, because the mask would be on-top of it, and you wouldn't be able to click on the modal -->
-      <div @click="$emit('close')" class="modal-mask">
-      </div>
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <div class="modal-header">
-            <slot name="header">
-            </slot>
-          </div>
-          <div class="separator"></div>
-          <div class="modal-body">
-            <slot name="body">
-              default body
-            </slot>
-          </div>
-          <div class="separator"></div>
-          <div class="modal-footer">
-            <slot name="footer">
-              &#8203;
-              <button class="modal-default-button" @click="$emit('close')">
-                OK
-              </button>
-            </slot>
-          </div>
+            <!-- the modal mask can't be a parent of the model, because the mask would be on-top of it, and you wouldn't be able to click on the modal -->
+            <div 
+                class="modal-mask" 
+                @click="$emit('close')">
+            </div>
+            <div class="modal-wrapper">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <slot name="header">
+                        </slot>
+                    </div>
+                    <div class="separator"></div>
+                    <div class="modal-body">
+                        <slot name="body">
+                            default body
+                        </slot>
+                    </div>
+                    <div class="separator"></div>
+                    <div class="modal-footer">
+                        <slot name="footer">
+                            &#8203;
+                            <button 
+                                class="modal-default-button" 
+                                @click="$emit('close')">
+                                OK
+                            </button>
+                        </slot>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </transition>
+    </transition>
 
 </template>
 
 <script>
-    export default {
-        name: 'modal'
-    };
+export default {
+    name: "Modal"
+};
 </script>
 
 <style scoped>

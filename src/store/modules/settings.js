@@ -30,7 +30,7 @@ const mutations = {
     },
 
     initialiseSettingsWithObject: (state, storageObjectString) => {
-        if (! storageObjectString) {
+        if (!storageObjectString) {
             return;
         }
         let storageObject = JSON.parse(storageObjectString);
@@ -47,11 +47,11 @@ const actions = {
         let storageObjectString = localStorage.getItem(STORAGE_KEY);
         context.commit("initialiseSettingsWithObject", storageObjectString);
     },
-}
+};
 
 export default {
     state,
     getters,
     mutations,
     actions
-}
+};

@@ -72,7 +72,7 @@ const mutations = {
     },
 
     initialiseTasksWithObject(state, storageObjectString) {
-        if (! storageObjectString) {
+        if (!storageObjectString) {
             return;
         }
         let storageObject = JSON.parse(storageObjectString);
@@ -106,7 +106,7 @@ const mutations = {
         state.tasks.delete(taskID);
 
         //we might need to delete the task ID from the root too
-        mutations.removeTaskFromRoot(state, taskID)
+        mutations.removeTaskFromRoot(state, taskID);
         mutations.incrementTaskChangeTracker(state);
     },
 
@@ -158,9 +158,9 @@ const actions = {
             let stateKey = context.getters.firebaseStateKey;
             firebaseDB.ref("states/" + stateKey).once("value").then(
                 (snapshot) => {
-                    context.commit("initialiseTasksWithObject", snapshot.val())
+                    context.commit("initialiseTasksWithObject", snapshot.val());
                     context.commit("incrementTaskChangeTracker");
-            });
+                });
         }
     },
     saveStateToFirebase(context) {
@@ -173,11 +173,11 @@ const actions = {
         //have to stringify it because firebase doesn't store empty arrays
         firebaseDB.ref("states/" + stateKey).set(JSON.stringify(storageObject));
     }
-}
+};
 
 export default {
     state,
     getters,
     mutations,
     actions
-}
+};

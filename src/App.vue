@@ -3,39 +3,39 @@
 </template>
 
 <script>
-    import Home from "./components/Home.vue";
-    import {mapMutations, mapActions} from "vuex";
+import Home from "./components/Home.vue";
+import {mapMutations, mapActions} from "vuex";
 
-    import store from "./store/store.js";
+import store from "./store/store.js";
 
-    export default {
-        name: "app",
-        el: '#app',
-        components: {
-            Home
-        },
-        methods: {
-            ...mapMutations([
-                "changeSearchTerm"
-            ]),
-            ...mapActions([
-                "initialiseApp"
-            ]),
-        },
-        created: function() {
-            this.initialiseApp();
+export default {
+    el: "#app",
+    name: "App",
+    components: {
+        Home
+    },
+    methods: {
+        ...mapMutations([
+            "changeSearchTerm"
+        ]),
+        ...mapActions([
+            "initialiseApp"
+        ]),
+    },
+    created: function() {
+        this.initialiseApp();
             
-            //clear the search term when escape is pressed
-            //arrow function preserves context
-            window.addEventListener('keyup', (event) => {
-                if (event.keyCode === 27) {
-                    document.activeElement.blur();
-                    this.changeSearchTerm("");
-                }
-            });
-        },
-        store
-    }
+        //clear the search term when escape is pressed
+        //arrow function preserves context
+        window.addEventListener("keyup", (event) => {
+            if (event.keyCode === 27) {
+                document.activeElement.blur();
+                this.changeSearchTerm("");
+            }
+        });
+    },
+    store
+};
 </script>
 
 <style>

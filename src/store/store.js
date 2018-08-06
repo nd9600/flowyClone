@@ -15,7 +15,7 @@ import * as process from "babel-core/lib/transformation/file/options/config";
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-    strict: process.env.NODE_ENV !== 'production',
+    strict: process.env.NODE_ENV !== "production",
     modules: {
         storageModule,
         tasksModule,
@@ -30,18 +30,18 @@ const store = new Vuex.Store({
 store.subscribe(
     debounce((mutation, state) => {
         let storageObjectBuilder = () =>  ({
-                tasks: Array.from(state.tasksModule.tasks.entries()),
-                rootTaskIDs: state.tasksModule.rootTaskIDs,
-                taskStorageUID: state.tasksModule.taskStorageUID,
-                settings: {
-                    storageMethod: state.settingsModule.storageMethod,
-                    firebaseStateKey: state.settingsModule.firebaseStateKey
-                }
+            tasks: Array.from(state.tasksModule.tasks.entries()),
+            rootTaskIDs: state.tasksModule.rootTaskIDs,
+            taskStorageUID: state.tasksModule.taskStorageUID,
+            settings: {
+                storageMethod: state.settingsModule.storageMethod,
+                firebaseStateKey: state.settingsModule.firebaseStateKey
+            }
         });        
 
         const storageMethodIsLocalStorage = state.settingsModule.storageMethod === "localStorage";
         const mutationIsTasksChange = ["setTask", "deleteTask", "addTaskToTask", "addTaskToRoot"]
-                .indexOf(mutation.type) > -1;
+            .indexOf(mutation.type) > -1;
         const mutationIsStorageChange = ["setStorageMethod", "setFirebaseStateKey"]
             .indexOf(mutation.type) > -1;
         if ((storageMethodIsLocalStorage && mutationIsTasksChange) || mutationIsStorageChange) {

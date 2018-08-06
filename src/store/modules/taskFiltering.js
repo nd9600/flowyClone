@@ -44,7 +44,7 @@ const getters = {
         }
 
         let tasksContainingSearchTerm = gettersArg.tasksAsArray.filter(task => {
-            return task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) > -1
+            return task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) > -1;
         });
         return taskFilters[gettersArg.visibility](tasksContainingSearchTerm)
             .map(task => task.id);
@@ -68,4 +68,4 @@ export default {
     state,
     getters,
     mutations
-}
+};
