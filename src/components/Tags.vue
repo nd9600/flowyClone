@@ -2,7 +2,7 @@
     <!-- #8203 is a zero width space, so we can set the height of the span when empty -->
     <span class="tags"> &#8203;
         <a
-            v-for="tag in this.tags"
+            v-for="tag in tags"
             :key="tag"
             class="tagLink"
             @click.prevent="updateSearchTerm"
@@ -17,7 +17,17 @@ import {mapGetters, mapMutations} from "vuex";
 
 export default {
     name: "Tags",
-    props: ["tags"],
+    props: {
+        tags: {
+            type: Array,
+            required: true
+        }
+    },
+    computed: {
+        ...mapGetters([
+            "searchTerm"
+        ])
+    },
     methods: {
         ...mapMutations([
             "changeSearchTerm"
@@ -29,11 +39,6 @@ export default {
                 this.changeSearchTerm(newSearchTerm);
             }
         }
-    },
-    computed: {
-        ...mapGetters([
-            "searchTerm"
-        ])
     }
 };
 </script>

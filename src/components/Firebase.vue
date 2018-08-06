@@ -20,15 +20,6 @@ export default {
     data() {
         return {};
     },
-    methods: {
-        ...mapMutations([
-            "setFirebaseStateKey",
-        ]),
-        ...mapActions([
-            "initialiseTasks",
-            "saveStateToFirebase"
-        ])
-    },
     computed: {
         ...mapGetters([
             "firebaseStateKey"
@@ -41,6 +32,15 @@ export default {
                 this.setFirebaseStateKey(value);
             }
         }
+    },
+    methods: {
+        ...mapMutations([
+            "setFirebaseStateKey",
+        ]),
+        ...mapActions([
+            "initialiseTasks",
+            "saveStateToFirebase"
+        ])
     }
 };
 </script>

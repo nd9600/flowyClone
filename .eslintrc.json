@@ -5,7 +5,7 @@
     "jquery": true
   },
   "globals": {
-    "moment": true
+    "Stretchy": true
   },
   "extends": [
     "eslint:recommended",
@@ -61,6 +61,7 @@
         "nonwords": false
       }
     ],
+    "no-unused-vars": "warn",
     "vue/html-indent": [
       "error",
       4,

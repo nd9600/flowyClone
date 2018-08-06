@@ -63,13 +63,13 @@
                 >Settings
                 </button>
                 <button 
-                    v-if="this.clipboard !== null"
+                    v-if="clipboard !== null"
                     class="topRightButton" 
                     @click="setCurrentTopRightTab('clipboard')"
                 >Clipboard
                 </button>
                 <button 
-                    v-if="this.storageMethod === 'firebase'"
+                    v-if="storageMethod === 'firebase'"
                     class="topRightButton" 
                     @click="setCurrentTopRightTab('firebase')"
                 >Firebase
@@ -112,51 +112,17 @@ export default {
         Clipboard,
         Firebase
     },
+    filters: {
+        pluralise(n) {
+            return n === 1 ? "item" : "items";
+        }
+    },
     data() {
         return {
             topRightComponent: "settings",
             newTask: "",
             showClearButton: false
         };
-    },
-    methods: {
-        ...mapMutations([
-            "incrementTaskStorageUID",
-            "changeSearchTerm",
-            "changeVisibility",
-            "setTask",
-            "addTaskToRoot",
-            "changeShowInnerTasks",
-            "setCurrentTopRightTab"
-        ]),
-
-        addTaskFromInput() {
-            let value = this.newTask && this.newTask.trim();
-            if (!value) {
-                return;
-            }
-            this.addTask(value);
-        },
-        addTask(value = "") {
-            this.incrementTaskStorageUID();
-            let newTask = new task.TaskObject({
-                id: this.taskStorageUID,
-                content: value,
-                parent: "root"
-            });
-            this.setTask(newTask);
-            this.addTaskToRoot(newTask.id);
-            this.newTask = "";
-
-            this.$nextTick(() => {
-                let addedTaskInput = document.getElementById(
-                    `task-${newTask.id}-input`
-                );
-                if (addedTaskInput) {
-                    addedTaskInput.focus();
-                }
-            });
-        }
     },
     computed: {
         ...mapGetters([
@@ -187,7 +153,7 @@ export default {
             let currentSearchTerm = this.searchTerm && this.searchTerm.trim();
 
             let shouldShowAllTasks =
-        this.visibility === "all" && currentSearchTerm.length === 0;
+                this.visibility === "all" && currentSearchTerm.length === 0;
             if (shouldShowAllTasks) {
                 return this.rootTasks;
             }
@@ -199,7 +165,7 @@ export default {
             let tasksContainingSearchTerm = this.tasksAsArray.filter(
                 task =>
                     task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) >
-          -1
+                    -1
             );
             return task.filters[this.visibility](tasksContainingSearchTerm);
         },
@@ -247,28 +213,23 @@ export default {
             }
         }
     },
-    filters: {
-        pluralise(n) {
-            return n === 1 ? "item" : "items";
-        }
-    },
     watch: {
         localVisibility() {
             let shouldShowInnerTasks =
-        this.visibility === "all" && this.searchTerm.trim().length === 0;
+                this.visibility === "all" && this.searchTerm.trim().length === 0;
             this.changeShowInnerTasks(shouldShowInnerTasks);
         },
         searchTerm() {
             let shouldShowInnerTasks =
-        this.visibility === "all" && this.searchTerm.trim().length === 0;
+                this.visibility === "all" && this.searchTerm.trim().length === 0;
             this.changeShowInnerTasks(shouldShowInnerTasks);
         }
     },
     mounted: function() {
         window.addEventListener("keyup", event => {
             let focusedElementIsntInput =
-        document.activeElement.tagName.toLowerCase() !== "input" &&
-        document.activeElement.tagName.toLowerCase() !== "textarea";
+                document.activeElement.tagName.toLowerCase() !== "input" &&
+                document.activeElement.tagName.toLowerCase() !== "textarea";
 
             switch (event.keyCode) {
             //focus on the new task field when n is pressed and you're not in an input
@@ -286,6 +247,45 @@ export default {
                 break;
             }
         });
+    },
+    methods: {
+        ...mapMutations([
+            "incrementTaskStorageUID",
+            "changeSearchTerm",
+            "changeVisibility",
+            "setTask",
+            "addTaskToRoot",
+            "changeShowInnerTasks",
+            "setCurrentTopRightTab"
+        ]),
+
+        addTaskFromInput() {
+            let value = this.newTask && this.newTask.trim();
+            if (!value) {
+                return;
+            }
+            this.addTask(value);
+        },
+        addTask(value = "") {
+            this.incrementTaskStorageUID();
+            let newTask = new task.TaskObject({
+                id: this.taskStorageUID,
+                content: value,
+                parent: "root"
+            });
+            this.setTask(newTask);
+            this.addTaskToRoot(newTask.id);
+            this.newTask = "";
+
+            this.$nextTick(() => {
+                let addedTaskInput = document.getElementById(
+                    `task-${newTask.id}-input`
+                );
+                if (addedTaskInput) {
+                    addedTaskInput.focus();
+                }
+            });
+        }
     }
 };
 </script>

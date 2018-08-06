@@ -32,12 +32,6 @@ export default {
     data() {
         return {};
     },
-    methods: {
-        ...mapMutations([
-            "setShowChildren",
-            "setStorageMethod"
-        ])
-    },
     computed: {
         ...mapGetters([
             "showChildren",
@@ -59,6 +53,12 @@ export default {
                 this.setStorageMethod(value);
             }
         }
+    },
+    methods: {
+        ...mapMutations([
+            "setShowChildren",
+            "setStorageMethod"
+        ])
     }
 };
 </script>

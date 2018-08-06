@@ -1,7 +1,7 @@
 <template>
     <div class="tasksList">
         <task
-            v-for="taskID in this.filteredTaskIDs"
+            v-for="taskID in filteredTaskIDs"
             :task-id="taskID"
             :key="taskID"
             @deleteTask="deleteInnerTask"
@@ -15,22 +15,14 @@ import {mapGetters, mapMutations} from "vuex";
 
 export default {
     name: "Tasks",
-    props: ["outerTaskID", "taskIDs"],
-    methods: {
-        ...mapMutations([
-            "removeTaskFromParentTask",
-            "deleteTask"
-        ]),
-
-        //event is fired from a child task
-        deleteInnerTask(taskID) {
-            if (this.outerTaskID) {
-                this.removeTaskFromParentTask({
-                    parentTaskID: this.outerTaskID,
-                    innerTaskID: taskID
-                });
-            }
-            this.deleteTask(taskID);
+    props: {
+        outerTaskID: {
+            type: Number,
+            required: true
+        },
+        taskIDs: {
+            type: Array,
+            required: true
         }
     },
     computed: {
@@ -40,7 +32,7 @@ export default {
         ]),
 
         //or set a variable in all tasks to show all children?
-            
+
         parentContainsTheSearchedTag() {
             if (!(this.searchTerm && this.searchTerm[0] === "#")) {
                 return false;
@@ -62,6 +54,23 @@ export default {
         },
         filteredTaskIDs() {
             return (this.parentContainsTheSearchedTag) ? this.taskIDs : this.taskIDs.filter(id => this.shownTaskIDs.indexOf(id) > -1);
+        }
+    },
+    methods: {
+        ...mapMutations([
+            "removeTaskFromParentTask",
+            "deleteTask"
+        ]),
+
+        //event is fired from a child task
+        deleteInnerTask(taskID) {
+            if (this.outerTaskID) {
+                this.removeTaskFromParentTask({
+                    parentTaskID: this.outerTaskID,
+                    innerTaskID: taskID
+                });
+            }
+            this.deleteTask(taskID);
         }
     }
 };

@@ -14,17 +14,9 @@ export default {
     components: {
         Home
     },
-    methods: {
-        ...mapMutations([
-            "changeSearchTerm"
-        ]),
-        ...mapActions([
-            "initialiseApp"
-        ]),
-    },
     created: function() {
         this.initialiseApp();
-            
+
         //clear the search term when escape is pressed
         //arrow function preserves context
         window.addEventListener("keyup", (event) => {
@@ -33,6 +25,14 @@ export default {
                 this.changeSearchTerm("");
             }
         });
+    },
+    methods: {
+        ...mapMutations([
+            "changeSearchTerm"
+        ]),
+        ...mapActions([
+            "initialiseApp"
+        ]),
     },
     store
 };

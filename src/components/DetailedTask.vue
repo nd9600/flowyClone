@@ -64,7 +64,12 @@ import {mapGetters, mapMutations} from "vuex";
 
 export default {
     name: "DetailedTask",
-    props: ["taskID"],
+    props: {
+        taskID: {
+            type: Number,
+            required: true
+        }
+    },
     data() {
         return {
             //all task's properties must be added here, so they are reactive
@@ -79,14 +84,6 @@ export default {
                 bold: false
             }
         };
-    },
-    methods: {
-        ...mapMutations([
-            "setTask"
-        ]),
-        goHome() {
-            this.$root.$emit("change-component-event", "home");
-        }
     },
     computed: {
         ...mapGetters([
@@ -117,6 +114,14 @@ export default {
         this.task = this.taskByID(this.taskID);
         this.shouldUpdateTask = true;
     },
+    methods: {
+        ...mapMutations([
+            "setTask"
+        ]),
+        goHome() {
+            this.$root.$emit("change-component-event", "home");
+        }
+    }
 };
 </script>
 

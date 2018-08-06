@@ -1,8 +1,8 @@
 <template>
     <div v-if="clipboardNotEmpty">
-        <p style="margin: 0;">{{ this.clipboard }}: {{ taskContent }}</p>
+        <p style="margin: 0;">{{ clipboard }}: {{ taskContent }}</p>
         <span>
-            <b style="display: inline;">mode: {{ this.clipboardMode }}</b>
+            <b style="display: inline;">mode: {{ clipboardMode }}</b>
             <button
                 class="btn"
                 style="float: right;"
@@ -20,12 +20,6 @@ export default {
     data() {
         return {};
     },
-    methods: {
-        ...mapMutations([
-            "setClipboard",
-            "setCurrentTopRightTab"               
-        ])
-    },
     computed: {
         ...mapGetters([
             "clipboard",
@@ -38,6 +32,12 @@ export default {
         taskContent() {
             return this.taskByID(this.clipboard).content;
         }
+    },
+    methods: {
+        ...mapMutations([
+            "setClipboard",
+            "setCurrentTopRightTab"               
+        ])
     }
 };
 </script>

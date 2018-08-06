@@ -1,7 +1,7 @@
 <template>
     <div class="taskFlexbox">
         <div
-            v-if="this.shouldShowChildren && task.tasks.length > 0"
+            v-if="shouldShowChildren && task.tasks.length > 0"
             class="showHide"
             @click="expandChildrenFlag = ! expandChildrenFlag"
         >
@@ -20,7 +20,7 @@
                 >
                     <h3 
                         slot="header" 
-                        style="margin: 0;">Task {{ this.taskID }}</h3>
+                        style="margin: 0;">Task {{ taskID }}</h3>
                     <detailedTask 
                         slot="body" 
                         :task-id="taskID"></detailedTask>
@@ -48,7 +48,7 @@
 
                         <!-- you shouldn't be able to paste a task into itself -->
                         <a 
-                            v-if="this.clipboard != null && this.clipboard !== this.taskID" 
+                            v-if="clipboard != null && clipboard !== taskID"
                             @click="pasteInto">Paste into</a>
 
                         <div class="separator"></div>
@@ -121,7 +121,7 @@
                 </div>
             </div>
 
-            <div v-if="this.shouldShowChildren">
+            <div v-if="shouldShowChildren">
                 <div v-if="expandChildrenFlag">
                     <!-- you need to bind arrays like this for them to work properly -->
                     <tasks
@@ -137,9 +137,9 @@
                     class="leftIndent"
                 >
                     <p
-                        v-if="this.numberOfChildren > 0"
+                        v-if="numberOfChildren > 0"
                         class="smallText"
-                    >{{ this.numberOfChildren }} {{ this.numberOfChildren | pluralise }}</p>
+                    >{{ numberOfChildren }} {{ numberOfChildren | pluralise }}</p>
                 </div>
             </div>
 
@@ -158,13 +158,76 @@ export default {
     components: {
         DetailedTask
     },
-    props: ["taskID"],
+    filters: {
+        pluralise(n) {
+            return n === 1 ? "child" : "children";
+        }
+    },
+    props: {
+        taskID: {
+            type: Number,
+            required: true
+        }
+    },
     data() {
         return {
             showContextMenu: false,
             showModal: false,
             expandChildrenFlag: true
         };
+    },
+    computed: {
+        ...mapGetters([
+            "taskStorageUID",
+            "rootTaskIDs",
+            "taskByID",
+            "tasksInTask",
+            "tagsInTask",
+            "showInnerTasks",
+            "showChildren",
+            "clipboard",
+            "clipboardMode"
+        ]),
+        task() {
+            return this.taskByID(this.taskID);
+        },
+        taskContent: {
+            get() {
+                return this.task.content;
+            },
+            set(newContent) {
+                this.task.content = newContent;
+                this.setTask(this.task);
+            }
+        },
+
+        showHideButtonText() {
+            return (this.expandChildrenFlag ? "[-]" : "[+]");
+        },
+
+        showHideText() {
+            return (this.expandChildrenFlag ? "Hide" : "Show");
+        },
+
+        tags() {
+            return this.tagsInTask(this.task);
+        },
+
+        numberOfChildren() {
+            let vm = this;
+            function recursiveNumberOfChildren(taskID) {
+                let thisTask = vm.taskByID(taskID);
+                let innerChildren = thisTask.tasks.map(innerTaskID => recursiveNumberOfChildren(innerTaskID));
+                let numberOfInnerChildren = innerChildren.reduce((acc, val) => acc + val, 0);
+                return 1 + numberOfInnerChildren;
+            }
+            let mappedNumberOfActiveTasks = this.task.tasks.map(taskID => recursiveNumberOfChildren(taskID));
+            return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val, 0);
+        },
+
+        shouldShowChildren() {
+            return this.showInnerTasks || this.showChildren;
+        }
     },
     methods: {
         ...mapMutations([
@@ -337,64 +400,6 @@ export default {
             this.showModal = false;
             document.getElementsByTagName("body")[0].classList.remove("noscroll");
         }     
-    },
-    computed: {
-        ...mapGetters([
-            "taskStorageUID",
-            "rootTaskIDs",
-            "taskByID",
-            "tasksInTask",
-            "tagsInTask",
-            "showInnerTasks",
-            "showChildren",
-            "clipboard",
-            "clipboardMode"
-        ]),
-        task() {
-            return this.taskByID(this.taskID);
-        },
-        taskContent: {
-            get() {
-                return this.task.content;
-            },
-            set(newContent) {
-                this.task.content = newContent;
-                this.setTask(this.task);
-            }
-        },
-
-        showHideButtonText() {
-            return (this.expandChildrenFlag ? "[-]" : "[+]");
-        },
-
-        showHideText() {
-            return (this.expandChildrenFlag ? "Hide" : "Show");
-        },
-
-        tags() {
-            return this.tagsInTask(this.task);
-        },
-
-        numberOfChildren() {
-            let vm = this;
-            function recursiveNumberOfChildren(taskID) {
-                let thisTask = vm.taskByID(taskID);
-                let innerChildren = thisTask.tasks.map(innerTaskID => recursiveNumberOfChildren(innerTaskID));
-                let numberOfInnerChildren = innerChildren.reduce((acc, val) => acc + val, 0);
-                return 1 + numberOfInnerChildren;
-            }
-            let mappedNumberOfActiveTasks = this.task.tasks.map(taskID => recursiveNumberOfChildren(taskID));
-            return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val, 0);
-        },
-
-        shouldShowChildren() {
-            return this.showInnerTasks || this.showChildren;
-        }
-    },
-    filters: {
-        pluralise(n) {
-            return n === 1 ? "child" : "children";
-        }
     }
 };
 </script>
