@@ -2,7 +2,7 @@
     <div class="tasksList">
         <task
             v-for="taskID in filteredTaskIDs"
-            :task-id="taskID"
+            :taskID="taskID"
             :key="taskID"
             @deleteTask="deleteInnerTask"
         >
@@ -18,7 +18,8 @@ export default {
     props: {
         outerTaskID: {
             type: Number,
-            required: true
+            required: false,
+            default: -1
         },
         taskIDs: {
             type: Array,
@@ -39,7 +40,7 @@ export default {
             }
 
             //at the root
-            if (this.outerTaskID) {
+            if (this.outerTaskID === -1) {
                 return false;
             }
 
@@ -53,7 +54,9 @@ export default {
             return true;
         },
         filteredTaskIDs() {
-            return (this.parentContainsTheSearchedTag) ? this.taskIDs : this.taskIDs.filter(id => this.shownTaskIDs.indexOf(id) > -1);
+            return (this.parentContainsTheSearchedTag) 
+                ? this.taskIDs 
+                : this.taskIDs.filter(id => this.shownTaskIDs.indexOf(id) > -1);
         }
     },
     methods: {
@@ -64,7 +67,7 @@ export default {
 
         //event is fired from a child task
         deleteInnerTask(taskID) {
-            if (this.outerTaskID) {
+            if (this.outerTaskID > -1) {
                 this.removeTaskFromParentTask({
                     parentTaskID: this.outerTaskID,
                     innerTaskID: taskID

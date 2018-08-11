@@ -23,7 +23,7 @@
                         style="margin: 0;">Task {{ taskID }}</h3>
                     <detailedTask 
                         slot="body" 
-                        :task-id="taskID"></detailedTask>
+                        :taskID="taskID"></detailedTask>
                 </modal>
                 <div class="contextMenuLocation">
                     <div
@@ -126,8 +126,8 @@
                     <!-- you need to bind arrays like this for them to work properly -->
                     <tasks
                         v-if="task.tasks.length > 0"
-                        :outer-task-id="task.id"
-                        :task-ids="[...task.tasks]"
+                        :outerTaskID="task.id"
+                        :taskIDs="[...task.tasks]"
                         class="innerTasks"
                     >
                     </tasks>

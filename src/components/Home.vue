@@ -81,8 +81,7 @@
         </div>
         <section>
             <tasks
-                :outer-task-id="null"
-                :task-ids="rootTaskIDs"
+                :taskIDs="rootTaskIDs"
             >
             </tasks>
 

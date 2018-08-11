@@ -2,8 +2,8 @@ const path = require("path");
 const webpack = require("webpack");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
-// const mode = "development"; // change this to change the version of Vue that's loaded
-const mode = "production";
+const mode = "development"; // change this to change the version of Vue that's loaded
+// const mode = "production";
 
 module.exports = {
     mode: mode,
