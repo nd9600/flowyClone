@@ -73,7 +73,7 @@
       }
     ],
     "vue/html-self-closing": [
-      "none"
+      "off"
     ]
   }
 }
