@@ -149,29 +149,12 @@ export default {
         },
 
         numberOfTasksRemaining() {
-            if (this.visibility === "active") {
-                return this.filteredTaskIDs.length;
-            }
+            // this shouldn't include the parents of searched for tasks, so we only use filteredTaskIDs here
             let vm = this;
-            function recursiveNumberOfActiveTasks(taskID) {
-                let thisTask = vm.taskByID(taskID);
-                let thisTaskIsActive = thisTask.complete ? 0 : 1;
-
-                let activeInnerTasks = thisTask.tasks.map(innerTaskID =>
-                    recursiveNumberOfActiveTasks(innerTaskID)
-                );
-                let summedActiveInnerTasks = activeInnerTasks.reduce(
-                    (acc, val) => acc + val,
-                    0
-                );
-
-                return thisTaskIsActive + summedActiveInnerTasks;
-            }
-
-            let mappedNumberOfActiveTasks = this.filteredTaskIDs.map(taskID =>
-                recursiveNumberOfActiveTasks(taskID)
-            );
-            return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val, 0);
+            return this.filteredTaskIDs.filter((taskID) => {
+                const thisTask = vm.taskByID(taskID);
+                return ! thisTask.complete;
+            }).length;
         },
 
         tags() {

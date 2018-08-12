@@ -55,7 +55,7 @@
       }
     ],
     "space-unary-ops": [
-      "error",
+      "off",
       {
         "words": true,
         "nonwords": false
