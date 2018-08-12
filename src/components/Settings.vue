@@ -1,12 +1,5 @@
 <template>
     <div id="settings">
-        <label>
-            <input 
-                v-model="computedShowChildren" 
-                type="checkbox">
-            show children
-        </label>
-        <br />
         storage method
         <label>
             localStorage
@@ -34,17 +27,8 @@ export default {
     },
     computed: {
         ...mapGetters([
-            "showChildren",
             "storageMethod"
         ]),
-        computedShowChildren: {
-            get() {
-                return this.showChildren;
-            },
-            set(value) {
-                this.setShowChildren(value);
-            }
-        },
         computedStorageMethod: {
             get() {
                 return this.storageMethod;
@@ -56,7 +40,6 @@ export default {
     },
     methods: {
         ...mapMutations([
-            "setShowChildren",
             "setStorageMethod"
         ])
     }

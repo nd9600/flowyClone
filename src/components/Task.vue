@@ -1,7 +1,7 @@
 <template>
     <div class="taskFlexbox">
         <div
-            v-if="shouldShowChildren && task.tasks.length > 0"
+            v-if="task.tasks.length > 0"
             class="showHide"
             @click="expandChildrenFlag = ! expandChildrenFlag"
         >
@@ -121,7 +121,7 @@
                 </div>
             </div>
 
-            <div v-if="shouldShowChildren">
+            <div>
                 <div v-if="expandChildrenFlag">
                     <!-- you need to bind arrays like this for them to work properly -->
                     <tasks
@@ -184,7 +184,6 @@ export default {
             "tasksInTask",
             "tagsInTask",
             "showInnerTasks",
-            "showChildren",
             "clipboard",
             "clipboardMode"
         ]),
@@ -224,10 +223,6 @@ export default {
             let mappedNumberOfActiveTasks = this.task.tasks.map(taskID => recursiveNumberOfChildren(taskID));
             return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val, 0);
         },
-
-        shouldShowChildren() {
-            return this.showInnerTasks || this.showChildren;
-        }
     },
     methods: {
         ...mapMutations([

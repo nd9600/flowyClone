@@ -135,7 +135,8 @@ export default {
             "visibility",
             "clipboard",
             "currentTopRightTab",
-            "storageMethod"
+            "storageMethod",
+            "filteredTaskIDs"
         ]),
 
         localVisibility: {
@@ -145,32 +146,6 @@ export default {
             set(newValue) {
                 this.changeVisibility(newValue);
             }
-        },
-
-        //can filter tasks by a search term or visibility
-        filteredTasks() {
-            let currentSearchTerm = this.searchTerm && this.searchTerm.trim();
-
-            let shouldShowAllTasks =
-                this.visibility === "all" && currentSearchTerm.length === 0;
-            if (shouldShowAllTasks) {
-                return this.rootTasks;
-            }
-
-            if (!currentSearchTerm) {
-                return task.filters[this.visibility](this.tasksAsArray);
-            }
-
-            let tasksContainingSearchTerm = this.tasksAsArray.filter(
-                task =>
-                    task.content.toLowerCase().indexOf(currentSearchTerm.toLowerCase()) >
-                    -1
-            );
-            return task.filters[this.visibility](tasksContainingSearchTerm);
-        },
-
-        filteredTaskIDs() {
-            return this.filteredTasks.map(task => task.id);
         },
 
         numberOfTasksRemaining() {

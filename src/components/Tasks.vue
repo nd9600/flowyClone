@@ -32,31 +32,8 @@ export default {
             "searchTerm"
         ]),
 
-        //or set a variable in all tasks to show all children?
-
-        parentContainsTheSearchedTag() {
-            if (!(this.searchTerm && this.searchTerm[0] === "#")) {
-                return false;
-            }
-
-            //at the root
-            if (this.outerTaskID === -1) {
-                return false;
-            }
-
-            function recurse(taskID) {
-                //get parent
-                //if parent contains tag, return true
-                //if parent has parent, check
-                //if parent doesn't have parent, return false
-            }
-
-            return true;
-        },
-        filteredTaskIDs() {
-            return (this.parentContainsTheSearchedTag) 
-                ? this.taskIDs 
-                : this.taskIDs.filter(id => this.shownTaskIDs.indexOf(id) > -1);
+        filteredTaskIDs: function() {
+            return this.taskIDs.filter(id => this.shownTaskIDs.indexOf(id) > -1);
         }
     },
     methods: {
