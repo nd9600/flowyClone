@@ -6,7 +6,7 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const mode = "production";
 
 module.exports = {
-    mode: mode,
+    mode: mode || "production",
     entry: "./src/main.js",
     output: {
         path: path.resolve(__dirname, "./static/js/tasks"),
