@@ -3,16 +3,16 @@
         storage method
         <label>
             localStorage
-            <input 
-                v-model="computedStorageMethod" 
-                type="radio" 
+            <input
+                v-model="computedStorageMethod"
+                type="radio"
                 value="localStorage">
         </label>
         <label>
             firebase
-            <input 
-                v-model="computedStorageMethod" 
-                type="radio" 
+            <input
+                v-model="computedStorageMethod"
+                type="radio"
                 value="firebase">
         </label>
     </div>
@@ -20,6 +20,7 @@
 
 <script>
 import {mapGetters, mapMutations} from "vuex";
+
 export default {
     name: "Settings",
     data() {

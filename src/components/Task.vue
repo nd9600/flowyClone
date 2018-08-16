@@ -18,11 +18,11 @@
                     v-if="showModal"
                     @close="hideModal"
                 >
-                    <h3 
-                        slot="header" 
+                    <h3
+                        slot="header"
                         style="margin: 0;">Task {{ taskID }}</h3>
-                    <detailedTask 
-                        slot="body" 
+                    <detailedTask
+                        slot="body"
                         :taskID="taskID"></detailedTask>
                 </modal>
                 <div class="contextMenuLocation">
@@ -37,11 +37,11 @@
                         >
                             {{ showHideText }}
                         </a>
-                        <a 
-                            class="contextMenuLink" 
+                        <a
+                            class="contextMenuLink"
                             @click="toggleComplete">Complete</a>
-                        <a 
-                            class="contextMenuLink" 
+                        <a
+                            class="contextMenuLink"
                             @click="bold">Bold</a>
                         <div class="separator"></div>
                         <a
@@ -68,11 +68,11 @@
                             @click="pasteInto">Paste into</a>
 
                         <div class="separator"></div>
-                        <a 
-                            class="contextMenuLink" 
+                        <a
+                            class="contextMenuLink"
                             @click="moveUp">Move up</a>
-                        <a 
-                            class="contextMenuLink" 
+                        <a
+                            class="contextMenuLink"
                             @click="moveDown">Move down</a>
                     </div>
                 </div>
@@ -234,12 +234,14 @@ export default {
 
         numberOfChildren() {
             let vm = this;
+
             function recursiveNumberOfChildren(taskID) {
                 let thisTask = vm.taskByID(taskID);
                 let innerChildren = thisTask.tasks.map(innerTaskID => recursiveNumberOfChildren(innerTaskID));
                 let numberOfInnerChildren = innerChildren.reduce((acc, val) => acc + val, 0);
                 return 1 + numberOfInnerChildren;
             }
+
             let mappedNumberOfActiveTasks = this.task.tasks.map(taskID => recursiveNumberOfChildren(taskID));
             return mappedNumberOfActiveTasks.reduce((acc, val) => acc + val, 0);
         },
@@ -415,7 +417,7 @@ export default {
         hideModal() {
             this.showModal = false;
             document.getElementsByTagName("body")[0].classList.remove("noscroll");
-        }     
+        }
     }
 };
 </script>
@@ -432,6 +434,7 @@ export default {
         justify-content: flex-start;
         margin: 5px 0 0 33px;
     }
+
     .completed {
         opacity: 0.4;
         text-decoration: line-through solid currentcolor;
@@ -480,6 +483,7 @@ export default {
     .contextMenuLink {
         padding: 1px 5px 1px 5px;
     }
+
     .contextMenuLink:hover {
         color: #fff;
         background-color: var(--link-colour);

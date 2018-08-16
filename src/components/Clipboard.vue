@@ -15,6 +15,7 @@
 
 <script>
 import {mapGetters, mapMutations} from "vuex";
+
 export default {
     name: "Clipboard",
     data() {
@@ -36,7 +37,7 @@ export default {
     methods: {
         ...mapMutations([
             "setClipboard",
-            "setCurrentTopRightTab"               
+            "setCurrentTopRightTab"
         ])
     }
 };

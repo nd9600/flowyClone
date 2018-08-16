@@ -59,20 +59,20 @@
         </header>
         <div id="topRight">
             <div id="topRightButtons">
-                <button 
-                    class="topRightButton" 
+                <button
+                    class="topRightButton"
                     @click="setCurrentTopRightTab('settings')"
                 >Settings
                 </button>
-                <button 
+                <button
                     v-if="clipboard !== null"
-                    class="topRightButton" 
+                    class="topRightButton"
                     @click="setCurrentTopRightTab('clipboard')"
                 >Clipboard
                 </button>
-                <button 
+                <button
                     v-if="storageMethod === 'firebase'"
-                    class="topRightButton" 
+                    class="topRightButton"
                     @click="setCurrentTopRightTab('firebase')"
                 >Firebase
                 </button>
@@ -87,7 +87,7 @@
             >
             </tasks>
 
-            <p 
+            <p
                 v-if="localVisibility !== 'completed'"
                 style="color: #999;"
             >{{ numberOfTasksRemaining }} {{ numberOfTasksRemaining | pluralise }} left</p>
@@ -95,12 +95,13 @@
         <div
             class="bottomRightButton"
             @click="addTask()"
-        >+</div>
+        >+
+        </div>
     </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 import Settings from "./Settings.vue";
 import Clipboard from "./Clipboard.vue";
 import Firebase from "./Firebase.vue";
@@ -155,7 +156,7 @@ export default {
             let vm = this;
             return this.filteredTaskIDs.filter((taskID) => {
                 const thisTask = vm.taskByID(taskID);
-                return ! thisTask.complete;
+                return !thisTask.complete;
             }).length;
         },
 
@@ -175,20 +176,20 @@ export default {
     watch: {
         localVisibility() {
             let shouldShowInnerTasks =
-                this.visibility === "all" && this.searchTerm.trim().length === 0;
+                    this.visibility === "all" && this.searchTerm.trim().length === 0;
             this.changeShowInnerTasks(shouldShowInnerTasks);
         },
         searchTerm() {
             let shouldShowInnerTasks =
-                this.visibility === "all" && this.searchTerm.trim().length === 0;
+                    this.visibility === "all" && this.searchTerm.trim().length === 0;
             this.changeShowInnerTasks(shouldShowInnerTasks);
         }
     },
-    mounted: function() {
+    mounted: function () {
         window.addEventListener("keyup", event => {
             let focusedElementIsntInput =
-                document.activeElement.tagName.toLowerCase() !== "input" &&
-                document.activeElement.tagName.toLowerCase() !== "textarea";
+                    document.activeElement.tagName.toLowerCase() !== "input" &&
+                    document.activeElement.tagName.toLowerCase() !== "textarea";
 
             switch (event.keyCode) {
             //focus on the new task field when n is pressed and you're not in an input
@@ -250,68 +251,73 @@ export default {
 </script>
 
 <style>
-#home {
-  font-family: Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
+    #home {
+        font-family: Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: #2c3e50;
+    }
 
-#topRight {
-  position: absolute;
-  top: 1%;
-  right: 1%;
-  min-width: 275px;
-  max-width: 275px;
-  padding: 0 0 10px 10px;
-  border: 1px solid var(--separator-colour);
+    #topRight {
+        position: absolute;
+        top: 1%;
+        right: 1%;
+        min-width: 275px;
+        max-width: 275px;
+        padding: 0 0 10px 10px;
+        border: 1px solid var(--separator-colour);
 
-  opacity: 0.1;
-}
-#topRight:hover {
-  opacity: 1;
-}
-#topRightButtons {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 10px;
-}
-.topRightButton {
-  padding: 6px 10px;
-  margin-bottom: -1px;
-  margin-right: -1px;
+        opacity: 0.1;
+        transition: opacity 200ms ease 0s;
+    }
 
-  border: 1px solid #ccc;
-  cursor: pointer;
-  background: #f0f0f0;
-  color: #34495e;
-}
+    #topRight:hover {
+        opacity: 1;
+    }
 
-.bottomRightButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    #topRightButtons {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+    }
 
-  position: absolute;
-  bottom: 25%;
-  right: 22%;
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
-  padding: 10px;
-  cursor: pointer;
+    .topRightButton {
+        padding: 6px 10px;
+        margin-bottom: -1px;
+        margin-right: -1px;
 
-  background-color: #f44336;
-  background: #f44336;
-  border: none;
-  outline: none;
-  color: #fff;
-  opacity: 0.5;
-  font-size: 36px;
-  box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-}
-.bottomRightButton:hover {
-  opacity: 1;
-  box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46);
-}
+        border: 1px solid #ccc;
+        cursor: pointer;
+        background: #f0f0f0;
+        color: #34495e;
+    }
+
+    .bottomRightButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        position: absolute;
+        bottom: 25%;
+        right: 22%;
+        width: 30px;
+        height: 30px;
+        border-radius: 100%;
+        padding: 10px;
+        cursor: pointer;
+
+        background-color: #f44336;
+        background: #f44336;
+        border: none;
+        outline: none;
+        color: #fff;
+        opacity: 0.5;
+        font-size: 36px;
+        box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+
+    .bottomRightButton:hover {
+        opacity: 1;
+        box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46);
+    }
 </style>

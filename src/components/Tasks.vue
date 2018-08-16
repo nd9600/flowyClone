@@ -32,7 +32,7 @@ export default {
             "searchTerm"
         ]),
 
-        filteredTaskIDs: function() {
+        filteredTaskIDs: function () {
             return this.taskIDs.filter(id => this.shownTaskIDs.indexOf(id) > -1);
         }
     },

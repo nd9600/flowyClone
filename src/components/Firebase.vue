@@ -2,10 +2,10 @@
     <div>
         <label>
             state key
-            <input 
-                v-resize-on-insert 
-                v-model="computedFirebaseStateKey" 
-                type="text" 
+            <input
+                v-resize-on-insert
+                v-model="computedFirebaseStateKey"
+                type="text"
                 style="min-width: 125px;">
         </label>
         <button @click="initialiseTasks">load tasks</button>
@@ -14,7 +14,8 @@
 </template>
 
 <script>
-import {mapGetters, mapMutations, mapActions} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
+
 export default {
     name: "Firebase",
     data() {

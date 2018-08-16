@@ -2,14 +2,14 @@
     <div>
         <div>
             <legend>content</legend>
-            <textarea 
-                v-resize-on-insert 
+            <textarea
+                v-resize-on-insert
                 v-model="task.content"></textarea>
 
             <div style="padding-top: 15px;">
                 description
-                <textarea 
-                    v-resize-on-insert 
+                <textarea
+                    v-resize-on-insert
                     v-model="task.description"></textarea>
             </div>
 
@@ -26,16 +26,16 @@
             <span class="bottomInputContainer">
                 <span class="inputCol">
                     <span>
-                        complete <input 
-                            v-model="task.complete" 
+                        complete <input
+                            v-model="task.complete"
                             type="checkbox">
                     </span>
                     <span>
                         <a :href="taskLink">
                             link
                         </a>
-                        <textarea 
-                            v-resize-on-insert 
+                        <textarea
+                            v-resize-on-insert
                             v-model="task.link"></textarea>
                     </span>
                     
@@ -43,14 +43,14 @@
 
                 <span class="inputCol">
                     <span>
-                        bold <input 
-                            v-model="task.bold" 
+                        bold <input
+                            v-model="task.bold"
                             type="checkbox">
                     </span>
 
                     <span>
-                        author <textarea 
-                            v-resize-on-insert 
+                        author <textarea
+                            v-resize-on-insert
                             v-model="task.author"></textarea>
                     </span>
                 </span>
