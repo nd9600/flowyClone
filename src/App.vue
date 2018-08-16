@@ -91,6 +91,7 @@ export default {
     }
 
     .separator {
+        height: 1px;
         margin: 6px 0 6px 0;
     }
 

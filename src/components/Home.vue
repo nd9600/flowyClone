@@ -54,6 +54,8 @@
             </tags>
 
             <div class="separator"></div>
+            <div class="separator"></div>
+            <div class="separator"></div>
         </header>
         <div id="topRight">
             <div id="topRightButtons">
