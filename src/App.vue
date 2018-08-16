@@ -91,9 +91,7 @@ export default {
     }
 
     .separator {
-        background-color: var(--separator-colour);
-        height: 1px;
-        margin: 10px 0 10px 0;
+        margin: 6px 0 6px 0;
     }
 
     .fade-enter-active, .fade-leave-active {

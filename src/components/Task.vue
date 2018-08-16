@@ -32,28 +32,48 @@
                     >
                         <a
                             v-if="task.tasks.length > 0"
+                            class="contextMenuLink"
                             @click="expandChildrenFlag = ! expandChildrenFlag"
                         >
                             {{ showHideText }}
                         </a>
-                        <a @click="toggleComplete">Complete</a>
-                        <a @click="bold">Bold</a>
+                        <a 
+                            class="contextMenuLink" 
+                            @click="toggleComplete">Complete</a>
+                        <a 
+                            class="contextMenuLink" 
+                            @click="bold">Bold</a>
                         <div class="separator"></div>
-                        <a @click="addNewTask(); toggleContextMenu()">Add new child</a>
-                        <a @click="displayModal(); toggleContextMenu()">Edit</a>
-                        <a @click="deleteTask(); toggleContextMenu()">Delete</a>
+                        <a
+                            class="contextMenuLink"
+                            @click="addNewTask(); toggleContextMenu()">Add new child</a>
+                        <a
+                            class="contextMenuLink"
+                            @click="displayModal(); toggleContextMenu()">Edit</a>
+                        <a
+                            class="contextMenuLink"
+                            @click="deleteTask(); toggleContextMenu()">Delete</a>
                         <div class="separator"></div>
-                        <a @click="copyTask">Copy</a>
-                        <a @click="cutTask">Cut</a>
+                        <a
+                            class="contextMenuLink"
+                            @click="copyTask">Copy</a>
+                        <a
+                            class="contextMenuLink"
+                            @click="cutTask">Cut</a>
 
                         <!-- you shouldn't be able to paste a task into itself -->
-                        <a 
+                        <a
                             v-if="clipboard != null && clipboard !== taskID"
+                            class="contextMenuLink"
                             @click="pasteInto">Paste into</a>
 
                         <div class="separator"></div>
-                        <a @click="moveUp">Move up</a>
-                        <a @click="moveDown">Move down</a>
+                        <a 
+                            class="contextMenuLink" 
+                            @click="moveUp">Move up</a>
+                        <a 
+                            class="contextMenuLink" 
+                            @click="moveDown">Move down</a>
                     </div>
                 </div>
 
@@ -449,12 +469,21 @@ export default {
         min-height: 58px;
         min-width: 80px;
 
-        padding: 5px;
         margin: 16px 0 10px -38px;
 
         background: #f6f6f6;
         border: 1px solid #bbb;
         border-radius: 4px;
+    }
+
+    .contextMenuLink {
+        padding: 1px 5px 1px 5px;
+    }
+    .contextMenuLink:hover {
+        color: #fff;
+        background-color: var(--link-colour);
+        transition: background-color 200ms ease 0s;
+        border-bottom: 0;
     }
 
     .mainTaskContainer {
