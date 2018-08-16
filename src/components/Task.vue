@@ -26,55 +26,57 @@
                         :taskID="taskID"></detailedTask>
                 </modal>
                 <div class="contextMenuLocation">
-                    <div
-                        v-if="showContextMenu"
-                        class="contextMenu"
-                    >
-                        <a
-                            v-if="task.tasks.length > 0"
-                            class="contextMenuLink"
-                            @click="expandChildrenFlag = ! expandChildrenFlag"
+                    <transition name="fade">
+                        <div
+                            v-if="showContextMenu"
+                            class="contextMenu"
                         >
-                            {{ showHideText }}
-                        </a>
-                        <a
-                            class="contextMenuLink"
-                            @click="toggleComplete">Complete</a>
-                        <a
-                            class="contextMenuLink"
-                            @click="bold">Bold</a>
-                        <div class="separator"></div>
-                        <a
-                            class="contextMenuLink"
-                            @click="addNewTask(); toggleContextMenu()">Add new child</a>
-                        <a
-                            class="contextMenuLink"
-                            @click="displayModal(); toggleContextMenu()">Edit</a>
-                        <a
-                            class="contextMenuLink"
-                            @click="deleteTask(); toggleContextMenu()">Delete</a>
-                        <div class="separator"></div>
-                        <a
-                            class="contextMenuLink"
-                            @click="copyTask">Copy</a>
-                        <a
-                            class="contextMenuLink"
-                            @click="cutTask">Cut</a>
+                            <a
+                                v-if="task.tasks.length > 0"
+                                class="contextMenuLink"
+                                @click="expandChildrenFlag = ! expandChildrenFlag"
+                            >
+                                {{ showHideText }}
+                            </a>
+                            <a
+                                class="contextMenuLink"
+                                @click="toggleComplete">Complete</a>
+                            <a
+                                class="contextMenuLink"
+                                @click="bold">Bold</a>
+                            <div class="separator"></div>
+                            <a
+                                class="contextMenuLink"
+                                @click="addNewTask(); toggleContextMenu()">Add new child</a>
+                            <a
+                                class="contextMenuLink"
+                                @click="displayModal(); toggleContextMenu()">Edit</a>
+                            <a
+                                class="contextMenuLink"
+                                @click="deleteTask(); toggleContextMenu()">Delete</a>
+                            <div class="separator"></div>
+                            <a
+                                class="contextMenuLink"
+                                @click="copyTask">Copy</a>
+                            <a
+                                class="contextMenuLink"
+                                @click="cutTask">Cut</a>
 
-                        <!-- you shouldn't be able to paste a task into itself -->
-                        <a
-                            v-if="clipboard != null && clipboard !== taskID"
-                            class="contextMenuLink"
-                            @click="pasteInto">Paste into</a>
+                            <!-- you shouldn't be able to paste a task into itself -->
+                            <a
+                                v-if="clipboard != null && clipboard !== taskID"
+                                class="contextMenuLink"
+                                @click="pasteInto">Paste into</a>
 
-                        <div class="separator"></div>
-                        <a
-                            class="contextMenuLink"
-                            @click="moveUp">Move up</a>
-                        <a
-                            class="contextMenuLink"
-                            @click="moveDown">Move down</a>
-                    </div>
+                            <div class="separator"></div>
+                            <a
+                                class="contextMenuLink"
+                                @click="moveUp">Move up</a>
+                            <a
+                                class="contextMenuLink"
+                                @click="moveDown">Move down</a>
+                        </div>
+                    </transition>
                 </div>
 
                 <span
