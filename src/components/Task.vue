@@ -80,7 +80,7 @@
                 </div>
 
                 <span
-                    style="margin-left: 5px;"
+                    style="margin-left: 5px; width:100%;"
                 >
                     <textarea
                         v-resize-on-insert
@@ -435,6 +435,7 @@ export default {
         flex-direction: column;
         justify-content: flex-start;
         margin: 5px 0 0 33px;
+        width: 100%;
     }
 
     .completed {
@@ -443,8 +444,7 @@ export default {
     }
 
     .showHide {
-        min-width: 25px;
-        max-width: 25px;
+        width: 2vw;
         padding: 4px;
         margin-right: -33px;
         flex-grow: 1;
@@ -516,7 +516,7 @@ export default {
         margin: 0 0 3px 3px;
         line-height: 20px;
         min-height: 11px;
-        min-width: 375px;
+        min-width: 90%;
     }
 
     .btn {

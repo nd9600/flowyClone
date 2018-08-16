@@ -67,19 +67,19 @@
                 <button
                     v-if="clipboard !== null"
                     class="topRightButton"
+                    style="border-left: 1px solid #ccc;"
                     @click="setCurrentTopRightTab('clipboard')"
                 >Clipboard
                 </button>
                 <button
                     v-if="storageMethod === 'firebase'"
                     class="topRightButton"
+                    style="border-left: 1px solid #ccc;"
                     @click="setCurrentTopRightTab('firebase')"
                 >Firebase
                 </button>
             </div>
-            <div>
-                <component :is="currentTopRightTab"></component>
-            </div>
+            <component :is="currentTopRightTab"></component>
         </div>
         <section>
             <tasks
@@ -262,9 +262,8 @@ export default {
         position: absolute;
         top: 1%;
         right: 1%;
-        min-width: 275px;
-        max-width: 275px;
-        padding: 0 0 10px 10px;
+        width: 20vw;
+        padding: 0;
         border: 1px solid var(--separator-colour);
 
         opacity: 0.1;
@@ -282,11 +281,11 @@ export default {
     }
 
     .topRightButton {
+        width: 50%;
         padding: 6px 10px;
-        margin-bottom: -1px;
-        margin-right: -1px;
 
-        border: 1px solid #ccc;
+        border-width: 0 0 1px 0;
+        border-bottom: 1px solid #ccc;
         cursor: pointer;
         background: #f0f0f0;
         color: #34495e;

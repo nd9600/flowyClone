@@ -78,7 +78,7 @@ export default {
         display: block;
         margin: 10px 0 10px 0;
         padding: 10px;
-        min-width: 200px;
+        min-width: 40vw;
         min-height: 42px;
     }
 

@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <div class="paddedLeftAndBottom">
         <label>
             state key
             <input
                 v-resize-on-insert
                 v-model="computedFirebaseStateKey"
                 type="text"
-                style="min-width: 125px;">
+                style="width: 100%;">
         </label>
         <button @click="initialiseTasks">load tasks</button>
         <button @click="saveStateToFirebase">save tasks</button>
@@ -47,4 +47,7 @@ export default {
 </script>
 
 <style scoped>
+    .paddedLeftAndBottom {
+        padding: 0 0 10px 10px;
+    }
 </style>

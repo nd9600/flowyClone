@@ -1,14 +1,14 @@
 <template>
-    <div id="settings">
-        storage method
-        <label>
-            localStorage
+    <div class="paddedLeftAndBottom">
+        <span style="font-weight: bold;">storage method</span>
+        <label class="noBold">
+            local storage
             <input
                 v-model="computedStorageMethod"
                 type="radio"
                 value="localStorage">
         </label>
-        <label>
+        <label class="noBold">
             firebase
             <input
                 v-model="computedStorageMethod"
@@ -48,7 +48,11 @@ export default {
 </script>
 
 <style scoped>
-    #settings {
-        padding: 0 5px 0 5px;
+    .paddedLeftAndBottom {
+        padding: 0 0 10px 10px;
+    }
+
+    .noBold {
+        font-weight: normal;
     }
 </style>
