@@ -409,6 +409,7 @@ export default {
 
         displayModal() {
             this.showModal = true;
+            this.showContextMenu = false;
             document.getElementsByTagName("body")[0].classList.add("noscroll");
         },
         hideModal() {
