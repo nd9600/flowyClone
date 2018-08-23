@@ -8,8 +8,8 @@
                 type="text"
                 style="width: 100%;">
         </label>
-        <button @click="initialiseTasks">load tasks</button>
-        <button @click="saveStateToFirebase">save tasks</button>
+        <button @click="confirmLoad">load tasks</button>
+        <button @click="confirmSave">save tasks</button>
     </div>
 </template>
 
@@ -41,7 +41,17 @@ export default {
         ...mapActions([
             "initialiseTasks",
             "saveStateToFirebase"
-        ])
+        ]),
+        confirmLoad: function() {
+            if (window.confirm("Are you sure you want to load tasks?")) {
+                this.initialiseTasks();
+            }
+        },
+        confirmSave: function() {
+            if (window.confirm("Are you sure you want to save tasks to Firebase? This will overwrite the existing ones")) {
+                this.saveStateToFirebase();
+            }
+        }
     }
 };
 </script>
