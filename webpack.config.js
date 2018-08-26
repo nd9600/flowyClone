@@ -35,7 +35,10 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: "babel-loader",
-                exclude: /node_modules/
+                exclude: /node_modules/,
+                options: {
+                    cacheDirectory: true
+                }
             },
             {
                 test: /\.(png|jpg|gif|svg)$/,
