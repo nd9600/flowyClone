@@ -1,9 +1,11 @@
 const path = require("path");
 const webpack = require("webpack");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
-// const mode = "development"; // change this to change the version of Vue that's loaded
-const mode = "production";
+const mode = "development"; // change this to change the version of Vue that's loaded
+// const mode = "production";
 
 module.exports = {
     mode: mode || "production",
@@ -11,7 +13,8 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "./static/js/tasks"),
         publicPath: "static/js/tasks/",
-        filename: "build.js"
+        filename: "build.js",
+        pathinfo: false
     },
     module: {
         rules: [
@@ -46,7 +49,8 @@ module.exports = {
     },
     plugins: [
         // new webpack.HashedModuleIdsPlugin(),
-        new VueLoaderPlugin()
+        new VueLoaderPlugin()//,
+        //new HardSourceWebpackPlugin()
     ],
     resolve: {
         alias: {
@@ -56,6 +60,14 @@ module.exports = {
     },
     optimization: {
         minimize: true,
+        minimizer: [
+            new UglifyJsPlugin({ 
+                uglifyOptions: { 
+                    compress: false, 
+                    mangle: true 
+                }
+            })
+          ]
         // runtimeChunk: {
         //     name: "runtime"
         // },
@@ -71,8 +83,8 @@ module.exports = {
         // }
     },
     devServer: {
-        historyApiFallback: true,
-        noInfo: false,
+        compress: false,
+        noInfo: true,
         overlay: true
     },
     performance: {
@@ -81,7 +93,7 @@ module.exports = {
 };
 
 if (mode === "production") {
-    module.exports.devtool = "source-map";
+    module.exports.devtool = "eval-source-map";
     // module.exports.devtool = false;
     // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
@@ -95,5 +107,5 @@ if (mode === "production") {
         })
     ]);
 } else {
-    module.exports.devtool = "eval-source-map";
+    module.exports.devtool = "eval-cheap-source-map";
 }
