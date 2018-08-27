@@ -2,13 +2,10 @@ const path = require("path");
 const webpack = require("webpack");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
-
-const mode = "development"; // change this to change the version of Vue that's loaded
-// const mode = "production";
+// const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
-    mode: mode || "production",
+    mode: process.env.NODE_ENV,
     entry: "./src/main.js",
     output: {
         path: path.resolve(__dirname, "./static/js/tasks"),
@@ -70,7 +67,8 @@ module.exports = {
                     mangle: true 
                 }
             })
-          ]
+        ],
+        splitChunks: false
         // runtimeChunk: {
         //     name: "runtime"
         // },
@@ -87,16 +85,17 @@ module.exports = {
     },
     devServer: {
         compress: false,
-        noInfo: true,
+        noInfo: false,
         overlay: true
     },
     performance: {
         hints: false
-    }
+    },
+    devtool: "#eval-source-map"
 };
 
-if (mode === "production") {
-    module.exports.devtool = "eval-source-map";
+if (process.env.NODE_ENV === "production") {
+    module.exports.devtool = "#source-map";
     // module.exports.devtool = false;
     // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
@@ -109,6 +108,4 @@ if (mode === "production") {
             minimize: true
         })
     ]);
-} else {
-    module.exports.devtool = "eval-cheap-source-map";
 }
