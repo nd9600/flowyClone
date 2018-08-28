@@ -6,8 +6,8 @@
                 v-resize-on-insert
                 v-model="task.content"></textarea>
 
-            <div style="padding-top: 15px;">
-                description
+            <div>
+                <legend>description</legend>
                 <textarea
                     v-resize-on-insert
                     v-model="task.description"></textarea>
