@@ -113,6 +113,11 @@ export default {
     created() {
         this.task = this.taskByID(this.taskID);
         this.shouldUpdateTask = true;
+
+        document.body.classList.add("noscroll");
+        this.$once("hook:destroyed", () => {
+            document.body.classList.remove("noscroll");
+        });
     },
     methods: {
         ...mapMutations([
