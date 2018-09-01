@@ -62,13 +62,17 @@ export default {
 
     .modal-wrapper {
         position: fixed;
-        top: 10%;
-        vertical-align: middle;
+        top: 5%;
         z-index: 100;
+        border-radius: 15px;
 
         /* centers vertically */
         left: 25%;
         transform: translateX(-12.5%);
+
+        /* lets the modal scroll if it's too long */
+        overflow-y: auto;
+        max-height: 90%;
     }
 
     .modal-container {
