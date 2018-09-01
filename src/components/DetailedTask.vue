@@ -6,8 +6,8 @@
                 v-resize-on-insert
                 v-model="task.content"></textarea>
 
-            <div style="padding-top: 15px;">
-                description
+            <div>
+                <legend>description</legend>
                 <textarea
                     v-resize-on-insert
                     v-model="task.description"></textarea>
@@ -113,6 +113,11 @@ export default {
     created() {
         this.task = this.taskByID(this.taskID);
         this.shouldUpdateTask = true;
+
+        document.body.classList.add("noscroll");
+        this.$once("hook:destroyed", () => {
+            document.body.classList.remove("noscroll");
+        });
     },
     methods: {
         ...mapMutations([
