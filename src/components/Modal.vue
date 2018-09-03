@@ -15,21 +15,23 @@
                         </slot>
                     </div>
                     <div class="separator"></div>
-                    <div class="modal-body">
-                        <slot name="body">
-                            default body
-                        </slot>
-                    </div>
-                    <div class="separator"></div>
-                    <div class="modal-footer">
-                        <slot name="footer">
-                            &#8203;
-                            <button
-                                class="modal-default-button"
-                                @click="$emit('close')">
-                                OK
-                            </button>
-                        </slot>
+                    <div class="modal-scrollableSection">
+                        <div class="modal-body">
+                            <slot name="body">
+                                default body
+                            </slot>
+                        </div>
+                        <div class="separator"></div>
+                        <div class="modal-footer">
+                            <slot name="footer">
+                                &#8203;
+                                <button
+                                    class="modal-default-button"
+                                    @click="$emit('close')">
+                                    OK
+                                </button>
+                            </slot>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -56,7 +58,6 @@ export default {
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, .5);
-
         transition: opacity .3s ease;
     }
 
@@ -69,9 +70,6 @@ export default {
         /* centers vertically */
         left: 25%;
         transform: translateX(-12.5%);
-
-        /* lets the modal scroll if it's too long */
-        overflow-y: auto;
         max-height: 90%;
     }
 
@@ -79,11 +77,12 @@ export default {
         min-width: 25vw;
         max-width: 62vw;
         margin: 0px auto;
-        padding: 20px 30px;
+        padding: 20px 10px 20px 20px;
         background-color: #fff;
         border-radius: 2px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
         transition: all .3s ease;
+        max-height: 85vh;
     }
 
     .modal-header h3 {
@@ -91,9 +90,20 @@ export default {
         color: #42b983;
     }
 
+    .modal-scrollableSection {
+        /* lets the modal scroll if it's too long */
+        overflow-y: auto;
+        max-height: 80vh;
+    }
+
     .modal-body {
         margin: 20px 0;
         max-width: 100%;
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: flex-start;
     }
 
     .modal-default-button {
