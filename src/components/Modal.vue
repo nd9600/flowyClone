@@ -10,10 +10,10 @@
             </div>
             <div class="modal-wrapper">
                 <div class="modal-container">
-                    <div class="modal-header">
+                    <h3 class="modal-header">
                         <slot name="header">
                         </slot>
-                    </div>
+                    </h3>
                     <div class="separator"></div>
                     <div class="modal-scrollableSection">
                         <div class="modal-body">
@@ -75,8 +75,8 @@ export default {
     .modal-container {
         min-width: 25vw;
         max-width: 62vw;
-        margin: 0px auto;
-        padding: 20px 10px 20px 20px;
+        margin: 0 auto;
+        padding: 20px;
         background-color: #fff;
         border-radius: 15px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
@@ -84,8 +84,8 @@ export default {
         max-height: 85vh;
     }
 
-    .modal-header h3 {
-        margin-top: 0;
+    .modal-header {
+        margin: 0;
         color: #42b983;
     }
 
@@ -96,7 +96,7 @@ export default {
     }
 
     .modal-body {
-        margin: 20px 0;
+        margin: 0;
         max-width: 100%;
     }
 
@@ -106,7 +106,7 @@ export default {
     }
 
     .modal-default-button {
-        float: right;
+        border-radius: 10px;
     }
 
     .modal-enter {

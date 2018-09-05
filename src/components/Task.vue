@@ -18,9 +18,7 @@
                     v-if="showModal"
                     @close="hideModal"
                 >
-                    <h3
-                        slot="header"
-                        style="margin: 0;">Task {{ taskID }}</h3>
+                    <template slot="header">Task {{ taskID }}</template>
                     <detailedTask
                         slot="body"
                         :taskID="taskID"></detailedTask>
