@@ -556,6 +556,7 @@ export default {
     .description {
         font-size: 1.5rem;
         color: #696969;
+        white-space: pre-line;
     }
 
     .leftIndent {
