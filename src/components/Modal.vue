@@ -21,17 +21,17 @@
                                 default body
                             </slot>
                         </div>
-                        <div class="separator"></div>
-                        <div class="modal-footer">
-                            <slot name="footer">
-                                &#8203;
-                                <button
-                                    class="modal-default-button"
-                                    @click="$emit('close')">
-                                    OK
-                                </button>
-                            </slot>
-                        </div>
+                    </div>
+                    <div class="separator"></div>
+                    <div class="modal-footer">
+                        <slot name="footer">
+                            &#8203;
+                            <button
+                                class="modal-default-button"
+                                @click="$emit('close')">
+                                OK
+                            </button>
+                        </slot>
                     </div>
                 </div>
             </div>
@@ -63,7 +63,8 @@ export default {
 
     .modal-wrapper {
         position: fixed;
-        top: 5%;
+        top: 2.5%;
+        bottom: 2.5%;
         z-index: 100;
 
         /* centers vertically */
@@ -81,7 +82,6 @@ export default {
         border-radius: 15px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
         transition: all .3s ease;
-        max-height: 85vh;
     }
 
     .modal-header {

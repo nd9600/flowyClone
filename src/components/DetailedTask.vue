@@ -142,6 +142,6 @@ export default {
         flex-direction: column;
         justify-content: space-around;
         align-items: flex-start;
-        max-width: 50%;
+        max-width: 45%;
     }
 </style>
