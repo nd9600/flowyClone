@@ -8,7 +8,7 @@
                 class="modal-mask"
                 @click="$emit('close')">
             </div>
-            <div class="modal-wrapper">
+            <div class="modal-wrapper ">
                 <div class="modal-container">
                     <h3 class="modal-header">
                         <slot name="header">
@@ -76,17 +76,19 @@ export default {
     .modal-container {
         min-width: 25vw;
         max-width: 62vw;
-        margin: 0 auto;
-        padding: 20px;
+
         background-color: #fff;
         border-radius: 15px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
         transition: all .3s ease;
+        overflow: hidden;
     }
 
     .modal-header {
         margin: 0;
-        color: #42b983;
+        background-color: #42b983;
+        color: white;
+        padding: 20px;
     }
 
     .modal-scrollableSection {
@@ -97,12 +99,12 @@ export default {
 
     .modal-body {
         margin: 0;
+        padding: 20px;
         max-width: 100%;
     }
 
     .modal-footer {
-        display: flex;
-        justify-content: flex-start;
+        padding: 20px;
     }
 
     .modal-default-button {

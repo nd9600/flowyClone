@@ -18,7 +18,7 @@
                     v-if="showModal"
                     @close="hideModal"
                 >
-                    <template slot="header">Task {{ taskID }}</template>
+                    <template slot="header">Task {{ taskID }} - {{ task.content }}</template>
                     <detailedTask
                         slot="body"
                         :taskID="taskID"></detailedTask>
