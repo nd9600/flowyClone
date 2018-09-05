@@ -4,6 +4,10 @@
             <legend>content</legend>
             <textarea
                 v-resize-on-insert
+                ref="taskInput"
+                :class="{
+                    bold: task.bold,
+                }"
                 v-model="task.content"></textarea>
 
             <div>
@@ -106,6 +110,9 @@ export default {
                 if (this.shouldUpdateTask) {
                     this.setTask(newTask);
                 }
+                this.$nextTick(() => {
+                    Stretchy.resize(this.$refs.taskInput);
+                });
             },
             deep: true
         },
@@ -131,6 +138,10 @@ export default {
 </script>
 
 <style scoped>
+    .bold {
+        font-weight: bold;
+    }
+
     .bottomInputContainer {
         display: flex;
         flex-direction: row;
