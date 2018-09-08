@@ -101,7 +101,7 @@
                 </button>
 
                 <button
-                    class="btn dangerBtn"
+                    class="btn btn--danger"
                     @click="deleteTask"
                 >x
                 </button>
@@ -530,15 +530,21 @@ export default {
 
     .btn:hover {
         background-color: var(--link-colour);
-        border: 1px solid var(--link-colour);
+        border: 3px solid var(--link-colour);
 
         transition: background-color 200ms ease 0s;
         color: #fff;
     }
+    .btn:focus {
+        border: 3px solid var(--link-colour);
+    }
 
-    .dangerBtn:hover {
+    .btn--danger:hover {
         background-color: #e00808;
-        border: 1px solid #e00808;
+        border: 3px solid #e00808;
+    }
+    .btn--danger:focus {
+        border: 3px solid #e00808;
     }
 
     .bold {

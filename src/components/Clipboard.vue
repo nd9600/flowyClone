@@ -44,4 +44,27 @@ export default {
 </script>
 
 <style scoped>
+     .btn {
+        min-height: 32px;
+        margin: 0 10px 0 10px;
+
+        font-size: 18px;
+        color: #ddd;
+        background-color: #f6f6f6;
+        border-color: #f6f6f6;
+        border-radius: 8px;
+
+        text-decoration: none;
+    }
+
+    .btn:hover {
+        background-color: var(--link-colour);
+        border: 3px solid var(--link-colour);
+
+        transition: background-color 200ms ease 0s;
+        color: #fff;
+    }
+    .btn:focus {
+        border: 3px solid var(--link-colour);
+    }
 </style>

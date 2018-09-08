@@ -70,6 +70,10 @@ export default {
         color: #fff;
     }
 
+    input[type="radio"]:focus, input[type="radio"]:hover {
+        outline: 5px solid var(--link-colour);
+    }
+
     input[type="search"]::-webkit-search-cancel-button {
         display: none
     }

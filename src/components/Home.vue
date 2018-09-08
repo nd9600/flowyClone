@@ -270,7 +270,11 @@ export default {
         transition: opacity 200ms ease 0s;
     }
 
-    #topRight:hover {
+    /* #topRight:hover, #topRight:focus, #topRight:focus-within, #topRightButtons:focus, #topRightButtons:focus-within {
+        background: lightyellow;
+        opacity: 1;
+    } */
+    #topRight:hover, #topRight:focus, #topRight:focus-within {
         opacity: 1;
     }
 

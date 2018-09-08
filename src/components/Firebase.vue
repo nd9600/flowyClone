@@ -8,8 +8,14 @@
                 type="text"
                 style="width: 100%;">
         </label>
-        <button @click="confirmLoad">load tasks</button>
-        <button @click="confirmSave">save tasks</button>
+        <button 
+            class="btn--firebase"
+            @click="confirmLoad"
+        >load tasks</button>
+        <button 
+            class="btn--firebase"
+            @click="confirmSave"
+        >save tasks</button>
     </div>
 </template>
 
@@ -59,5 +65,8 @@ export default {
 <style scoped>
     .paddedLeftAndBottom {
         padding: 0 0 10px 10px;
+    }
+    .btn--firebase {
+        padding: 5px;
     }
 </style>
