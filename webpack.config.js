@@ -2,6 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     mode: process.env.NODE_ENV,
@@ -49,7 +50,7 @@ module.exports = {
     plugins: [
         // new webpack.HashedModuleIdsPlugin(),
         new VueLoaderPlugin()//,
-        //new HardSourceWebpackPlugin()
+        // new BundleAnalyzerPlugin()
     ],
     resolve: {
         alias: {
