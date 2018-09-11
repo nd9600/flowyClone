@@ -49,7 +49,7 @@ export default {
 <style scoped>
     .modal-mask {
         position: fixed;
-        overflow: auto;
+        overflow: scroll;
         z-index: 3;
         top: 0;
         right: 0;
@@ -81,7 +81,8 @@ export default {
         border-radius: 15px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
         transition: all .3s ease;
-        overflow: hidden;
+        overflow-y: hidden;
+        max-height: 100%;
     }
 
     .modal-header {
@@ -89,12 +90,13 @@ export default {
         background-color: #42b983;
         color: white;
         padding: 20px;
+        max-height: 10vh;
     }
 
     .modal-scrollableSection {
         /* lets the modal scroll if it's too long */
-        overflow-y: auto;
-        max-height: 80vh;
+        overflow-y: scroll;
+        max-height: 65vh;
     }
 
     .modal-body {
@@ -105,6 +107,7 @@ export default {
 
     .modal-footer {
         padding: 20px;
+        max-height: 10vh;
     }
 
     .modal-default-button {
