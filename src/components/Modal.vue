@@ -8,31 +8,29 @@
                 class="modal-mask"
                 @click="$emit('close')">
             </div>
-            <div class="modal-wrapper ">
-                <div class="modal-container">
-                    <h3 class="modal-header">
-                        <slot name="header">
-                        </slot>
-                    </h3>
-                    <div class="separator"></div>
-                    <div class="modal-scrollableSection">
-                        <div class="modal-body">
-                            <slot name="body">
-                                default body
-                            </slot>
-                        </div>
-                    </div>
-                    <div class="separator"></div>
-                    <div class="modal-footer">
-                        <slot name="footer">
-                            &#8203;
-                            <button
-                                class="modal-default-button"
-                                @click="$emit('close')">
-                                OK
-                            </button>
+            <div class="modal-container">
+                <h3 class="modal-header">
+                    <slot name="header">
+                    </slot>
+                </h3>
+                <div class="separator"></div>
+                <div class="modal-scrollableSection">
+                    <div class="modal-body">
+                        <slot name="body">
+                            default body
                         </slot>
                     </div>
+                </div>
+                <div class="separator"></div>
+                <div class="modal-footer">
+                    <slot name="footer">
+                        &#8203;
+                        <button
+                            class="modal-default-button"
+                            @click="$emit('close')">
+                            OK
+                        </button>
+                    </slot>
                 </div>
             </div>
         </div>
@@ -49,7 +47,6 @@ export default {
 <style scoped>
     .modal-mask {
         position: fixed;
-        overflow: scroll;
         z-index: 3;
         top: 0;
         right: 0;
@@ -61,28 +58,27 @@ export default {
         transition: opacity .3s ease;
     }
 
-    .modal-wrapper {
+    .modal-container {
         position: fixed;
         top: 2.5%;
-        bottom: 2.5%;
         z-index: 100;
 
-        /* centers vertically */
-        left: 25%;
-        transform: translateX(-12.5%);
-        max-height: 90%;
-    }
+        /* centers horizontally and vertically */
+        transform: translate(-12.5%, 2.5%);
 
-    .modal-container {
+        display: flex;
+        flex-direction: column;
+
         min-width: 25vw;
         max-width: 62vw;
+        max-height: 90vh;
+
+        overflow-y: hidden;
 
         background-color: #fff;
         border-radius: 15px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
         transition: all .3s ease;
-        overflow-y: hidden;
-        max-height: 100%;
     }
 
     .modal-header {
@@ -90,7 +86,7 @@ export default {
         background-color: #42b983;
         color: white;
         padding: 20px;
-        max-height: 10vh;
+        max-height: 15vh;
     }
 
     .modal-scrollableSection {
@@ -112,6 +108,7 @@ export default {
 
     .modal-default-button {
         border-radius: 10px;
+        padding: 10px 20px;
     }
 
     .modal-enter {
