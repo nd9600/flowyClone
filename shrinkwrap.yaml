@@ -16,6 +16,7 @@ devDependencies:
   eslint-plugin-vue: 4.7.1
   file-loader: 1.1.11
   jest: 23.3.0
+  merge: 1.2.1
   vue-hot-reload-api: 2.3.0
   vue-jest: 2.6.0
   vue-loader: 15.3.0
@@ -4796,6 +4797,10 @@ packages:
     dev: true
     resolution:
       integrity: sha1-dTHjnUlJwoGma4xabgJl6LBYlNo=
+  /merge/1.2.1:
+    dev: true
+    resolution:
+      integrity: sha512-VjFo4P5Whtj4vsLzsYBu5ayHhoHJ0UqNm7ibvShmbmoz7tGi0vXaoJbGdB+GmDMLUdg8DpQXEIeVDAe8MaABvQ==
   /methods/1.1.2:
     dev: true
     engines:
@@ -7872,6 +7877,7 @@ specifiers:
   firebase: ^5.0.4
   jest: ^23.1.0
   lodash.debounce: ^4.0.8
+  merge: ^1.2.1
   vue: ^2.5.17
   vue-hot-reload-api: ^2.3.0
   vue-jest: ^2.6.0
